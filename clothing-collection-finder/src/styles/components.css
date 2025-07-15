@@ -1,0 +1,80 @@
+/* src/styles/components.css */
+
+/* 네이버 지도 컴포넌트 - 전체 화면 고정 */
+.naver-map-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.naver-map-container .map {
+    width: 100%;
+    height: 100%;
+}
+
+.naver-map-container .loading,
+.naver-map-container .error {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.naver-map-container .error {
+    color: #e74c3c;
+}
+
+/* 사이드바 레이아웃 컴포넌트 - 오버레이 방식 */
+.sidebar-layout {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* 메인 콘텐츠 영역 */
+.sidebar-layout .main-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+/* 상단 네비게이션이 있는 경우 지도 영역 조정 */
+.main-content .naver-map-container {
+    top: 70px; /* 상단 네비게이션 높이만큼 아래로 */
+    height: calc(100vh - 70px); /* 상단 네비게이션 높이 제외 */
+}
+
+/* 상단 네비게이션이 없는 경우 전체 화면 사용 */
+.no-navigation .main-content .naver-map-container {
+    top: 0;
+    height: 100vh;
+}
+
+/* 사이드바 관련 스타일은 SidebarLayout.vue에서 관리 */
+
+/* 반응형 - 모바일 */
+@media (max-width: 768px) {
+    /* 모바일에서도 지도는 전체 화면 고정 */
+    .main-content .naver-map-container {
+        top: 70px;
+        height: calc(100vh - 70px);
+    }
+
+    .no-navigation .main-content .naver-map-container {
+        top: 0;
+        height: 100vh;
+    }
+}

@@ -1,0 +1,98 @@
+/* src/styles/navigation.css */
+
+/* 상단 네비게이션 바 컴포넌트 */
+.navigation-bar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 70px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0 40px;
+    position: fixed !important;
+    top: 0;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navigation-bar .nav-brand {
+    flex-shrink: 0;
+}
+
+.navigation-bar .brand-text {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #7c3aed;
+}
+
+.navigation-bar .nav-menu {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 0;
+    margin-left: 80px;
+    height: 100%;
+}
+
+.navigation-bar .nav-item {
+    text-decoration: none;
+    color: #666666;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 25px 36px; /* 기존 32px에서 36px로 증가 */
+    transition: all 0.2s ease;
+    position: relative;
+    border-bottom: 3px solid transparent;
+    display: inline-block !important;
+    white-space: nowrap;
+}
+
+.navigation-bar .nav-item:hover {
+    color: #333333;
+}
+
+.navigation-bar .nav-item.active {
+    color: #333333;
+    font-weight: 600;
+    border-bottom: 3px solid #7c3aed;
+}
+
+.navigation-bar .nav-user {
+    display: flex !important;
+    align-items: center !important;
+    gap: 24px;
+    flex-shrink: 0;
+}
+
+.navigation-bar .user-link {
+    text-decoration: none;
+    color: #666666;
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px 0;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.navigation-bar .user-link:hover {
+    color: #333333;
+}
+
+/* 반응형 - 네비게이션 바 */
+@media (max-width: 768px) {
+    .navigation-bar {
+        padding: 0 16px;
+        height: 60px;
+    }
+
+    .navigation-bar .nav-menu {
+        display: none;
+    }
+
+    .navigation-bar .brand-text {
+        font-size: 1.25rem;
+    }
+}
