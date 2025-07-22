@@ -8,16 +8,16 @@
 
     <!-- 메뉴 영역 -->
     <div class="nav-menu">
-      <a href="#" class="nav-item active">의류수거함</a>
-      <a href="#" class="nav-item">나눔</a>
-      <a href="#" class="nav-item">즐겨찾기</a>
-      <a href="#" class="nav-item">이용가이드</a>
+      <router-link to="/" class="nav-item">의류수거함</router-link>
+      <router-link to="/share" class="nav-item">나눔</router-link>
+      <router-link to="/favorites" class="nav-item">즐겨찾기</router-link>
+      <router-link to="/guide" class="nav-item">이용가이드</router-link>
     </div>
 
     <!-- 사용자 메뉴 영역 -->
     <div class="nav-user">
-      <a href="#" class="user-link">마이페이지</a>
-      <a href="#" class="user-link">로그인</a>
+      <router-link to="/mypage" class="nav-item">마이페이지</router-link>
+      <router-link to="/login" class="nav-item">로그인</router-link>
     </div>
   </nav>
 </template>

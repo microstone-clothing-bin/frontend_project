@@ -6,7 +6,7 @@
       <div class="search-input-wrapper">
         <input
             type="text"
-            placeholder="장소, 주소 검색"
+            placeholder="00시 00동"
             class="search-input"
         />
         <button class="search-button">

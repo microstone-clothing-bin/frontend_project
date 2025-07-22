@@ -54,7 +54,9 @@
     color: #333333;
 }
 
-.navigation-bar .nav-item.active {
+.navigation-bar .nav-item.active,
+.navigation-bar .nav-item.router-link-active,
+.navigation-bar .nav-item.router-link-exact-active {
     color: #333333;
     font-weight: 600;
     border-bottom: 3px solid #7c3aed;
