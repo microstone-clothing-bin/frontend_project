@@ -1,4 +1,4 @@
-// src/services/apiService.js
+// src/services/apiService.js 백엔드랑 프론트랑 연결 데이터 가져오기
 import axios from 'axios'
 
 // 백엔드 API 기본 URL 설정

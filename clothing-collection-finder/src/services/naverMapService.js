@@ -1,4 +1,4 @@
-// src/services/naverMapService.js
+// src/services/naverMapService.js 네이버 지도 연결
 class NaverMapService {
     constructor() {
         this.isLoaded = false;

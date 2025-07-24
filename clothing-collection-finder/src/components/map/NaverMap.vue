@@ -1,13 +1,13 @@
 <template>
   <div class="naver-map-container">
     <!-- 로딩 중 -->
-    <div v-if="isLoading" class="loading">
+    <div v-if="isMapLoading || isDataLoading" class="loading">
       <p>지도 로딩 중...</p>
     </div>
 
     <!-- 에러 -->
-    <div v-if="error" class="error">
-      <p>{{ error }}</p>
+    <div v-if="mapError || dataError" class="error">
+      <p>{{ mapError || dataError }}</p>
     </div>
 
     <!-- 지도 -->
@@ -17,7 +17,9 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useNaverMap } from '../../composables/useNaverMap'
+import { useNaverMap } from '../../composables/useNaverMap' // 지도 생성/관리
+import { useMapMarkers } from '../../composables/useMapMarkers' //  마커 생성/제거
+import { useClotheBin } from '../../composables/useClotheBin' // 의류수거함 데이터 관리
 
 // Props 정의
 const props = defineProps({
@@ -41,17 +43,43 @@ const props = defineProps({
 
 const mapContainerId = `naver-map-${Date.now()}`
 
+// 지도 관련
 const {
-  isLoading,
-  error,
+  map,
+  isLoading: isMapLoading,
+  error: mapError,
   initMap,
   triggerResize
 } = useNaverMap(mapContainerId)
 
+// 마커 관련
+const { addMarkersToMap, clearMarkers } = useMapMarkers()
+
+// 의류수거함 데이터 관련
+const {
+  clothingBins,
+  isLoading: isDataLoading,
+  error: dataError,
+  loadClothingBins
+} = useClotheBin()
+
 onMounted(async () => {
-  await initMap({
-    zoom: props.zoom
-  })
+  try {
+    // 1. 지도 초기화
+    await initMap({
+      zoom: props.zoom
+    })
+
+    // 2. 의류수거함 데이터 로드
+    await loadClothingBins()
+
+    // 3. 데이터 검증 후 마커 추가
+    if (map.value && clothingBins.value && clothingBins.value.length > 0) {
+      addMarkersToMap(map.value, clothingBins.value)
+    }
+  } catch (error) {
+    console.error('NaverMap 초기화 에러:', error)
+  }
 })
 
 // 부모 컴포넌트에서 리사이즈를 호출할 수 있도록 expose

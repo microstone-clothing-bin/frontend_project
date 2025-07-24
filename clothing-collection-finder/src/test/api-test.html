@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>백엔드 API 연결 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .loading {
+            color: #007bff;
+            font-weight: bold;
+        }
+        .error {
+            color: #dc3545;
+            background-color: #f8d7da;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .success {
+            color: #155724;
+            background-color: #d4edda;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .data-preview {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🔌 백엔드 API 연결 테스트</h1>
+    <p>Spring Boot 서버가 <code>localhost:8081</code>에서 실행 중인지 확인하세요.</p>
+
+    <button id="testBtn" onclick="testConnection()">백엔드 연결 테스트</button>
+
+    <div id="status"></div>
+    <div id="result"></div>
+</div>
+
+<script>
+    let isLoading = false;
+
+    async function testConnection() {
+        if (isLoading) return;
+
+        const statusDiv = document.getElementById('status');
+        const resultDiv = document.getElementById('result');
+        const testBtn = document.getElementById('testBtn');
+
+        // 로딩 시작
+        isLoading = true;
+        testBtn.disabled = true;
+        testBtn.textContent = '연결 중...';
+        statusDiv.innerHTML = '<div class="loading">🔄 서버에 연결 중...</div>';
+        resultDiv.innerHTML = '';
+
+        try {
+            console.log('API 요청 시작: http://localhost:8081/api/clothing-bins');
+
+            const response = await fetch('http://localhost:8081/api/clothing-bins', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+
+            console.log('응답 상태:', response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            console.log('받아온 데이터:', data);
+
+            // 성공 표시
+            statusDiv.innerHTML = `
+                    <div class="success">
+                        ✅ 연결 성공! 의류수거함 데이터 ${data.length}개를 받아왔습니다.
+                    </div>
+                `;
+
+            // 첫 3개 데이터 미리보기
+            const preview = data.slice(0, 3).map(item =>
+                `ID: ${item.id}, 도로명: ${item.roadAddr}, 위도: ${item.lat}, 경도: ${item.lon}`
+            ).join('\n');
+
+            resultDiv.innerHTML = `
+                    <h3>📊 데이터 미리보기 (처음 3개)</h3>
+                    <div class="data-preview">${preview}</div>
+                    <p><strong>총 ${data.length}개의 의류수거함 데이터</strong></p>
+                    <p>✨ 프론트엔드에서 이 데이터를 사용해 지도에 마커를 표시할 수 있습니다!</p>
+                `;
+
+        } catch (error) {
+            console.error('연결 실패:', error);
+
+            statusDiv.innerHTML = `
+                    <div class="error">
+                        ❌ 연결 실패: ${error.message}
+                    </div>
+                `;
+
+            // 해결 방법 안내
+            let troubleshoot = '';
+            if (error.message.includes('Failed to fetch') || error.message.includes('ECONNREFUSED')) {
+                troubleshoot = `
+                        <h3>🔧 해결 방법:</h3>
+                        <ol>
+                            <li>Spring Boot 서버가 실행 중인지 확인하세요</li>
+                            <li><code>http://localhost:8081</code>에 직접 접속해보세요</li>
+                            <li>서버 콘솔에서 오류 메시지를 확인하세요</li>
+                            <li>CORS 설정이 되어있는지 확인하세요</li>
+                        </ol>
+                    `;
+            } else if (error.message.includes('404')) {
+                troubleshoot = `
+                        <h3>🔧 해결 방법:</h3>
+                        <p>API 엔드포인트가 존재하지 않습니다. <code>/api/clothing-bins</code> 경로를 확인하세요.</p>
+                    `;
+            }
+
+            resultDiv.innerHTML = troubleshoot;
+        } finally {
+            // 로딩 종료
+            isLoading = false;
+            testBtn.disabled = false;
+            testBtn.textContent = '다시 테스트';
+        }
+    }
+
+    // 페이지 로드 시 자동 실행
+    window.addEventListener('load', () => {
+        console.log('테스트 페이지 로드 완료');
+        console.log('백엔드 서버 확인: http://localhost:8081');
+    });
+</script>
+</body>
+</html>
