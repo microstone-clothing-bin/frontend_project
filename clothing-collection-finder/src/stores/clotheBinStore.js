@@ -30,6 +30,11 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
     // getter - 총 개수
     const totalCount = computed(() => clothingBins.value.length)
 
+    // getter - 사이드바용 상위 10개
+    const sidebarClothingBins = computed(() => {
+        return clothingBins.value.slice(0, 5)
+    })
+
     return {
         // 상태
         clothingBins,
@@ -38,6 +43,7 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
 
         // getter
         totalCount,
+        sidebarClothingBins, // 사이드바 전용 getter 추가
 
         // 액션
         fetchClothingBins

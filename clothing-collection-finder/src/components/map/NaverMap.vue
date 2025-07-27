@@ -21,6 +21,9 @@ import { useNaverMap } from '../../composables/useNaverMap' // 지도 생성/관
 import { useMapMarkers } from '../../composables/useMapMarkers' //  마커 생성/제거
 import { useClotheBin } from '../../composables/useClotheBin' // 의류수거함 데이터 관리
 
+// 🆕 이벤트 정의 (HomeView로 전달할 이벤트)
+const emit = defineEmits(['markerClick'])
+
 // Props 정의
 const props = defineProps({
   width: {
@@ -52,7 +55,7 @@ const {
   triggerResize
 } = useNaverMap(mapContainerId)
 
-// 마커 관련
+// 🔄 수정: 마커 관련 (showDetailPanel, closeDetailPanel 제거)
 const { addMarkersToMap, clearMarkers } = useMapMarkers()
 
 // 의류수거함 데이터 관련
@@ -62,6 +65,23 @@ const {
   error: dataError,
   loadClothingBins
 } = useClotheBin()
+
+// 🆕 마커 클릭 핸들러 추가
+const handleMarkerClick = (binData) => {
+  console.log('NaverMap에서 마커 클릭 받음:', binData)
+  // HomeView로 이벤트 전달
+  emit('markerClick', binData)
+}
+
+// 지도 이동 함수 추가 - 여기에 추가!
+const moveToLocation = (latitude, longitude) => {
+  if (map.value) {
+    const newCenter = new naver.maps.LatLng(latitude, longitude)
+    map.value.setCenter(newCenter)
+    map.value.setZoom(16) // 적당한 확대 레벨
+    console.log(`지도 이동: ${latitude}, ${longitude}`)
+  }
+}
 
 onMounted(async () => {
   try {
@@ -73,18 +93,20 @@ onMounted(async () => {
     // 2. 의류수거함 데이터 로드
     await loadClothingBins()
 
-    // 3. 데이터 검증 후 마커 추가
+    // 🔄 수정: 콜백 함수와 함께 마커 추가
     if (map.value && clothingBins.value && clothingBins.value.length > 0) {
-      addMarkersToMap(map.value, clothingBins.value)
+      addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
+      console.log('🎯 마커 생성 완료 - 이벤트 방식으로 연결됨')
     }
   } catch (error) {
     console.error('NaverMap 초기화 에러:', error)
   }
 })
 
-// 부모 컴포넌트에서 리사이즈를 호출할 수 있도록 expose
+// 🔄 수정: 부모 컴포넌트에서 리사이즈를 호출할 수 있도록 expose (패널 상태 제거)
 defineExpose({
-  triggerResize
+  triggerResize,
+  moveToLocation
 })
 </script>
 

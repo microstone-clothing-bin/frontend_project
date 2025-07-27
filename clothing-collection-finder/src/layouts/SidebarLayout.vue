@@ -12,7 +12,7 @@
       <div class="sidebar-content">
         <slot name="sidebar">
           <!-- 기본 사이드바 내용으로 SidebarContent 사용 -->
-          <SidebarContent />
+          <SidebarContent @moveToLocation="$emit('moveToLocation', $event)" />
         </slot>
       </div>
     </aside>
@@ -47,7 +47,7 @@ export default {
   components: {
     SidebarContent
   },
-  emits: ['sidebar-toggle'],
+  emits: ['sidebar-toggle', 'moveToLocation'],
   setup(props, { emit }) {
     const isCollapsed = ref(false)
 
@@ -124,7 +124,7 @@ export default {
   width: 100%;
   height: 100%;
   overflow-y: auto;
-  overflow-x: hidden;
+  overflow-x: auto;
 }
 
 /* 사이드바 토글 버튼 */
