@@ -1,4 +1,4 @@
-<!-- src/components/common/SidebarContent.vue -->
+<!-- src/components/common/SidebarContent.vue 왼쪽 사이드바-->
 <template>
   <div class="sidebar-content-wrapper">
     <!-- 검색창 섹션 -->
@@ -80,9 +80,9 @@ export default {
     const allBins = computed(() => clotheBinStore.clothingBins)
     const isLoading = computed(() => clotheBinStore.isLoading)
 
-    // 처음 2개만 표시
+    // 처음 10개만 표시
     const first2Bins = computed(() => {
-      return allBins.value.slice(0, 5)
+      return allBins.value.slice(0, 10)
     })
 
     // 데이터 로드
@@ -95,12 +95,16 @@ export default {
     // 클릭 핸들러
     const handleBinClick = (bin) => {
       console.log('클릭된 수거함:', bin)
+      // 지도 이동
       emit('moveToLocation', {
         latitude: bin.latitude,
         longitude: bin.longitude,
         binId: bin.id,
         address: bin.roadAddress
       })
+
+      // 추가: 사이드바 데이터 누르면 정보패널 표시
+      emit('showDetailPanel', bin)
     }
 
     // 거리 계산

@@ -1,4 +1,4 @@
-// src/composables/useMapMarkers.js 마커 생성.제거 담당
+// src/composables/useMapMarkers.js 마커 생성.제거 클러스터링 담당
 import { ref } from 'vue'
 
 export function useMapMarkers() {
@@ -24,11 +24,9 @@ export function useMapMarkers() {
                 if (onMarkerClick) {
                     // 콜백 함수가 있으면 호출 (이벤트 방식)
                     onMarkerClick(bin)
-                    console.log('📍 마커 클릭 - 이벤트 발생 (콜백 호출)')
                 } else {
                     // 콜백 함수가 없으면 기존 방식 (상태 변경)
                     showDetailPanel.value = true
-                    console.log('📍 마커 클릭 - 패널 열림 (기존 방식)')
                 }
             })
 
@@ -142,7 +140,6 @@ export function useMapMarkers() {
     // 패널 닫기 함수 추가 ✨
     const closeDetailPanel = () => {
         showDetailPanel.value = false
-        console.log('❌ 패널 닫힘')
     }
 
     // 모든 마커 제거

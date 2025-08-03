@@ -32,7 +32,7 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
 
     // getter - 사이드바용 상위 10개
     const sidebarClothingBins = computed(() => {
-        return clothingBins.value.slice(0, 5)
+        return clothingBins.value.slice(0, 10)
     })
 
     return {

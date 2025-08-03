@@ -1,4 +1,4 @@
-// src/composables/useNaverMap.js
+// src/composables/useNaverMap.js 네이버 지도 재사용
 import { ref, nextTick, onUnmounted } from 'vue'
 import naverMapService from '../services/naverMapService'
 

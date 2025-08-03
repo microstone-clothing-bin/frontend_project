@@ -1,3 +1,4 @@
+<!-- src/layouts/SidebarLayout.vue 왼쪽 사이드바 레이아웃 -->
 <template>
   <div class="sidebar-layout">
     <!-- 메인 콘텐츠 (지도) - 전체 배경 -->
@@ -12,7 +13,8 @@
       <div class="sidebar-content">
         <slot name="sidebar">
           <!-- 기본 사이드바 내용으로 SidebarContent 사용 -->
-          <SidebarContent @moveToLocation="$emit('moveToLocation', $event)" />
+          <SidebarContent @moveToLocation="$emit('moveToLocation', $event)"
+                          @showDetailPanel="$emit('showDetailPanel', $event)" /> <!-- 정보패널 이벤트 전달 -->
         </slot>
       </div>
     </aside>
@@ -47,7 +49,7 @@ export default {
   components: {
     SidebarContent
   },
-  emits: ['sidebar-toggle', 'moveToLocation'],
+  emits: ['sidebar-toggle', 'moveToLocation', 'showDetailPanel'], //사이드바 토글, 지도 이동, 정보패널 표시
   setup(props, { emit }) {
     const isCollapsed = ref(false)
 
@@ -123,8 +125,7 @@ export default {
 .sidebar-content {
   width: 100%;
   height: 100%;
-  overflow-y: auto;
-  overflow-x: auto;
+  overflow: hidden;
 }
 
 /* 사이드바 토글 버튼 */

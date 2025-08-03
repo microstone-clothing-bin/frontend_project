@@ -1,7 +1,8 @@
 <!-- src/views/HomeView.vue -->
 <template>
   <MainLayout>  <!-- 상단 네비게이션 바 -->
-    <SidebarLayout @moveToLocation="handleMoveToLocation">
+    <SidebarLayout @moveToLocation="handleMoveToLocation"
+                   @showDetailPanel="handleShowPanel">
       <!-- 메인 콘텐츠 (지도) -->
       <NaverMap
           ref="naverMapRef"
@@ -39,13 +40,20 @@ export default {
     const mapCenter = ref({ lat: 37.5665, lng: 126.9780 }) // 서울시청
     const naverMapRef = ref(null)
 
-    // 🔄 수정: useMapMarkers 제거하고 직접 상태 관리
-    const showDetailPanel = ref(false)
-    const selectedBinData = ref(null)
+    // 정보패널 상태 관리용 로컬 상태
+    const showDetailPanel = ref(false) // 패널 표시/숨김 상태
+    const selectedBinData = ref(null) // 의류수거함 데이터
 
     // 🆕 마커 클릭 핸들러 추가
     const handleMarkerClick = (binData) => {
       console.log('HomeView에서 마커 클릭 받음:', binData)
+      selectedBinData.value = binData // 선택된 데이터 저장
+      showDetailPanel.value = true // 정보패널 표시
+    }
+
+    // 새로 추가: 사이드바 패널 표시 핸들러
+    const handleShowPanel = (binData) => {
+      console.log('HomeView에서 사이드바 클릭 받음:', binData)
       selectedBinData.value = binData
       showDetailPanel.value = true
     }
@@ -54,7 +62,6 @@ export default {
     const closeDetailPanel = () => {
       showDetailPanel.value = false
       selectedBinData.value = null
-      console.log('❌ 패널 닫힘')
     }
 
     // 사이드바에서 온 이벤트 처리
@@ -73,10 +80,11 @@ export default {
     return {
       mapCenter,
       naverMapRef,
-      handleMoveToLocation,
-      handleMarkerClick,    // 🆕 추가
-      showDetailPanel,      // 정보패널 관련
-      closeDetailPanel,     // 정보패널 관련
+      handleMoveToLocation, // 지도 이동
+      handleMarkerClick,    // 마커 정보 패널 표시
+      handleShowPanel,      // 사이드바 정보패널 표시
+      showDetailPanel,      // 정보패널 관련 열기
+      closeDetailPanel,     // 정보패널 관련 닫기
       selectedBinData       // 🆕 선택된 의류수거함 데이터
     }
   }

@@ -1,3 +1,4 @@
+// 라우팅 설정 및 경로 정의
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ShareView from '../views/ShareView.vue'

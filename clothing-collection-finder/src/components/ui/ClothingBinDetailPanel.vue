@@ -1,3 +1,4 @@
+<!-- 정보패널 -->
 <template>
   <div class="detail-panel">
     <!-- 패널 내용 (헤더 완전 제거) -->
@@ -23,16 +24,7 @@ const emit = defineEmits(['close'])
 
 // 디버깅용 함수들
 const handleClose = () => {
-  console.log('🔴 CLOSE 버튼 클릭됨!')
   emit('close')  // $emit 대신 emit 사용
-}
-
-const handleMouseDown = () => {
-  console.log('🔴 마우스 다운!')
-}
-
-const handleMouseUp = () => {
-  console.log('🔴 마우스 업!')
 }
 
 // Props (사이드바 상태 받기)

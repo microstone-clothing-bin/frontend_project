@@ -1,4 +1,4 @@
-<!-- src/components/common/NavigationBar.vue -->
+<!-- src/components/common/NavigationBar.vue 상단 네비게이션 바-->
 <template>
   <nav class="navigation-bar">
     <!-- 로고 영역 -->

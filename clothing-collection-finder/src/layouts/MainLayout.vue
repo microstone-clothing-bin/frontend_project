@@ -1,4 +1,4 @@
-<!-- src/layouts/MainLayout.vue -->
+<!-- src/layouts/MainLayout.vue 상단 네비게이션바 레이아웃 -->
 <template>
   <div class="main-layout">
     <!-- 상단 네비게이션 바 -->

@@ -1,3 +1,4 @@
+<!-- 네이버 지도 -->
 <template>
   <div class="naver-map-container">
     <!-- 로딩 중 -->

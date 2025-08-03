@@ -1,15 +1,11 @@
 /* src/styles/sidebar.css */
 @import './sidebar/clothing-bins.css';
-
-/* 사이드바 콘텐츠 컴포넌트 - 새로운 디자인 */
+@import './sidebar/scrollbar.css';
+/* 왼쪽 사이드바 컴포넌트 */
 .sidebar-content-wrapper {
-    height: 100vh; /* 전체 화면 높이로 제한 */
-    max-height: 100vh;
-    overflow: hidden;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
-
 }
 
 /* 검색창 섹션 */
@@ -26,7 +22,7 @@
 .search-input {
     width: 100%;
     padding: 12px 45px 12px 15px;
-    border: 2px solid #8b5cf6;
+    border: 2px solid #6029B7;
     border-radius: 8px;
     font-size: 0.95rem;
     color: #374151;
@@ -36,7 +32,7 @@
 
 .search-input:focus {
     outline: none;
-    border-color: #7c3aed;
+    border-color: #6029B7;
     box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
 }
 
@@ -51,7 +47,7 @@
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: #8b5cf6;
+    color: #6029B7;
     cursor: pointer;
     padding: 6px;
     border-radius: 4px;
@@ -62,12 +58,12 @@
 }
 
 .search-button:hover {
-    color: #7c3aed;
-    background-color: #f3f4f6;
+    color: #6029B7;
+    background-color: #6029B7;
 }
 
 .search-button:active {
-    background-color: #e5e7eb;
+    background-color: #6029B7;
 }
 
 .search-button svg {
@@ -106,11 +102,10 @@
 
 /* 주변 의류수거함 섹션 */
 .nearby-section {
-    flex: none;
-    height: 1000px; /* 충분한 높이 */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    min-height: 0;
 }
 
 .section-header {
@@ -154,4 +149,13 @@
     flex-shrink: 0; /* 아이콘 크기 고정 */
 }
 
+.bins-container {
+    flex: 1; /* 부모의 남은 공간 모두 차지 */
+    overflow-y: auto;
 
+    min-height: 0; /* 중요! flex 스크롤 활성화 */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
