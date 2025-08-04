@@ -1,0 +1,23 @@
+/* 의류수거함 리스트 전용 스크롤바 - 피그마 디자인 적용 */
+.bins-container::-webkit-scrollbar {
+    width: 3px;
+}
+
+.bins-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.bins-container::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 2px;
+}
+
+.bins-container::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+/* Firefox 지원 */
+.bins-container {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+}
