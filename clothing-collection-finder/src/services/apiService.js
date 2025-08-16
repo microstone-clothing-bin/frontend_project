@@ -2,12 +2,12 @@
 import axios from 'axios'
 
 // 백엔드 API 기본 URL 설정
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081/api'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://midserver-url.onrender.com'
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
     baseURL: BASE_URL,
-    timeout: 10000, // 10초 타임아웃
+    timeout: 60000, // 60초 타임아웃
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'

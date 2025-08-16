@@ -22,6 +22,7 @@
       <ClothingBinDetailPanel
           v-if="showDetailPanel"
           :binData="selectedBinData"
+          :sidebar-collapsed="false"
           @close="closeDetailPanel"
       />
     </SidebarLayout>

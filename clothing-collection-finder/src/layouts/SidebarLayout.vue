@@ -20,11 +20,11 @@
       </div>
     </aside>
 
-    <!-- 🆕 분리된 토글 버튼 컴포넌트 -->
+    <!--  분리된 토글 버튼 컴포넌트 -->
     <SidebarToggleButton
         :isCollapsed="isCollapsed"
         :showDetailPanel="showDetailPanel"
-        :sidebarWidth="400"
+        :sidebarWidth="401"
         :detailPanelWidth="335"
         @toggle="handleFullToggle"
     />
@@ -142,7 +142,7 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  width: 400px;
+  width: 409px;
   height: 100%;
   padding-top: 70px;
   background-color: #ffffff;

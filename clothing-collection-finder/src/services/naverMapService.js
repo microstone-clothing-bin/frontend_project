@@ -26,7 +26,7 @@ class NaverMapService {
             // 스크립트 태그 생성
             const script = document.createElement('script');
             script.type = 'text/javascript';
-            script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}`;
+            script.src = `https://openapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=${import.meta.env.VITE_NAVER_MAP_CLIENT_ID}&submodules=geocoder`;
 
             script.onload = () => {
                 this.isLoaded = true;

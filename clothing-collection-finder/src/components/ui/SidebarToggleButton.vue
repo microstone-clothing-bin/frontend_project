@@ -1,4 +1,3 @@
-<!-- src/components/ui/SidebarToggleButton.vue -->
 <template>
   <button
       class="sidebar-toggle-btn"
@@ -6,15 +5,17 @@
       :style="{ left: buttonPosition }"
       :class="{ 'collapsed': isCollapsed }"
   >
-    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-      <path d="M15 18l-6-6 6-6" v-if="!isCollapsed"></path>
-      <path d="M9 18l6-6-6-6" v-if="isCollapsed"></path>
-    </svg>
+    <img
+        :src="toggleButtonImage"
+        alt="사이드바 토글"
+        class="toggle-icon"
+    >
   </button>
 </template>
 
 <script>
 import { computed } from 'vue'
+import sidebarToggleImageSrc from '@/assets/images/sidebartogglebutton.png'
 
 export default {
   name: 'SidebarToggleButton',
@@ -38,19 +39,21 @@ export default {
   },
   emits: ['toggle'],
   setup(props) {
-    // 토글 버튼 위치 계산
     const buttonPosition = computed(() => {
       if (props.isCollapsed) {
-        return '0px'  // 사이드바가 접혔을 때
+        return '-6px' //사이드바 접을때 버튼 위치 조절
       }
       if (props.showDetailPanel) {
-        return `${props.sidebarWidth + props.detailPanelWidth}px`  // 사이드바 + 정보패널
+        return `${props.sidebarWidth + 378}px` // 정보패널 접는 버튼 양 옆으로 조절
       }
-      return `${props.sidebarWidth}px`  // 사이드바만
+      return `${props.sidebarWidth}px`
     })
 
+    const toggleButtonImage = sidebarToggleImageSrc
+
     return {
-      buttonPosition
+      buttonPosition,
+      toggleButtonImage
     }
   }
 }
@@ -62,45 +65,41 @@ export default {
   top: 50%;
   transform: translateY(-50%);
   width: 30px;
-  height: 60px;
-  background-color: #ffffff;
-  border: 1px solid #e5e7eb;
-  border-left: none;
-  border-radius: 0 15px 15px 0;
+  height: 55px;
+  background: none !important;
+  border: none !important;
+  border-radius: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 200;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;  /* 위치 변경 애니메이션 */
+  box-shadow: none !important;
+  transition: all 0.3s ease;
   color: #6b7280;
 }
 
 .sidebar-toggle-btn:hover {
-  background-color: #f9fafb;
-  border-color: #d1d5db;
+  background: none !important;
   color: #374151;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .sidebar-toggle-btn:active {
   transform: translateY(-50%) scale(0.95);
 }
 
-/* 사이드바가 접혔을 때 버튼 스타일 */
 .sidebar-toggle-btn.collapsed {
-  border-left: 1px solid #e5e7eb;
-  border-right: none;
-  border-radius: 0 15px 15px 0;
+  /* 접혔을 때도 동일하게 투명 배경 유지 */
 }
 
-.sidebar-toggle-btn svg {
-  width: 12px;
-  height: 12px;
+.toggle-icon {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 }
 
-/* 모바일 대응 */
 @media (max-width: 768px) {
   .sidebar-toggle-btn {
     /* 모바일에서 필요한 추가 스타일 */

@@ -1,0 +1,82 @@
+/* 지역 그룹 전체 컨테이너 */
+.region-group {
+    margin-bottom: 30px;
+    display: flex;
+    align-items: flex-start;  /* 상단 정렬 */
+    gap: 30px;               /* 지역명과 데이터 간 간격 */
+}
+
+/* 지역 헤더 영역 (지역명 표시) */
+.region-header {
+    padding: 12px 0;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+    min-width: 200px;        /* 지역명 최소 너비 */
+}
+
+/* 지역명 텍스트 스타일 */
+.region-name {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A1A1A;
+}
+
+/* 지역 내 아이템들 컨테이너 */
+.region-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* 지역 구분선 (PNG 이미지 사용) */
+.region-divider {
+    width: 100%;
+    margin: 5px 0;
+    margin-left: -230px; /* region-group의 gap만큼 왼쪽으로 */
+}
+
+.region-divider img {
+    width: 127%;
+    height: auto;
+}
+
+/* 반응형 디자인 - 태블릿 */
+@media (max-width: 768px) {
+    .region-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .region-header {
+        min-width: auto;
+        margin-bottom: 5px;
+    }
+
+    .region-name {
+        font-size: 16px;
+    }
+
+    .region-divider {
+        margin-left: 0;
+    }
+
+    .region-divider img {
+        width: 100%;
+    }
+}
+
+/* 반응형 디자인 - 모바일 */
+@media (max-width: 480px) {
+    .region-group {
+        gap: 10px;
+    }
+
+    .region-header {
+        padding: 8px 0;
+    }
+
+    .region-name {
+        font-size: 15px;
+    }
+}

@@ -1,0 +1,38 @@
+/* 제목과 거리순을 가로로 배치 */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.page-title {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    color: #6029B7;
+    margin: 0;
+    padding: 0;
+    line-height: 100%;
+    letter-spacing: 0;
+}
+
+/* 거리순 텍스트 스타일 */
+.sort-label {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    color: #1A1A1A;
+    transform: translateY(40px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 24px;
+    }
+
+    .sort-label {
+        font-size: 14px;
+    }
+}

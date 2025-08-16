@@ -1,0 +1,27 @@
+/* 🆕 거리 정보 스타일 */
+.distance-info {
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0 2px;
+}
+
+.distance-label {
+    font-size: 14px;
+    color: #1A1A1A;
+    font-weight: 500;
+}
+
+.distance-value {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6029B7;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .distance-info {
+        padding: 0 12px;
+    }
+}

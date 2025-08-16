@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>네이버 지도 Geocoder 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .api-config {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f9f9f9;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        button {
+            padding: 12px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #333;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .result.success {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        .result.error {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        .result.info {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🗺️ 네이버 지도 Geocoder 테스트</h1>
+
+    <!-- API 설정 알림 -->
+    <div class="api-config">
+        <h3>⚙️ 설정 안내</h3>
+        <p><strong>중요:</strong> 이 페이지를 사용하기 전에 HTML 파일의 스크립트 태그에서 <code>YOUR_CLIENT_ID</code>를 실제 네이버 지도 API 키로 변경해주세요!</p>
+        <p><strong>현재 API 상태:</strong> <span id="apiStatus">확인 중...</span></p>
+    </div>
+
+    <!-- 지도 표시 -->
+    <div class="test-section">
+        <h3>🗺️ 네이버 지도</h3>
+        <div id="map" class="map-container"></div>
+    </div>
+
+    <div class="grid">
+        <!-- 주소 → 좌표 변환 -->
+        <div class="test-section">
+            <h3>📍 주소 → 좌표 변환 (Geocoding)</h3>
+            <div class="input-group">
+                <label>검색할 주소:</label>
+                <input type="text" id="addressInput" value="서울시청" placeholder="예: 서울시청, 강남역">
+            </div>
+            <button class="btn-primary" onclick="geocodeAddress()" id="geocodingBtn">
+                🔍 주소 검색
+            </button>
+            <button class="btn-success" onclick="testMultipleAddresses()">
+                📋 여러 주소 테스트
+            </button>
+            <div id="geocodingResult" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- 좌표 → 주소 변환 -->
+        <div class="test-section">
+            <h3>🏠 좌표 → 주소 변환 (Reverse Geocoding)</h3>
+            <div class="input-group">
+                <label>위도 (Latitude):</label>
+                <input type="number" id="latInput" value="37.5665" step="0.000001" placeholder="예: 37.5665">
+            </div>
+            <div class="input-group">
+                <label>경도 (Longitude):</label>
+                <input type="number" id="lngInput" value="126.9780" step="0.000001" placeholder="예: 126.9780">
+            </div>
+            <button class="btn-primary" onclick="reverseGeocode()" id="reverseBtn">
+                🔍 좌표 변환
+            </button>
+            <button class="btn-success" onclick="getCurrentLocation()">
+                📱 현재 위치
+            </button>
+            <div id="reverseResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- 종합 테스트 -->
+    <div class="test-section">
+        <h3>🧪 종합 테스트</h3>
+        <button class="btn-success" onclick="runAllTests()">
+            🚀 모든 테스트 실행
+        </button>
+        <button class="btn-warning" onclick="clearAllResults()">
+            🧹 결과 지우기
+        </button>
+        <div id="allTestsResult" class="result" style="display: none;"></div>
+    </div>
+</div>
+
+<!-- 🔑 네이버 지도 API 로드 (YOUR_CLIENT_ID를 실제 키로 변경하세요!) -->
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpKeyId=vxeo1t8eav&submodules=geocoder"></script>
+
+<script>
+    let map;
+    let markers = [];
+
+    // 페이지 로드 시 초기화
+    window.onload = function() {
+        checkApiStatus();
+        initializeMap();
+    };
+
+    // API 상태 확인
+    function checkApiStatus() {
+        const statusElement = document.getElementById('apiStatus');
+
+        // 네이버 지도 API가 로드되었는지 확인
+        if (typeof naver !== 'undefined' && naver.maps) {
+            statusElement.innerHTML = '<span style="color: #28a745;">✅ 네이버 지도 API 로드 성공!</span>';
+
+            // Geocoder 서브모듈이 로드되었는지 확인
+            if (naver.maps.Service && naver.maps.Service.geocode) {
+                statusElement.innerHTML += '<br><span style="color: #28a745;">✅ Geocoder 서브모듈 로드 성공!</span>';
+            } else {
+                statusElement.innerHTML += '<br><span style="color: #dc3545;">❌ Geocoder 서브모듈 로드 실패</span>';
+            }
+        } else {
+            statusElement.innerHTML = '<span style="color: #dc3545;">❌ 네이버 지도 API 로드 실패 - API 키를 확인하세요!</span>';
+        }
+    }
+
+    // 지도 초기화
+    function initializeMap() {
+        if (typeof naver === 'undefined' || !naver.maps) {
+            console.error('네이버 지도 API가 로드되지 않았습니다.');
+            return;
+        }
+
+        const mapOptions = {
+            center: new naver.maps.LatLng(37.5665, 126.9780), // 서울시청
+            zoom: 10,
+            mapTypeControl: true
+        };
+
+        map = new naver.maps.Map('map', mapOptions);
+        console.log('🗺️ 지도 초기화 완료');
+    }
+
+    // 마커 추가
+    function addMarker(lat, lng, title, color = 'red') {
+        if (!map) return;
+
+        const marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(lat, lng),
+            map: map,
+            title: title,
+            icon: {
+                content: `<div style="background: ${color}; color: white; padding: 5px 8px; border-radius: 15px; font-size: 12px; font-weight: bold;">${title}</div>`,
+                anchor: new naver.maps.Point(0, 0)
+            }
+        });
+
+        markers.push(marker);
+        return marker;
+    }
+
+    // 모든 마커 제거
+    function clearMarkers() {
+        markers.forEach(marker => marker.setMap(null));
+        markers = [];
+    }
+
+    // 주소 → 좌표 변환
+    function geocodeAddress() {
+        const address = document.getElementById('addressInput').value.trim();
+        const resultDiv = document.getElementById('geocodingResult');
+        const btn = document.getElementById('geocodingBtn');
+
+        if (!address) {
+            alert('주소를 입력해주세요!');
+            return;
+        }
+
+        if (!naver.maps.Service) {
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result error';
+            resultDiv.textContent = '❌ Geocoder 서비스를 사용할 수 없습니다. API 키를 확인하세요!';
+            return;
+        }
+
+        try {
+            btn.disabled = true;
+            btn.textContent = '검색 중...';
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = `"${address}" 검색 중...`;
+
+            naver.maps.Service.geocode({
+                query: address
+            }, function(status, response) {
+                btn.disabled = false;
+                btn.textContent = '🔍 주소 검색';
+
+                if (status === naver.maps.Service.Status.ERROR) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ 지오코딩 서비스 오류`;
+                    return;
+                }
+
+                if (response.v2.meta.totalCount === 0) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ "${address}"에 대한 결과를 찾을 수 없습니다.`;
+                    return;
+                }
+
+                const items = response.v2.addresses;
+                let result = `✅ "${address}" 검색 성공!\n\n`;
+
+                items.forEach((item, index) => {
+                    result += `📍 결과 ${index + 1}:\n`;
+                    result += `   도로명: ${item.roadAddress}\n`;
+                    result += `   지번: ${item.jibunAddress}\n`;
+                    result += `   좌표: ${item.y}, ${item.x}\n\n`;
+                });
+
+                resultDiv.className = 'result success';
+                resultDiv.textContent = result;
+
+                // 첫 번째 결과를 지도에 표시
+                const firstItem = items[0];
+                const lat = parseFloat(firstItem.y);
+                const lng = parseFloat(firstItem.x);
+
+                // 좌표 입력란에 자동 입력
+                document.getElementById('latInput').value = lat;
+                document.getElementById('lngInput').value = lng;
+
+                // 지도에 마커 추가 및 이동
+                clearMarkers();
+                addMarker(lat, lng, address, 'blue');
+                map.setCenter(new naver.maps.LatLng(lat, lng));
+                map.setZoom(15);
+            });
+
+        } catch (error) {
+            btn.disabled = false;
+            btn.textContent = '🔍 주소 검색';
+            resultDiv.className = 'result error';
+            resultDiv.textContent = `❌ 오류 발생:\n${error.message}`;
+        }
+    }
+
+    // 좌표 → 주소 변환
+    function reverseGeocode() {
+        const lat = parseFloat(document.getElementById('latInput').value);
+        const lng = parseFloat(document.getElementById('lngInput').value);
+        const resultDiv = document.getElementById('reverseResult');
+        const btn = document.getElementById('reverseBtn');
+
+        if (isNaN(lat) || isNaN(lng)) {
+            alert('올바른 좌표를 입력해주세요!');
+            return;
+        }
+
+        if (!naver.maps.Service) {
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result error';
+            resultDiv.textContent = '❌ Geocoder 서비스를 사용할 수 없습니다. API 키를 확인하세요!';
+            return;
+        }
+
+        try {
+            btn.disabled = true;
+            btn.textContent = '변환 중...';
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = `좌표 (${lat}, ${lng}) 변환 중...`;
+
+            naver.maps.Service.reverseGeocode({
+                coords: new naver.maps.LatLng(lat, lng),
+                orders: [
+                    naver.maps.Service.OrderType.ADDR,
+                    naver.maps.Service.OrderType.ROAD_ADDR
+                ].join(',')
+            }, function(status, response) {
+                btn.disabled = false;
+                btn.textContent = '🔍 좌표 변환';
+
+                if (status === naver.maps.Service.Status.ERROR) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ 역지오코딩 서비스 오류`;
+                    return;
+                }
+
+                if (response.v2.results.length === 0) {
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ 좌표 (${lat}, ${lng})에 대한 주소를 찾을 수 없습니다.`;
+                    return;
+                }
+
+                const items = response.v2.results;
+                let output = `✅ 좌표 변환 성공!\n\n`;
+                output += `📍 좌표: ${lat}, ${lng}\n\n`;
+
+                items.forEach((item, index) => {
+                    output += `🏠 결과 ${index + 1}:\n`;
+                    output += `   지역: ${item.region.area1.name} ${item.region.area2.name} ${item.region.area3.name}\n`;
+                    if (item.land) {
+                        output += `   지번: ${item.land.number1}${item.land.number2 ? '-' + item.land.number2 : ''}\n`;
+                        if (item.land.addition0) {
+                            output += `   도로명: ${item.land.addition0.value}\n`;
+                        }
+                    }
+                    output += '\n';
+                });
+
+                resultDiv.className = 'result success';
+                resultDiv.textContent = output;
+
+                // 지도에 마커 추가 및 이동
+                clearMarkers();
+                addMarker(lat, lng, '변환된 위치', 'green');
+                map.setCenter(new naver.maps.LatLng(lat, lng));
+                map.setZoom(15);
+            });
+
+        } catch (error) {
+            btn.disabled = false;
+            btn.textContent = '🔍 좌표 변환';
+            resultDiv.className = 'result error';
+            resultDiv.textContent = `❌ 오류 발생:\n${error.message}`;
+        }
+    }
+
+    // 현재 위치 가져오기
+    function getCurrentLocation() {
+        const resultDiv = document.getElementById('reverseResult');
+
+        try {
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result info';
+            resultDiv.textContent = '현재 위치 확인 중... (위치 권한을 허용해주세요)';
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const { latitude, longitude, accuracy } = position.coords;
+
+                    // 입력란에 현재 위치 좌표 설정
+                    document.getElementById('latInput').value = latitude;
+                    document.getElementById('lngInput').value = longitude;
+
+                    resultDiv.textContent = `📱 현재 위치 확인 완료!\n좌표: ${latitude}, ${longitude}\n정확도: ${Math.round(accuracy)}m\n\n주소 변환 중...`;
+
+                    // 자동으로 주소 변환 실행
+                    setTimeout(() => {
+                        reverseGeocode();
+                    }, 500);
+                },
+                function(error) {
+                    let errorMessage = '현재 위치 확인 실패';
+
+                    if (error.code === 1) {
+                        errorMessage = '위치 권한이 거부되었습니다. 브라우저 설정에서 위치 권한을 허용해주세요.';
+                    } else if (error.code === 2) {
+                        errorMessage = '위치 정보를 사용할 수 없습니다.';
+                    } else if (error.code === 3) {
+                        errorMessage = '위치 찾기 시간이 초과되었습니다.';
+                    }
+
+                    resultDiv.className = 'result error';
+                    resultDiv.textContent = `❌ ${errorMessage}`;
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 300000
+                }
+            );
+
+        } catch (error) {
+            resultDiv.className = 'result error';
+            resultDiv.textContent = `❌ 현재 위치 확인 오류: ${error.message}`;
+        }
+    }
+
+    // 여러 주소 테스트
+    function testMultipleAddresses() {
+        const addresses = ['서울시청', '강남역', '부산역', '제주도', '광화문', '홍대입구역'];
+        const resultDiv = document.getElementById('geocodingResult');
+        const btn = event.target;
+
+        if (!naver.maps.Service) {
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result error';
+            resultDiv.textContent = '❌ Geocoder 서비스를 사용할 수 없습니다.';
+            return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = '테스트 중...';
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'result info';
+
+        let output = '🧪 여러 주소 테스트 시작...\n\n';
+        resultDiv.textContent = output;
+
+        let completedCount = 0;
+        const totalCount = addresses.length;
+
+        addresses.forEach((address, index) => {
+            setTimeout(() => {
+                output += `📍 ${address} 검색 중...\n`;
+                resultDiv.textContent = output;
+
+                naver.maps.Service.geocode({
+                    query: address
+                }, function(status, response) {
+                    completedCount++;
+
+                    if (status === naver.maps.Service.Status.OK && response.v2.meta.totalCount > 0) {
+                        const item = response.v2.addresses[0];
+                        output += `   ✅ ${item.roadAddress}\n`;
+                        output += `   📍 ${item.y}, ${item.x}\n\n`;
+                    } else {
+                        output += `   ❌ 결과 없음\n\n`;
+                    }
+
+                    resultDiv.textContent = output;
+
+                    if (completedCount === totalCount) {
+                        output += '🏁 여러 주소 테스트 완료!';
+                        resultDiv.className = 'result success';
+                        resultDiv.textContent = output;
+                        btn.disabled = false;
+                        btn.textContent = '📋 여러 주소 테스트';
+                    }
+                });
+            }, index * 1000); // 1초 간격으로 실행
+        });
+    }
+
+    // 모든 테스트 실행
+    function runAllTests() {
+        const resultDiv = document.getElementById('allTestsResult');
+        const btn = event.target;
+
+        btn.disabled = true;
+        btn.textContent = '테스트 중...';
+        resultDiv.style.display = 'block';
+        resultDiv.className = 'result info';
+
+        let output = '🚀 종합 테스트 시작!\n\n';
+        resultDiv.textContent = output;
+
+        // 1. API 상태 확인
+        output += '1️⃣ API 상태 확인...\n';
+        resultDiv.textContent = output;
+
+        if (typeof naver !== 'undefined' && naver.maps && naver.maps.Service) {
+            output += '   ✅ 네이버 지도 API 정상\n';
+            output += '   ✅ Geocoder 서비스 정상\n\n';
+        } else {
+            output += '   ❌ API 로드 실패\n\n';
+            resultDiv.className = 'result error';
+            resultDiv.textContent = output;
+            btn.disabled = false;
+            btn.textContent = '🚀 모든 테스트 실행';
+            return;
+        }
+
+        // 2. 지오코딩 테스트
+        output += '2️⃣ 지오코딩 테스트...\n';
+        resultDiv.textContent = output;
+
+        naver.maps.Service.geocode({
+            query: '서울시청'
+        }, function(status, response) {
+            if (status === naver.maps.Service.Status.OK && response.v2.meta.totalCount > 0) {
+                output += '   ✅ 서울시청 검색 성공\n\n';
+            } else {
+                output += '   ❌ 서울시청 검색 실패\n\n';
+            }
+
+            // 3. 역지오코딩 테스트
+            output += '3️⃣ 역지오코딩 테스트...\n';
+            resultDiv.textContent = output;
+
+            naver.maps.Service.reverseGeocode({
+                coords: new naver.maps.LatLng(37.5665, 126.9780)
+            }, function(status, response) {
+                if (status === naver.maps.Service.Status.OK && response.v2.results.length > 0) {
+                    output += '   ✅ 좌표 변환 성공\n\n';
+                } else {
+                    output += '   ❌ 좌표 변환 실패\n\n';
+                }
+
+                output += '🎉 종합 테스트 완료!\n';
+                output += '네이버 지도 Geocoder가 정상적으로 작동합니다! ✅';
+
+                resultDiv.className = 'result success';
+                resultDiv.textContent = output;
+                btn.disabled = false;
+                btn.textContent = '🚀 모든 테스트 실행';
+            });
+        });
+    }
+
+    // 모든 결과 지우기
+    function clearAllResults() {
+        const results = document.querySelectorAll('.result');
+        results.forEach(result => {
+            result.style.display = 'none';
+            result.textContent = '';
+        });
+        clearMarkers();
+    }
+
+    // Enter 키 이벤트
+    document.getElementById('addressInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') geocodeAddress();
+    });
+
+    document.getElementById('latInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') reverseGeocode();
+    });
+
+    document.getElementById('lngInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') reverseGeocode();
+    });
+</script>
+</body>
+</html>

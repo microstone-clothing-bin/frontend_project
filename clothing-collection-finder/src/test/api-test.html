@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>백엔드 API 연결 테스트</title>
+    <title>미드서버 API 연결 테스트</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,14 +63,27 @@
             font-family: monospace;
             font-size: 12px;
         }
+        .url-info {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #2196f3;
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🔌 백엔드 API 연결 테스트</h1>
-    <p>Spring Boot 서버가 <code>localhost:8081</code>에서 실행 중인지 확인하세요.</p>
+    <h1>🔌 미드서버 API 연결 테스트</h1>
 
-    <button id="testBtn" onclick="testConnection()">백엔드 연결 테스트</button>
+    <div class="url-info">
+        <h3>📡 연결 정보</h3>
+        <p><strong>미드서버 URL:</strong> <code>https://midserver-url.onrender.com/mid/bins</code></p>
+        <p><strong>최종 마커서버:</strong> <code>https://marker-url.onrender.com/api/clothing-bins</code></p>
+        <p>미드서버를 통해 마커서버의 의류수거함 데이터를 가져옵니다.</p>
+    </div>
+
+    <button id="testBtn" onclick="testConnection()">미드서버 연결 테스트</button>
 
     <div id="status"></div>
     <div id="result"></div>
@@ -90,13 +103,13 @@
         isLoading = true;
         testBtn.disabled = true;
         testBtn.textContent = '연결 중...';
-        statusDiv.innerHTML = '<div class="loading">🔄 서버에 연결 중...</div>';
+        statusDiv.innerHTML = '<div class="loading">🔄 미드서버에 연결 중...</div>';
         resultDiv.innerHTML = '';
 
         try {
-            console.log('API 요청 시작: http://localhost:8081/api/clothing-bins');
+            console.log('미드서버 API 요청 시작: https://midserver-url.onrender.com/mid/bins');
 
-            const response = await fetch('http://localhost:8081/api/clothing-bins', {
+            const response = await fetch('https://midserver-url.onrender.com/mid/bins', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -104,59 +117,66 @@
                 }
             });
 
-            console.log('응답 상태:', response.status);
+            console.log('미드서버 응답 상태:', response.status);
 
             if (!response.ok) {
                 throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
 
             const data = await response.json();
-            console.log('받아온 데이터:', data);
+            console.log('미드서버에서 받아온 데이터:', data);
 
             // 성공 표시
             statusDiv.innerHTML = `
                     <div class="success">
-                        ✅ 연결 성공! 의류수거함 데이터 ${data.length}개를 받아왔습니다.
+                        ✅ 미드서버 연결 성공! 의류수거함 데이터 ${data.length}개를 받아왔습니다.
                     </div>
                 `;
 
-            // 첫 3개 데이터 미리보기
+            // 첫 3개 데이터 미리보기 - 올바른 필드명 사용
             const preview = data.slice(0, 3).map(item =>
-                `ID: ${item.id}, 도로명: ${item.roadAddr}, 위도: ${item.lat}, 경도: ${item.lon}`
+                `ID: ${item.id}, 도로명: ${item.roadAddress}, 위도: ${item.latitude}, 경도: ${item.longitude}`
             ).join('\n');
 
             resultDiv.innerHTML = `
                     <h3>📊 데이터 미리보기 (처음 3개)</h3>
                     <div class="data-preview">${preview}</div>
                     <p><strong>총 ${data.length}개의 의류수거함 데이터</strong></p>
-                    <p>✨ 프론트엔드에서 이 데이터를 사용해 지도에 마커를 표시할 수 있습니다!</p>
+                    <p>✨ Vue 프론트엔드에서 이 데이터를 사용해 네이버 지도에 마커를 표시할 수 있습니다!</p>
+                    <p>🔗 <strong>데이터 흐름:</strong> 미드서버 → 마커서버 → 프론트엔드</p>
                 `;
 
         } catch (error) {
-            console.error('연결 실패:', error);
+            console.error('미드서버 연결 실패:', error);
 
             statusDiv.innerHTML = `
                     <div class="error">
-                        ❌ 연결 실패: ${error.message}
+                        ❌ 미드서버 연결 실패: ${error.message}
                     </div>
                 `;
 
             // 해결 방법 안내
             let troubleshoot = '';
-            if (error.message.includes('Failed to fetch') || error.message.includes('ECONNREFUSED')) {
+            if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
                 troubleshoot = `
                         <h3>🔧 해결 방법:</h3>
                         <ol>
-                            <li>Spring Boot 서버가 실행 중인지 확인하세요</li>
-                            <li><code>http://localhost:8081</code>에 직접 접속해보세요</li>
-                            <li>서버 콘솔에서 오류 메시지를 확인하세요</li>
-                            <li>CORS 설정이 되어있는지 확인하세요</li>
+                            <li>미드서버가 Render에서 정상 실행 중인지 확인하세요</li>
+                            <li><code>https://midserver-url.onrender.com</code>에 직접 접속해보세요</li>
+                            <li>Render 대시보드에서 서버 로그를 확인하세요</li>
+                            <li>미드서버의 CORS 설정을 확인하세요</li>
+                            <li>마커서버와 미드서버 간 연결 상태를 확인하세요</li>
                         </ol>
                     `;
             } else if (error.message.includes('404')) {
                 troubleshoot = `
                         <h3>🔧 해결 방법:</h3>
-                        <p>API 엔드포인트가 존재하지 않습니다. <code>/api/clothing-bins</code> 경로를 확인하세요.</p>
+                        <p>미드서버 API 엔드포인트가 존재하지 않습니다. <code>/mid/bins</code> 경로를 확인하세요.</p>
+                    `;
+            } else if (error.message.includes('500')) {
+                troubleshoot = `
+                        <h3>🔧 해결 방법:</h3>
+                        <p>미드서버 내부 오류입니다. 미드서버와 마커서버 간 연결을 확인하세요.</p>
                     `;
             }
 
@@ -171,8 +191,9 @@
 
     // 페이지 로드 시 자동 실행
     window.addEventListener('load', () => {
-        console.log('테스트 페이지 로드 완료');
-        console.log('백엔드 서버 확인: http://localhost:8081');
+        console.log('미드서버 테스트 페이지 로드 완료');
+        console.log('미드서버 확인: https://midserver-url.onrender.com/mid/bins');
+        console.log('최종 데이터 소스: https://marker-url.onrender.com/api/clothing-bins (미드서버를 통해 접근)');
     });
 </script>
 </body>

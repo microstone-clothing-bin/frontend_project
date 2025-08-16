@@ -7,8 +7,19 @@
 │   │   ├── map/ 지도 관련 컴포넌트
 │   │   │   └── NaverMap.vue             ← 네이버 지도 컴포넌트
 │   │   └── ui/    기본 UI 요소들   
-│   │          ├ ClothingBinDetailPanel 정보 패널 vue
-│   │          └ SidebarToggleButton.vue 사이드바 정보패널 토글버튼 vue
+│   │          │  ├── mapzoom/     지도 맵 축소 확대 버튼 vue   (신규 추가)
+│   │          │  │        ├─ MapZoomInButton.vue ← 지도 확대 버튼 vue  (신규 추가)
+│   │          │  │        └─ MapZoomOutButton.vue ← 지도 축소 버튼 vue  (신규 추가)
+│   │          │  ├── detailpanel/    정보패널 ui vue (신규 추가)
+│   │          │  │          └─ DetailPanelCloseButton.vue ← 정보패널 종료 버튼 vue (신규 추가)
+│   │          │  ├ search/ 검색 (신규 추가)
+│   │          │  │      └─ SearchContainer.vue ← 검색 뷰 (신규 추가)
+│   │          │  └ favorites/ 즐겨찾기 뷰 (신규 추가)
+│   │          │           └─ FavoriteButton.vue ← 북마크 이미지 컴포넌트 (신규 추가)
+│   │          ├ ClothingBinDetailPanel ← 정보 패널 vue
+│   │          ├ SidebarToggleButton.vue ← 사이드바 정보패널 토글버튼 vue
+│   │          ├ CurrentLocationButton.vue  ← 현재 위치 버튼 vue   (신규 추가)
+│   │          └ LocationPermissionModal.vue ← 현재 위치 버튼 권한 허용 안될때 나오는 vue (신규 추가)
 │   ├── layouts/ 페이지 레이아웃 컴포넌트 (전체 구조 담당)
 │   │   ├── MainLayout.vue               ← 상단 네비바 레이아웃
 │   │   └── SidebarLayout.vue            ← 사이드바 레이아웃
@@ -21,27 +32,61 @@
 │   │   └── MyPageView.vue                ← 마이페이지 페이지 (상단 네비바만)
 │   ├── router/  Vue Router 라우팅 설정 및 경로 정의
 │   │   └── index.js                     ← 라우터 설정
-│   ├── stores/                          (비어있음 - 향후 상태관리용)
-│   │   └── clotheBinStore.js            ← 의류수거함 상태 관리 (신규 추가)
+│   ├── stores/    상태관리용
+│   │   ├── clotheBinStore.js            ← 의류수거함 상태 관리 
+│   │   └── favoritesStore.js             ← 즐겨찾기 localStorage 관리 (신규 추가)
 │   ├── services/                        API 호출, 외부 서비스 연동 로직
 │   │   ├── naverMapService.js           ← 네이버 지도 API 서비스 네이버지도 연결
-│   │   └── apiService.js           ←  기본 HTTP 요청 기능 백엔드랑 연결 기본 axios 설정
-│   │   └── clothesBinService.js         ← 의류수거함 API 호출 서비스 (신규 추가)
+│   │   ├── apiService.js           ←  기본 HTTP 요청 기능 백엔드랑 연결 기본 axios 설정
+│   │   ├── clothesBinService.js         ← 의류수거함 API 호출 서비스        
+│   │   └── geocodingService.js   ← 네이버 지도 Geocoding API  (신규 추가)
 │   ├── composables/                       Vue 3 Composition API 재사용 로직
+│   │   │	      └── currentlocation/                  ← 현재 위치 관련 모든 기능  (신규 추가)
+│   │   │	      │    │   └── coordinates/ ← 좌표 권한 관리 (신규 추가)
+│   │   │	      │    │              └── gpsCoordinates.js ← GPS 좌표 관리 80% 함수 (신규 추가)
+│   │   │	      │    │              └── locationPermission.js ← 권한 관련 20% 함수 (신규 추가)
+│   │   │	      │    ├── useGeolocation.js            ← 통합 래퍼 gpsCoordinates.js locationPermission.js (신규 추가) 
+│   │   │	      │    ├── useCoordinates.js            ← 최종 래퍼 useGeolocation.js 함수 기능 주석 추가 (신규 추가) 
+│   │   │	      │    ├── useCurrentLocationMarker.js   ← 현재 위치 마커         (신규 추가)
+│   │   │	      │    ├── useCurrentLocationMove.js ← 현재 위치로 지도 이동   (신규 추가)
+│   │   │	      │    ├── useCurrentLocation.js          ← 현재 위치 관련 모든 기능을 통합  마커랑 지도 이동 통합  (신규 추가)
+│   │   │	      │    ├── useNaverMapCurrentLocation.js ← 네이버 지도의 현재 위치 관련 모든 로직을 관리 (신규 추가)
+│   │   │	      │    └── useDistanceCalculator.js  ← 거리 계산 전용 (신규 추가)
+│   │   │       ├── search/ 검색 (신규 추가)
+│   │   │       │    └─ useSearch.js  ← 검색 기능 (신규 추가)
+│   │   │       ├── sorted/ 정렬 (신규 추가)
+│   │   │       │    └─ useSortedDistance.js ← 거리순 정렬 전용 함수 (신규 추가)
+│   │   │       └── favorites/ 즐겨찾기 (신규 추가)
+│   │   │              ├─ FavoriteButton.vue   ← 북마크 버튼 컴포넌트 (신규 추가)
+│   │   │              └─ FavoriteScrollbar.vue   ← 북마크 스크롤바 전용 컴포넌트 (신규 추가)
 │   │   ├── useNaverMap.js               ← 네이버 지도 로직
-│   │   ├── useMapMarkers.js             ← 마커 관련 기능 (신규 추가)
-│   │   └── useClotheBin.js              ← 의류수거함 데이터 관리 (신규 추가)
-│   │   └── useDetailPanel.js            ← 정보패널 상태 관리
+│   │   ├── useMapMarkers.js             ← 마커 관련 기능 
+│   │   ├── useClotheBin.js              ← 의류수거함 데이터 관리
+│   │   ├── useDetailPanel.js            ← 정보패널 상태 관리
+│   │   └── useGeocoding.js            ← 지오코딩 관련 반응형 상태 관리 (신규 추가)
 │   ├── utils/  유틸리티용
-│   │   └markerClustering.js   ← 마커 클러스터링을 정의
-│   ├── assets/                        이미지, 폰트, 아이콘 등 정적 자원    (비어있음 - 정적 파일용)
+│   │   ├ markerClustering.js   ← 마커 클러스터링을 정의
+│   │   └ regionExtractor.js ← 지역 추출 및 그룹화 함수 (신규 추가)
+│   ├── assets/                        이미지, 폰트, 아이콘 등 정적 자원  정적 파일용
 │   └── styles/                         CSS/SCSS 스타일 파일들
-│	  │ └─── sidebar/       ← 사이드바 세부사항 
-│ 	  │         ├── clothing-bins.css ← 의류수거함 데이터 띄우는 창 디자인
-│ 	  │         └── scrollbar.css  ← 스크롤바 디자인
+│	  │ ├─── sidebar/       ← 사이드바 세부사항 css
+│ 	  │ │        ├── clothing-bins.css ← 의류수거함 데이터 띄우는 창 디자인
+│ 	  │ │        └── scrollbar.css  ← 스크롤바 디자인
+│ 	  │ └───  detailpanel/ ← 정보패널 세부사항 css (신규 추가)
+│ 	  │ │        ├── clothing-bin-image.css ← 정보패널 의류수거함 사진 css (신규 추가)
+│ 	  │ │        ├── clothing-bin-data.css ← 정보패널 의류수거함 데이터 글씨 css (신규 추가)
+│ 	  │ │        └── distance-info.css ← 거리 정보 css (신규 추가)
+│ 	  │ └─── favorites/ ← 즐겨찾기 css  (신규 추가)
+│ 	  │            ├── favorites-layout.css ← 전체 레이아웃 (신규 추가)
+│ 	  │            ├── favorites-header.css ← 헤더 스타일 (신규 추가)
+│ 	  │            └── favorites-line.css ← 구분선 스타일 (신규 추가)
+│ 	  │            └── favorites-clothing-item.css ← 의류수거함 아이템 전체 컨테이너 스타일 (신규 추가)
+│ 	  │            └── favorites-region-group.css ← 지역 그룹 전체 컨테이너 스타일 (신규 추가)
 │       ├── global.css                   ← 전역 스타일 + CSS import 관리
 │       ├── components.css               ← 레이아웃, 지도 컴포넌트 스타일
 │       ├── navigation.css               ← 네비게이션 바 전용 스타일
 │       └── sidebar.css                  ← 사이드바 전용 스타일 (통합버전)
 ├── App.vue                              ← 메인 앱 컴포넌트
 └── .env                                 ← 네이버 지도 API 키  .env 파일 네이버지도 키 변수설정 VITE_NAVER_MAP_CLIENT_ID
+
+

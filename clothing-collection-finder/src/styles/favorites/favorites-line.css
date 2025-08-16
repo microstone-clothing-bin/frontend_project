@@ -1,0 +1,19 @@
+/* 선 이미지 스타일 */
+.title-line {
+    width: 1207px;
+    height: 0px;
+    margin-top: 45px;
+    border-top: 1px solid #DCDCDC;
+    max-width: 100%;
+}
+
+.title-line img {
+    display: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .title-line {
+        width: 100%;
+    }
+}

@@ -16,7 +16,6 @@ export function useMapMarkers() {
             const marker = new window.naver.maps.Marker({
                 position: new window.naver.maps.LatLng(bin.latitude, bin.longitude),
                 title: bin.roadAddress
-                // map: map 제거 (클러스터링이 관리)
             })
 
             // 🔄 수정: 마커 클릭 이벤트
@@ -144,7 +143,7 @@ export function useMapMarkers() {
 
     // 모든 마커 제거
     const clearMarkers = () => {
-        // 클러스터러 정리
+        // 클러스터링 정리
         if (clusterer) {
             clusterer.setMap(null)
             clusterer = null
@@ -185,12 +184,12 @@ export function useMapMarkers() {
     return {
         // 상태
         markers,
-        showDetailPanel,    // ✨ 추가
+        showDetailPanel,
 
         // 액션
         addMarkersToMap,
         clearMarkers,
         handleZoomChange,
-        closeDetailPanel    // ✨ 추가
+        closeDetailPanel
     }
 }

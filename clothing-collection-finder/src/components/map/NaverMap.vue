@@ -13,6 +13,27 @@
 
     <!-- 지도 -->
     <div :id="mapContainerId" class="map"></div>
+
+    <!-- 🆕 지도 확대/축소 버튼들 추가 -->
+    <MapZoomInButton
+        :map="map"
+        :current-zoom="currentZoom"
+        :max-zoom="21"
+        @zoom-changed="handleZoomChanged"
+    />
+
+    <MapZoomOutButton
+        :map="map"
+        :current-zoom="currentZoom"
+        :min-zoom="6"
+        @zoom-changed="handleZoomChanged"
+    />
+
+    <!-- 🆕 현재 위치 버튼 추가 -->
+    <CurrentLocationButton
+        @location-success="currentLocationHandlers.handleLocationSuccess"
+        @location-error="currentLocationHandlers.handleLocationError"
+    />
   </div>
 </template>
 
@@ -21,9 +42,16 @@ import { ref, onMounted } from 'vue'
 import { useNaverMap } from '../../composables/useNaverMap' // 지도 생성/관리
 import { useMapMarkers } from '../../composables/useMapMarkers' //  마커 생성/제거
 import { useClotheBin } from '../../composables/useClotheBin' // 의류수거함 데이터 관리
+// 🆕 현재 위치 버튼 컴포넌트 import
+import CurrentLocationButton from '../ui/CurrentLocationButton.vue'
+// 🆕 줌 버튼 컴포넌트들 import
+import MapZoomInButton from '../ui/mapzoom/MapZoomInButton.vue'
+import MapZoomOutButton from '../ui/mapzoom/MapZoomOutButton.vue'
+// 🆕 현재 위치 로직 분리된 composable import (경로 수정)
+import { useNaverMapCurrentLocation } from '../../composables/currentlocation/useNaverMapCurrentLocation'
 
 // 🆕 이벤트 정의 (HomeView로 전달할 이벤트)
-const emit = defineEmits(['markerClick'])
+const emit = defineEmits(['markerClick', 'location-found', 'location-error','address-updated', 'address-error'])
 
 // Props 정의
 const props = defineProps({
@@ -47,16 +75,25 @@ const props = defineProps({
 
 const mapContainerId = `naver-map-${Date.now()}`
 
-// 지도 관련
+// 🆕 현재 줌 레벨 상태 추가
+const currentZoom = ref(10)
+
+// 🔄 수정: 지도 관련 (현재 위치 기능 추가)
 const {
   map,
   isLoading: isMapLoading,
   error: mapError,
   initMap,
-  triggerResize
+  triggerResize,
+  // 🆕 현재 위치 관련 기능들 추가
+  showCurrentLocation,
+  hideCurrentLocation,
+  showCurrentLocationWithNearbyData,
+
+  currentLocationCoordinates
 } = useNaverMap(mapContainerId)
 
-// 🔄 수정: 마커 관련 (showDetailPanel, closeDetailPanel 제거)
+//   마커 관련
 const { addMarkersToMap, clearMarkers } = useMapMarkers()
 
 // 의류수거함 데이터 관련
@@ -66,6 +103,22 @@ const {
   error: dataError,
   loadClothingBins
 } = useClotheBin()
+
+// 🆕 현재 위치 로직을 분리된 composable로 처리
+const currentLocationHandlers = useNaverMapCurrentLocation(
+    map,
+    clothingBins,
+    showCurrentLocation,
+    hideCurrentLocation,
+    showCurrentLocationWithNearbyData,
+    emit
+)
+
+// 🆕 줌 변경 핸들러 추가
+const handleZoomChanged = (zoomInfo) => {
+  console.log('줌 변경:', zoomInfo)
+  currentZoom.value = zoomInfo.newZoom
+}
 
 // 🆕 마커 클릭 핸들러 추가
 const handleMarkerClick = (binData) => {
@@ -91,6 +144,18 @@ onMounted(async () => {
       zoom: props.zoom
     })
 
+    // 🆕 지도 초기화 후 줌 이벤트 리스너 추가
+    if (map.value) {
+      // 초기 줌 레벨 설정
+      currentZoom.value = map.value.getZoom()
+
+      // 줌 변경 이벤트 리스너 추가
+      naver.maps.Event.addListener(map.value, 'zoom_changed', () => {
+        currentZoom.value = map.value.getZoom()
+        console.log('지도 줌 변경됨:', currentZoom.value)
+      })
+    }
+
     // 2. 의류수거함 데이터 로드
     await loadClothingBins()
 
@@ -104,10 +169,14 @@ onMounted(async () => {
   }
 })
 
-// 🔄 수정: 부모 컴포넌트에서 리사이즈를 호출할 수 있도록 expose (패널 상태 제거)
+// 🔄 수정: 부모 컴포넌트에서 리사이즈를 호출할 수 있도록 expose (현재 위치 기능 추가)
 defineExpose({
   triggerResize,
-  moveToLocation
+  moveToLocation,
+  hideCurrentLocationMarker: currentLocationHandlers.hideCurrentLocationMarker,  // 🆕 현재 위치 숨기기
+  showCurrentLocationWithOptions: currentLocationHandlers.showCurrentLocationWithOptions, // 🆕 옵션으로 현재 위치 표시
+  currentLocationCoordinates,  // 🆕 현재 위치 좌표 (읽기 전용)
+  currentZoom  // 🆕 현재 줌 레벨 (읽기 전용)
 })
 </script>
 

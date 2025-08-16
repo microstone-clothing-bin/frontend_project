@@ -11,7 +11,7 @@ export const clothesBinService = {
      */
     async getAllClothingBins() {
         try {
-            const response = await api.get('/clothing-bins')
+            const response = await api.get('/mid/bins')
             return response.data
         } catch (error) {
             console.error('의류수거함 데이터 조회 실패:', error)

@@ -1,0 +1,23 @@
+/* 전체 컨테이너 레이아웃 */
+.favorites-content {
+    padding-top: 30px;
+    padding-left: 60px;
+    padding-right: 60px;
+    padding-bottom: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .favorites-content {
+        padding-top: 80px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
