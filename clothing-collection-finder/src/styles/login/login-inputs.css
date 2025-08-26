@@ -1,0 +1,79 @@
+/* 로그인 입력창 스타일 */
+
+/* 입력창 컨테이너 */
+.input-container {
+    position: relative;
+    width: 440px;
+    height: 65px;
+}
+
+/* 입력창 스타일 */
+.login-input {
+    width: 100%;
+    height: 100%;
+    background-image: url('src/assets/images/login-rectangle.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    outline: none;
+    padding: 7px 25px 12px 35px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+/* 플레이스홀더 스타일 */
+.login-input::placeholder {
+    color: #999;
+}
+
+/* 비밀번호 보기/숨기기 아이콘 */
+.eye-icon {
+    position: absolute;
+    right: 40px;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* 반응형 - 모바일에서 입력창 크기 조정 */
+@media (max-width: 768px) {
+    .input-container {
+        width: 350px;
+        height: 55px;
+    }
+
+    .login-input {
+        font-size: 13px;
+        padding: 5px 20px 10px 25px;
+    }
+
+    .eye-icon {
+        right: 30px;
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .input-container {
+        width: 280px;
+        height: 50px;
+    }
+
+    .login-input {
+        font-size: 12px;
+        padding: 5px 15px 8px 20px;
+    }
+
+    .eye-icon {
+        right: 25px;
+        width: 18px;
+        height: 18px;
+    }
+}

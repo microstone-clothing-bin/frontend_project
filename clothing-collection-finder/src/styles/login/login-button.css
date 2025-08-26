@@ -1,0 +1,69 @@
+/* 로그인 버튼 스타일 */
+
+/* 버튼 컨테이너 */
+.button-container {
+    position: relative;
+    width: 393px;
+    height: 65px;
+    margin-left: 20px;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    width: 100%;
+    height: 100%;
+    background-image: url('/src/assets/images/login-button.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent !important;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 버튼 텍스트 이미지 */
+.button-text {
+    width: auto;
+    height: 15px;
+    pointer-events: none;
+}
+
+/* 버튼 호버 효과 */
+.login-button:hover {
+    transform: scale(1.02);
+}
+
+/* 버튼 클릭 효과 */
+.login-button:active {
+    transform: scale(0.98);
+}
+
+/* 반응형 - 모바일에서 버튼 크기 조정 */
+@media (max-width: 768px) {
+    .button-container {
+        width: 320px;
+        height: 55px;
+        margin-left: 15px;
+    }
+
+    .button-text {
+        height: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .button-container {
+        width: 250px;
+        height: 50px;
+        margin-left: 10px;
+    }
+
+    .button-text {
+        height: 12px;
+    }
+}

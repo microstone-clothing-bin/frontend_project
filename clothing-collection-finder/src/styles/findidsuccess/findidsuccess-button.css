@@ -1,0 +1,55 @@
+/* 로그인 돌아가기 버튼 */
+.find-id-success-back-button {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 24rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 899px;
+    height: 65px;
+    background-image: url('/src/assets/images/login-backbutton.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.find-id-success-back-button:hover {
+    transform: scale(1.05);
+}
+
+.find-id-success-back-btn-text {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* 반응형 - 백 버튼 */
+@media (max-width: 768px) {
+    .find-id-success-back-button {
+        width: 80%;
+        max-width: 250px;
+        height: auto;
+        aspect-ratio: 287/65;
+    }
+
+    .find-id-success-back-btn-text {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .find-id-success-back-button {
+        width: 90%;
+        max-width: 200px;
+    }
+
+    .find-id-success-back-btn-text {
+        font-size: 13px;
+    }
+}

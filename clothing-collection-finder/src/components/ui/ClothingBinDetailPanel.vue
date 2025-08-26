@@ -31,6 +31,15 @@
             <span class="distance-label">내 위치에서</span>
             <span class="distance-value">{{ calculateDistance(binData) }}</span>
           </div>
+
+          <!-- 즐겨찾기 버튼 영역 -->
+          <div class="favorite-section">
+            <FavoriteButton
+                :is-active="isFavorite(binData?.id)"
+                @click="toggleFavorite(binData?.id)"
+            />
+          </div>
+          <div class="divider"></div>
         </div>
 
         <!-- 데이터가 없을 때 -->
@@ -56,6 +65,13 @@ import '@/styles/detailpanel/distance-info.css'
 // 거리 계산을 위한 import
 import { useDistanceCalculator } from '@/composables/currentlocation/useDistanceCalculator'
 import { useGeolocation } from '@/composables/currentlocation/useGeolocation'
+// 즐겨찾기 관련
+import FavoriteButton from '@/components/ui/favorites/FavoriteButton.vue'
+import { useFavoritesStore } from '@/stores/favoritesStore'
+import '@/styles/detailpanel/favorite-divider.css'
+
+const favoritesStore = useFavoritesStore()
+const { isFavorite, toggleFavorite } = favoritesStore
 
 // 거리 계산 composables
 const {
@@ -185,4 +201,5 @@ const props = defineProps({
     height: 100%;
   }
 }
+
 </style>

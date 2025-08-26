@@ -1,0 +1,13 @@
+/* 닉네임 라벨 */
+.find-id-nickname-label {
+    margin-right: 53.5rem;
+    margin-top: 3rem;
+}
+
+/* 반응형 - 닉네임 */
+@media (max-width: 768px) {
+    .find-id-nickname-label {
+        margin-right: 0;
+        text-align: left;
+    }
+}

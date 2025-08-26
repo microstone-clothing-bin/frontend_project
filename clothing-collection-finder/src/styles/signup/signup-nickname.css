@@ -1,0 +1,14 @@
+/* 닉네임 창*/
+.nickname-label {
+    margin-right: 53.5rem;
+    margin-top: 3rem;
+}
+
+.nickname-duplicate-btn {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-left: 1060px;
+    margin-top: -66px;      /* 아이디 버튼과 같은 위치 */
+    position: relative;
+    display: inline-block;
+}

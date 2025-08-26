@@ -1,0 +1,49 @@
+/* 이용약관 동의 라벨 */
+.terms-label {
+    margin-right: 51rem;
+    margin-top: 2rem;
+}
+
+/* 이용약관 동의 컨테이너 */
+.terms-agreement {
+    width: 612px;
+    margin-top: -33px;
+    margin-right: -285px;
+    padding: 10px;
+}
+
+/* 동의 항목 */
+.agreement-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 600;         /* 글씨 굵기 */
+    color: #1A1A1A;           /* 글씨 색상 */
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+.agree-button-image {
+    width: auto;
+    margin-right: 10px;        /* 12px → 20px로 늘리기 */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+/* 체크박스 숨기기 */
+.agreement-checkbox {
+    display: none;
+}
+
+/* 체크된 상태에서 버튼 효과 */
+.agreement-checkbox:checked + .agree-button-image {
+    transform: scale(1.05);    /* 살짝 확대 */
+    filter: brightness(1.1);   /* 살짝 밝게 */
+}
+
+/* 동의 텍스트 */
+.agreement-text {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    user-select: none;
+}

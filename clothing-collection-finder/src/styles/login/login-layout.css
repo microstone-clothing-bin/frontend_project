@@ -1,0 +1,51 @@
+/* 로그인 페이지 전체 레이아웃 */
+
+/* 메인 컨테이너 - 전체 화면 중앙 정렬 */
+.login-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    padding: 2rem;
+    margin-left: 90px;
+    gap: 10rem;
+}
+
+/* 로고 스타일 */
+.logo {
+    width: 200px;
+    height: auto;
+}
+
+/* 로그인 폼 컨테이너 - 세로 배치 */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .login-content {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1rem;
+        margin-left: 0;
+        min-height: 80vh;
+    }
+
+    .logo {
+        width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-content {
+        gap: 1.5rem;
+        padding: 0.5rem;
+    }
+
+    .logo {
+        width: 120px;
+    }
+}

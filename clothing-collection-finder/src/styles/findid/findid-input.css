@@ -1,0 +1,43 @@
+/* 입력창 컨테이너 */
+.find-id-input-container {
+    position: relative;
+    width: 612px;
+    height: 65px;
+    background-image: url('/src/assets/images/signup-rectangle.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: -305px;
+    margin-top: -43px;
+}
+
+/* 입력 필드 */
+.find-id-input-field {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 15px;
+    padding-top: 10px;
+    font-size: 16px;
+    outline: none;
+    color: #9E9E9E;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+.find-id-input-field:focus {
+    outline: none;
+    border-color: #6029b7;
+}
+
+.find-id-input-field::placeholder {
+    color: #9E9E9E;
+}
+
+/* 반응형 - 입력창 */
+@media (max-width: 768px) {
+    .find-id-input-field {
+        width: 100%;
+        max-width: 350px;
+    }
+}

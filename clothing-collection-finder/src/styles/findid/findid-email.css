@@ -1,0 +1,26 @@
+/* 이메일 라벨 */
+.find-id-email-label {
+    margin-right: 53.5rem;
+    margin-top: 3rem;
+}
+
+/* 이메일 입력창 컨테이너 */
+.find-id-email-container {
+    position: relative;
+    width: 612px;
+    height: 65px;
+    background-image: url('/src/assets/images/signup-rectangle.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: -305px;
+    margin-top: -43px;
+}
+
+/* 반응형 - 이메일 */
+@media (max-width: 768px) {
+    .find-id-email-label {
+        margin-right: 0;
+        text-align: left;
+    }
+}

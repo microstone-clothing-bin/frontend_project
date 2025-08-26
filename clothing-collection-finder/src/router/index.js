@@ -6,6 +6,13 @@ import FavoritesView from "@/views/FavoritesView.vue";
 import GuideView from "@/views/GuideView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MyPage from "@/views/MyPage.vue";
+import SignupView from '../views/SignupView.vue'
+import FindIdView from '../views/FindIdView.vue'
+import FindPasswordView from '../views/FindPasswordView.vue'
+import FindIdNotFoundView from '../views/FindIdNotFoundView.vue'
+import FindPasswordNotFoundView from '../views/FindPasswordNotFoundView.vue'
+import FindIdSuccessView from '../views/FindIdSuccessView.vue'
+import ResetPasswordView from '../views/ResetPasswordView.vue'
 
 const routes = [
     {
@@ -32,6 +39,41 @@ const routes = [
       path: '/login',
         name: 'login',
         component: LoginView
+    },
+    {
+        path: '/signup',
+        name: 'signup',
+        component: SignupView
+    },
+    {
+        path: '/find-id',
+        name: 'findId',
+        component: FindIdView
+    },
+    {
+        path: '/find-password',
+        name: 'findPassword',
+        component: FindPasswordView
+    },
+    {
+        path: '/find-id/not-found',
+        name: 'findIdNotFound',
+        component: FindIdNotFoundView
+    },
+    {
+        path: '/find-password/not-found',
+        name: 'findPasswordNotFound',
+        component: FindPasswordNotFoundView
+    },
+    {
+        path: '/find-id/success',
+        name: 'findIdSuccess',
+        component: FindIdSuccessView
+    },
+    {
+        path: '/reset-password',
+        name: 'resetPassword',
+        component: ResetPasswordView
     },
     {
       path: '/mypage',

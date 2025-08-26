@@ -1,0 +1,59 @@
+/* 로그인 하단 링크들 스타일 */
+
+/* 링크 컨테이너 */
+.auth-links {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    gap: 4rem;
+    font-size: 14px;
+    white-space: nowrap;
+    margin: -10px;
+    margin-top: 1px;
+}
+
+/* 개별 링크 스타일 */
+.auth-link {
+    color: #1A1A1A;
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.3s ease;
+    flex: 1;
+    text-align: center;
+    margin-left: 30px;
+    margin-top: -2rem;
+}
+
+/* 링크 호버 효과 */
+.auth-link:hover {
+    color: #6029b7;
+}
+
+/* 반응형 - 모바일에서 링크 조정 */
+@media (max-width: 768px) {
+    .auth-links {
+        max-width: 320px;
+        gap: 2rem;
+        font-size: 13px;
+        margin-left: 0;
+    }
+
+    .auth-link {
+        margin-left: 0;
+        margin-top: -1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-links {
+        max-width: 280px;
+        gap: 1rem;
+        font-size: 12px;
+    }
+
+    .auth-link {
+        margin-top: -1rem;
+    }
+}

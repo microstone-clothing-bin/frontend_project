@@ -1,0 +1,20 @@
+/* 즐겨찾기 섹션 */
+.favorite-section {
+    display: flex;
+    justify-content: flex-end; /* 오른쪽 정렬 */
+    margin-top: 10px; /* 위쪽 여백으로 간격 조정 */
+    padding-right: 5px;
+}
+
+.favorite-section {
+    position: relative;
+    top: 35px; /* 버튼만 아래로 */
+}
+
+/* 구분선 */
+.divider {
+    width: calc(100% - 10px);
+    height: 1px;
+    background-color: #e0e0e0;
+    margin-top: -10px;
+}
