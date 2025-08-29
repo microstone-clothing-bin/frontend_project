@@ -9,6 +9,7 @@
     font-size: 16px;
     font-weight: 600;
     margin-right: 4px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 .required {
@@ -39,6 +40,7 @@
     font-size: 16px;
     outline: none;
     color: #9E9E9E;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 .input-description {

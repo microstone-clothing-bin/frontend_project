@@ -52,6 +52,7 @@
     color: #374151;
     box-sizing: border-box;
     font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 .search-input-overlay::placeholder {
@@ -102,6 +103,7 @@
     font-size: 0.9rem;
     font-weight: 500;
     margin-left: 24px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 .location-info {
@@ -127,6 +129,7 @@
     color: #1f2937;
     font-size: 1.1rem;
     font-weight: 800;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 주변 의류수거함 섹션 */
@@ -161,11 +164,13 @@
     color: #374151;
     font-size: 0.9rem;
     font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 .filter-text {
     font-size: 0.75rem;
     color: #374151;
     font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 

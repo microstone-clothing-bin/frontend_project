@@ -28,7 +28,7 @@
         <!-- 로그인 버튼 - 여기에 추가! -->
         <div class="button-container">
           <button type="button" @click="handleLogin" class="login-button">
-            <img :src="loginTextImage" alt="로그인" class="button-text" />
+            <span class="button-text">로그인</span>
           </button>
         </div>
         <div class="auth-links">
@@ -45,7 +45,6 @@
 import MainLayout from '../layouts/MainLayout.vue'
 import logoImage from '../assets/images/DropIt-logo.png'
 import rectangleImage from '../assets/images/login-rectangle.png'
-import loginTextImage from '../assets/images/login.png'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
 
@@ -58,7 +57,6 @@ export default {
     return {
       logoImage,
       rectangleImage,
-      loginTextImage,
       eyeImage,
       eyeOpenImage,
       username: '',

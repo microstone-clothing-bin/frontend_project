@@ -12,6 +12,7 @@
     white-space: nowrap;
     margin: -10px;
     margin-top: 1px;
+
 }
 
 /* 개별 링크 스타일 */
@@ -24,6 +25,7 @@
     text-align: center;
     margin-left: 30px;
     margin-top: -2rem;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 링크 호버 효과 */

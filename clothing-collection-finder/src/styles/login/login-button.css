@@ -26,10 +26,12 @@
     justify-content: center;
 }
 
-/* 버튼 텍스트 이미지 */
+/* 버튼 텍스트 */
 .button-text {
-    width: auto;
-    height: 15px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
     pointer-events: none;
 }
 

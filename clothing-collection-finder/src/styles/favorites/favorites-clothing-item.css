@@ -30,6 +30,7 @@
     border-radius: 15px;   /* 둥근 모서리 */
     border: 1px solid #e5e7eb;  /* 연한 테두리 */
     object-fit: cover;     /* 이미지 비율 유지하면서 잘라내기 */
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 주소 정보 영역 */
@@ -45,6 +46,7 @@
     color: #1A1A1A;
     margin-bottom: 4px;
     line-height: 1.4;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 지번 주소 */
@@ -54,6 +56,7 @@
     color: #1A1A1A;
     line-height: 1.4;
     margin-top: 13px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 거리 정보 영역 */
@@ -62,6 +65,7 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 거리 라벨 ("내 위치에서") */
@@ -70,6 +74,7 @@
     font-weight: 500;
     color: #1A1A1A;
     white-space: nowrap;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 거리 값 (30M, 1.2KM 등) */
@@ -78,6 +83,7 @@
     font-weight: 600;
     color: #7c3aed;
     white-space: nowrap;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 즐겨찾기 버튼 영역 */
