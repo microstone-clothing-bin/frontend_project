@@ -1,0 +1,37 @@
+/* 위치정보 서비스 약관 관련 스타일 */
+.location-title-container {
+    width: 100%;
+    max-width: 899px;
+    text-align: center;
+    margin-bottom: 3rem;
+    margin-top: 70px;
+}
+
+.location-title {
+    font-size: 25px;
+    font-weight: 800;
+    color: #6029b7;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    margin-bottom: 1px;
+}
+
+.location-bottom-divider {
+    margin-bottom: 2rem;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .location-title {
+        font-size: 18px;
+    }
+
+    .location-bottom-divider {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .location-title {
+        font-size: 16px;
+    }
+}

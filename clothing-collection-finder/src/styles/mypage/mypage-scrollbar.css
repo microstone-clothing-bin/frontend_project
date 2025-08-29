@@ -1,0 +1,27 @@
+/* 스크롤 컨테이너 */
+.mypage-page-container {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 80px;
+}
+
+/* 커스텀 스크롤바 스타일 */
+.mypage-page-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.mypage-page-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.mypage-page-container::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.mypage-page-container::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

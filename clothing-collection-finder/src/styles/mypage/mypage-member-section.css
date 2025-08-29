@@ -1,0 +1,36 @@
+.member-info-section {
+    width: 100%;
+    max-width: 899px;
+    margin-top: -1px;
+    text-align: left;
+    margin-left: -390px;
+}
+
+/* 회원정보 수정 섹션 (위치 조정된 버전) */
+.member-edit-section {
+    width: 100%;
+    max-width: 899px;
+    margin-top: -30px; /* 기존 -1px에서 변경 */
+    text-align: left;
+    margin-left: -400px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1A1A1A;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    margin: 0;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .member-info-section,
+    .member-edit-section {
+        width: 90%;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,21 @@
+/* 마이페이지 아이디 라벨 */
+.mypage-id-label {
+    margin-right: 50rem;
+    margin-top: 3rem;
+    color: #1A1A1A;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* 마이페이지 아이디 입력창 */
+.mypage-id-container {
+    position: relative;
+    width: 612px;
+    height: 65px;
+    background-image: url('/src/assets/images/mypage-rectangle.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: -305px;
+    margin-top: -43px;
+}

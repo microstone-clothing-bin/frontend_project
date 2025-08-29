@@ -14,8 +14,12 @@
 │   │          │  │          └─ DetailPanelCloseButton.vue ← 정보패널 종료 버튼 vue (신규 추가)
 │   │          │  ├ search/ 검색 (신규 추가)
 │   │          │  │      └─ SearchContainer.vue ← 검색 뷰 (신규 추가)
-│   │          │  └ favorites/ 즐겨찾기 뷰 (신규 추가)
-│   │          │           └─ FavoriteButton.vue ← 북마크 이미지 컴포넌트 (신규 추가)
+│   │          │  ├ favorites/ 즐겨찾기 뷰 (신규 추가)
+│   │          │  │        └─ FavoriteButton.vue ← 북마크 이미지 컴포넌트 (신규 추가)
+│   │          │  └ signup/ 회원가입 약관 데이터 (신규추가)
+│   │          │           ├─ TermsOfService.vue ← 회원가입 이용약관 스타일 (신규추가)
+│   │          │           ├─ signup-privacy-policy.css ← 개인정보 동의서 스타일 (신규추가)
+│   │          │           └─ signup-location-terms.css ← 위치정보 약관 스타일 (신규추가)
 │   │          ├ ClothingBinDetailPanel ← 정보 패널 vue
 │   │          ├ SidebarToggleButton.vue ← 사이드바 정보패널 토글버튼 vue
 │   │          ├ CurrentLocationButton.vue  ← 현재 위치 버튼 vue   (신규 추가)
@@ -96,6 +100,10 @@
 │ 	  │ │            ├── login-button.css     ← 로그인 버튼 (신규 추가)
 │ 	  │ │            └── login-links.css      ← 하단 링크들 (신규 추가)
 │ 	  │ ├─── signup/ ← 회원가입 페이지 css (신규 추가)
+│ 	  │ │            │   └─ signup-data/ ← 회원가입 전체 약관 css (신규추가)
+│ 	  │ │            │         ├ signup-terms-of-service.css   ← 회원가입 이용약관 스타일 (신규추가)
+│ 	  │ │            │         ├ signup-privacy-policy.css      ← 개인정보 동의서 스타일 (신규추가)
+│ 	  │ │            │         └ signup-location-terms.css       ← 위치정보 약관 스타일 (신규추가)
 │ 	  │ │            ├── signup-layout.css     ← 전체 레이아웃 (신규 추가)
 │ 	  │ │            ├── signup-userid.css     ← 아이디 css (신규 추가)
 │ 	  │ │            ├── signup-password.css    ← 비밀번호 css (신규 추가)
@@ -135,6 +143,15 @@
 │ 	  │ │            ├── resetpassword-requirements.css ← 비밀번호 요구사항 컨테이너 (신규추가)
 │ 	  │ │            ├── resetpassword-confirm.css ← 비밀번호 확인 (신규추가)
 │ 	  │ │            ├── resetpassword-button.css ← 다음 버튼 (신규추가)
+│ 	  │ ├─── mypage/ ← 마이페이지 css  (신규추가)
+│ 	  │ │            ├── mypage-layout.css          ← 전체 레이아웃  (신규추가)
+│ 	  │ │            ├── mypage-profile-image.css   ← 위 사진 부분 (신규추가)
+│ 	  │ │            ├── mypage-scrollbar.css       ← 스크롤바 (신규추가)
+│ 	  │ │            ├── mypage-userid.css          ← 아이디 창 (신규추가)
+│ 	  │ │            ├── mypage-email.css           ← 이메일 창 (신규추가)
+│ 	  │ │            ├── mypage-nickname.css        ← 닉네임 창 (신규추가)
+│ 	  │ │            ├── mypage-password.css        ← 비밀번호 창  (신규추가)
+│ 	  │ │            ├── mypage-member-section.css  ← 회원정보/회원정보 수정 섹션 (신규추가)
 │       ├── global.css                   ← 전역 스타일 + CSS import 관리
 │       ├── components.css               ← 레이아웃, 지도 컴포넌트 스타일
 │       ├── navigation.css               ← 네비게이션 바 전용 스타일

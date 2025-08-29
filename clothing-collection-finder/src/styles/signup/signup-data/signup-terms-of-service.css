@@ -1,0 +1,38 @@
+/* 회원가입 이용약관 관련 스타일 */
+.terms-divider {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+}
+
+.terms-title-container {
+    width: 100%;
+    max-width: 899px;
+    text-align: center;
+    margin-bottom: 10px;
+    margin-top: 70px;
+}
+
+.terms-title {
+    font-size: 25px;
+    font-weight: 800;
+    color: #6029b7;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    margin-bottom: 1px;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .terms-title {
+        font-size: 18px;
+    }
+
+    .terms-divider {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .terms-title {
+        font-size: 16px;
+    }
+}

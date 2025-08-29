@@ -154,10 +154,35 @@
         </label>
       </div>
 
-      <!-- 임시 테스트 (나중에 삭제) -->
-      <div style="height: 2000px; background: lightgray; margin: 2rem;">
-        임시 공간 - 스크롤 테스트용
+      <!-- 회원가입 이용약관 제목 -->
+      <div class="terms-title-container">
+        <h3 class="terms-title">[회원가입 이용약관]</h3>
       </div>
+
+      <!-- 구분선 -->
+      <div class="divider-line terms-divider"></div>
+      <TermsOfService />
+
+      <!-- 개인정보 수집 및 이용 동의서 제목 -->
+      <div class="privacy-title-container">
+        <h3 class="privacy-title">[개인정보 수집 및 이용 동의서]</h3>
+      </div>
+
+      <!-- 구분선 -->
+      <div class="divider-line privacy-bottom-divider"></div>
+      <PrivacyPolicy />
+
+      <!-- 위치정보 서비스 이용약관 제목 -->
+      <div class="location-title-container">
+        <h3 class="location-title">[위치정보 서비스 이용약관]</h3>
+      </div>
+
+      <!-- 구분선 -->
+      <div class="divider-line location-bottom-divider"></div>
+      <LocationTerms />
+
+      <!-- 하단 여백 -->
+      <div class="bottom-spacing"></div>
     </div>
     </div>
   </MainLayout>
@@ -167,11 +192,17 @@
 import MainLayout from '../layouts/MainLayout.vue'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
+import TermsOfService from '@/components/ui/signup/TermsOfService.vue'
+import PrivacyPolicy from '@/components/ui/signup/PrivacyPolicy.vue'
+import LocationTerms from '@/components/ui/signup/LocationTerms.vue'
 
 export default {
   name: 'SignupView',
   components: {
-    MainLayout
+    MainLayout,
+    TermsOfService,
+    PrivacyPolicy,
+    LocationTerms
   }, data() {
     return {
       eyeImage,
@@ -213,6 +244,12 @@ export default {
 @import '../styles/signup/signup-nickname.css';
 @import '../styles/signup/signup-email.css';
 @import '../styles/signup/signup-agreebutton.css';
+@import '../styles/signup/signup-data/signup-terms-of-service.css';
+@import '../styles/signup/signup-data/signup-privacy-policy.css';
+@import '../styles/signup/signup-data/signup-location-terms.css';
 
-
+/* 빈공간 */
+.bottom-spacing {
+  height: 3rem;
+}
 </style>
