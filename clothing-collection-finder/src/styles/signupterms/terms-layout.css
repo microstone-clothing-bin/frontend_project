@@ -1,0 +1,15 @@
+/* 회원가입 이용약관 페이지 기본 레이아웃 */
+.signup-terms-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+.signup-terms-page-container {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 80px;
+}

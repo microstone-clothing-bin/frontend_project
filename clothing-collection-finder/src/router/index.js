@@ -13,6 +13,9 @@ import FindIdNotFoundView from '../views/FindIdNotFoundView.vue'
 import FindPasswordNotFoundView from '../views/FindPasswordNotFoundView.vue'
 import FindIdSuccessView from '../views/FindIdSuccessView.vue'
 import ResetPasswordView from '../views/ResetPasswordView.vue'
+import SignupTermsView from '../views/SignupTermsView.vue'
+import SignupPrivacyView from '../views/SignupPrivacyView.vue'
+import SignupLocationView from '../views/SignupLocationView.vue'
 
 const routes = [
     {
@@ -44,6 +47,21 @@ const routes = [
         path: '/signup',
         name: 'signup',
         component: SignupView
+    },
+    {
+        path: '/signup/terms',
+        name: 'signupTerms',
+        component: SignupTermsView
+    },
+    {
+        path: '/signup/privacy',
+        name: 'SignupPrivacy',
+        component: SignupPrivacyView
+    },
+    {
+        path: '/signup/location',
+        name: 'SignupLocation',
+        component: SignupLocationView
     },
     {
         path: '/find-id',

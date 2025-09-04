@@ -6,7 +6,7 @@
     margin-left: -390px;
 }
 
-/* 회원정보 수정 섹션 (위치 조정된 버전) */
+/* 회원정보 수정 섹션 , 계정 보안도 같이 사용 */
 .member-edit-section {
     width: 100%;
     max-width: 899px;

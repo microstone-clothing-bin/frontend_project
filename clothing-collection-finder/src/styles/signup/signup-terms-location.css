@@ -1,0 +1,34 @@
+/* 위치기반 서비스 약관 컨테이너 */
+.individual-location-terms {
+    margin-top: 6px;
+    padding-left: 300px; /* 들여쓰기 효과 */
+}
+
+/* 위치기반 서비스 약관 항목 */
+.individual-location-agreement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #1A1A1A;
+    font-size: 18px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 위치기반 서비스 약관보기 버튼 */
+.view-location-details-btn {
+    background: none;
+    border: none;
+    color: #6029B7;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 253px; /* 텍스트 길이에 맞춰 간격 조정 */
+    text-decoration: none;
+    font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+.view-location-details-btn:hover {
+    text-decoration: underline;
+}

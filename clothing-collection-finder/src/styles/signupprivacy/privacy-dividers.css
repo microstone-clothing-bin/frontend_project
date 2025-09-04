@@ -1,0 +1,14 @@
+/* 개인정보 관련 구분선 스타일 */
+.signup-privacy-divider-line {
+    width: 899px;
+    height: 0.5px;
+    background-color: #9E9E9E;
+}
+
+.signup-privacy-bottom-divider-line {
+    width: 899px;
+    height: 0.5px;
+    background-color: #9E9E9E;
+    margin-top: 40px;
+    margin-bottom: 50px;
+}

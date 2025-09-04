@@ -26,7 +26,7 @@
             {{ binData.landLotAddress }}
           </p>
 
-          <!-- 🆕 거리 정보 추가 -->
+          <!--  거리 정보 추가 -->
           <div class="distance-info">
             <span class="distance-label">내 위치에서</span>
             <span class="distance-value">{{ calculateDistance(binData) }}</span>

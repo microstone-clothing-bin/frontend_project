@@ -1,0 +1,81 @@
+/* 회원가입 이용약관 내용 스타일 */
+.terms-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.terms-title {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color: #6029B7;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.terms-body {
+    text-align: left;
+    line-height: 1.6;
+    max-width: 899px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.terms-section {
+    margin-bottom: 1px;
+}
+
+.terms-section-title {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1A1A1A;
+}
+
+.terms-list {
+    margin-left: 0;
+}
+
+.terms-item {
+    display: flex;
+    margin-bottom: 1px;
+    align-items: flex-start;
+}
+
+.terms-number {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #1A1A1A;
+    margin-right: 5px;
+}
+
+.terms-text {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #1A1A1A;
+    margin: 0;
+    flex: 1;
+}
+
+.terms-sublist {
+    margin-left: 20px;
+    margin-top: 1px;
+}
+
+.terms-subitem {
+    display: flex;
+    margin-bottom: 1px;
+    align-items: flex-start;
+}
+
+.terms-bullet {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #1A1A1A;
+    margin-right: 8px;
+    min-width: 15px;
+}

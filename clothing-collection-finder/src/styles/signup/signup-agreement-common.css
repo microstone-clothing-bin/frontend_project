@@ -1,0 +1,44 @@
+/* 개별 약관 컨테이너 */
+.individual-terms {
+    margin-top: 10px;
+    padding-left: 300px; /* 들여쓰기 효과 */
+}
+
+/* 개별 약관 항목 */
+.individual-agreement {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #1A1A1A;
+    font-size: 18px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 필수 텍스트 */
+.required-text {
+    color: #9E9E9E;
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 5px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 약관보기 버튼 */
+.view-details-btn {
+    background: none;
+    border: none;
+    color: #6029B7;
+    font-size: 16px;
+    cursor: pointer;
+    margin-left: 300px;
+    text-decoration: none;
+    font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+.view-details-btn:hover {
+    text-decoration: underline;
+}
+

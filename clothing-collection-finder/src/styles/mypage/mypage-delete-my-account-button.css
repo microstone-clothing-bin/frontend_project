@@ -1,0 +1,30 @@
+.mypage-delete-my-account-button {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: -67px;
+    margin-left: 450px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 176px;
+    height: 65px;
+    background-image: url('/src/assets/images/delete-my-account-button.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+mypage-delete-my-account-button:hover {
+    transform: scale(1.05);
+}
+
+.mypage-btn-delete-my-account {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #6029B7;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}

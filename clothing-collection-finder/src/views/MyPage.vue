@@ -81,7 +81,7 @@
         />
       </div>
 
-      <!-- 추가할 구분선 (모든 입력창 아래) -->
+      <!-- 추가할 구분선 -->
       <div class="divider-line additional-divider"></div>
 
       <!-- 회원정보 수정 섹션 (위쪽에 위치) -->
@@ -102,6 +102,41 @@
             placeholder="비밀번호를 입력하세요"
             v-model="userInfo.password"
         />
+      </div>
+
+      <!-- 비밀번호 확인 라벨 -->
+      <div class="input-label mypage-passwordcheck-label">
+        <span class="label-text">비밀번호 확인</span>
+      </div>
+
+      <!-- 비밀번호 확인 입력창 -->
+      <div class="input-container mypage-passwordcheck-container">
+        <input
+            type="passwordcheck"
+            class="input-field"
+            placeholder="새 비밀번호 재입력"
+            v-model="userInfo.passwordcheck"
+        />
+      </div>
+
+      <div class="mypage-storage-button" >
+        <span class="mypage-btn-storage">변경된 정보 저장</span>
+      </div>
+
+      <!-- 추가할 구분선  -->
+      <div class="divider-line additional-divider"></div>
+
+      <!-- 계정 보안 섹션  -->
+      <div class="member-edit-section">
+        <h2 class="section-title">계정 보안</h2>
+      </div>
+      <!-- 로그아웃 버튼  -->
+      <div class="mypage-logout-button" >
+        <span class="mypage-btn-logout">로그아웃</span>
+      </div>
+      <!-- 회원 탈퇴 버튼   -->
+      <div class="mypage-delete-my-account-button" >
+        <span class="mypage-btn-delete-my-account">회원 탈퇴</span>
       </div>
 
       <!-- 숨겨진 파일 입력 -->
@@ -132,7 +167,8 @@ export default {
         userId: '',
         email: '',
         nickname: '',
-        password: ''
+        password: '',
+        passwordcheck: ''
       }
     }
   },
@@ -167,6 +203,11 @@ export default {
 @import '../styles/mypage/mypage-email.css';
 @import '../styles/mypage/mypage-nickname.css';
 @import '../styles/mypage/mypage-password.css';
+@import '../styles/mypage/mypage-passwordcheck.css';
 @import '../styles/mypage/mypage-scrollbar.css';
+@import '../styles/mypage/mypage-storage-button.css';
+@import '../styles/mypage/mypage-logout-button.css';
+@import '../styles/mypage/mypage-delete-my-account-button.css';
+
 
 </style>

@@ -1,0 +1,14 @@
+.signup-location-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+.signup-location-page-container {
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 80px;
+}

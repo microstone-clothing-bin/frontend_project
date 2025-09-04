@@ -1,0 +1,32 @@
+/* 변경된 정보 저장 버튼 */
+.mypage-storage-button {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 3rem;
+    margin-left: 725px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 176px;
+    height: 65px;
+    background-image: url('/src/assets/images/mypage-storage-button.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+mypage-storage-button:hover {
+    transform: scale(1.05);
+}
+
+.mypage-btn-storage {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: #FFFFFF;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+

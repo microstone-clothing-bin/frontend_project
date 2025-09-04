@@ -1,0 +1,73 @@
+/* 개인정보 수집 및 이용 동의서 내용 스타일 */
+.privacy-header {
+    text-align: center;
+    margin-bottom: 70px;
+}
+
+.privacy-title {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 800;
+    font-size: 32px;
+    color: #6029B7;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.privacy-body {
+    text-align: left;
+    line-height: 1.6;
+    max-width: 899px;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.privacy-section {
+    margin-bottom: 1px;
+}
+
+.privacy-section-title {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #1A1A1A;
+}
+
+.privacy-list {
+    margin-left: 0;
+}
+
+.privacy-item {
+    display: flex;
+    margin-bottom: 1px;
+    align-items: flex-start;
+}
+
+.privacy-text {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #1A1A1A;
+    margin: 0;
+    flex: 1;
+}
+
+.privacy-sublist {
+    margin-left: 20px;
+    margin-top: 1px;
+}
+
+.privacy-subitem {
+    display: flex;
+    margin-bottom: 1px;
+    align-items: flex-start;
+}
+
+.privacy-bullet {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: #1A1A1A;
+    margin-right: 8px;
+    min-width: 15px;
+}

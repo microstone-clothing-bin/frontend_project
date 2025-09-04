@@ -1,0 +1,55 @@
+/* 회원가입 이용약관 동의 버튼 스타일 */
+.signup-terms-agree-button {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-top: 2rem;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 899px;
+    height: 65px;
+    background-image: url('/src/assets/images/signup-terms-button.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.signup-terms-agree-button:hover {
+    transform: scale(1.05);
+}
+
+.signup-terms-agree-btn-text {
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #FFFFFF;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+/* 반응형 - 동의 버튼 */
+@media (max-width: 768px) {
+    .signup-terms-agree-button {
+        width: 80%;
+        max-width: 250px;
+        height: auto;
+        aspect-ratio: 287/65;
+    }
+
+    .signup-terms-agree-btn-text {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .signup-terms-agree-button {
+        width: 90%;
+        max-width: 200px;
+    }
+
+    .signup-terms-agree-btn-text {
+        font-size: 13px;
+    }
+}

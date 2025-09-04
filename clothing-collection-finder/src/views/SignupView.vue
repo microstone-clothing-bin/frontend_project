@@ -143,6 +143,7 @@
           <input
               type="checkbox"
               v-model="formData.agreeAll"
+              @change="handleAgreeAll"
               class="agreement-checkbox"
           />
           <img
@@ -154,32 +155,84 @@
         </label>
       </div>
 
-      <!-- 회원가입 이용약관 제목 -->
-      <div class="terms-title-container">
-        <h3 class="terms-title">[회원가입 이용약관]</h3>
+      <!--  회원가입 이용약관 동의 버튼 추가 -->
+      <div class="individual-terms">
+        <label class="agreement-item individual-agreement">
+          <input
+              type="checkbox"
+              v-model="formData.agreeTerms"
+              @change="updateAgreeAll"
+              class="agreement-checkbox"
+          />
+          <img
+              src="/src/assets/images/agree-button.png"
+              alt="동의 버튼"
+              class="agree-button-image"
+          />
+          <span class="agreement-text">회원가입 이용약관 동의</span>
+          <span class="required-text">[필수]</span>
+          <button type="button" class="view-details-btn" @click="showTermsModal">약관보기 ></button>
+        </label>
       </div>
 
-      <!-- 구분선 -->
-      <div class="divider-line terms-divider"></div>
-      <TermsOfService />
-
-      <!-- 개인정보 수집 및 이용 동의서 제목 -->
-      <div class="privacy-title-container">
-        <h3 class="privacy-title">[개인정보 수집 및 이용 동의서]</h3>
+      <!--  개인정보 수집 및 이용 동의 추가 -->
+      <div class="individual-privacy-terms">
+        <label class="agreement-item individual-privacy-agreement">
+          <input
+              type="checkbox"
+              v-model="formData.agreePrivacy"
+              @change="updateAgreeAll"
+              class="agreement-checkbox"
+          />
+          <img
+              src="/src/assets/images/agree-button.png"
+              alt="동의 버튼"
+              class="agree-button-image"
+          />
+          <span class="agreement-text">개인정보 수집 및 이용 동의</span>
+          <span class="required-text">[필수]</span>
+          <button type="button" class="view-privacy-details-btn" @click="showPrivacyModal">약관보기 ></button>
+        </label>
       </div>
 
-      <!-- 구분선 -->
-      <div class="divider-line privacy-bottom-divider"></div>
-      <PrivacyPolicy />
-
-      <!-- 위치정보 서비스 이용약관 제목 -->
-      <div class="location-title-container">
-        <h3 class="location-title">[위치정보 서비스 이용약관]</h3>
+      <!--  위치기반 서비스 이용약관 동의 추가 -->
+      <div class="individual-location-terms">
+        <label class="agreement-item individual-location-agreement">
+          <input
+              type="checkbox"
+              v-model="formData.agreeLocation"
+              @change="updateAgreeAll"
+              class="agreement-checkbox"
+          />
+          <img
+              src="/src/assets/images/agree-button.png"
+              alt="동의 버튼"
+              class="agree-button-image"
+          />
+          <span class="agreement-text">위치기반 서비스 이용약관 동의</span>
+          <span class="required-text">[필수]</span>
+          <button type="button" class="view-location-details-btn" @click="showLocationModal">약관보기 ></button>
+        </label>
       </div>
 
-      <!-- 구분선 -->
-      <div class="divider-line location-bottom-divider"></div>
-      <LocationTerms />
+      <!-- 만 14세 이상입니다 추가 -->
+      <div class="individual-age-terms">
+        <label class="agreement-item individual-age-agreement">
+          <input
+              type="checkbox"
+              v-model="formData.agreeAge"
+              @change="updateAgreeAll"
+              class="agreement-checkbox"
+          />
+          <img
+              src="/src/assets/images/agree-button.png"
+              alt="동의 버튼"
+              class="agree-button-image"
+          />
+          <span class="agreement-text">만 14세 이상입니다.</span>
+          <span class="required-text">[필수]</span>
+        </label>
+      </div>
 
       <!-- 하단 여백 -->
       <div class="bottom-spacing"></div>
@@ -192,17 +245,12 @@
 import MainLayout from '../layouts/MainLayout.vue'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
-import TermsOfService from '@/components/ui/signup/TermsOfService.vue'
-import PrivacyPolicy from '@/components/ui/signup/PrivacyPolicy.vue'
-import LocationTerms from '@/components/ui/signup/LocationTerms.vue'
+
 
 export default {
   name: 'SignupView',
   components: {
-    MainLayout,
-    TermsOfService,
-    PrivacyPolicy,
-    LocationTerms
+    MainLayout
   }, data() {
     return {
       eyeImage,
@@ -214,6 +262,10 @@ export default {
         nickname: '',
         email: '',
         agreeAll: false,           // 전체 동의
+        agreeTerms: false,
+        agreePrivacy: false,       //  개인정보 동의 추가
+        agreeLocation: false,      // 위치기반 서비스 동의 추가
+        agreeAge: false,           // 🆕 만 14세 이상 동의 추가
       },
       showPassword: false,        // 비밀번호 보이기/숨기기 상태
       showPasswordConfirm: false
@@ -244,9 +296,11 @@ export default {
 @import '../styles/signup/signup-nickname.css';
 @import '../styles/signup/signup-email.css';
 @import '../styles/signup/signup-agreebutton.css';
-@import '../styles/signup/signup-data/signup-terms-of-service.css';
-@import '../styles/signup/signup-data/signup-privacy-policy.css';
-@import '../styles/signup/signup-data/signup-location-terms.css';
+@import '../styles/signup/signup-terms-privacy.css';
+@import '../styles/signup/signup-terms-location.css';
+@import '../styles/signup/signup-terms-age.css';
+@import '../styles/signup/signup-agreement-common.css';
+
 
 /* 빈공간 */
 .bottom-spacing {
