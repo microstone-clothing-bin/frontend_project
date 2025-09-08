@@ -373,5 +373,6 @@ export default {
   color: #666;
   font-size: 16px;
   line-height: 1.5;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 </style>

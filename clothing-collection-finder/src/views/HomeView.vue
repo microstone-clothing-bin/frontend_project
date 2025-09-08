@@ -2,7 +2,9 @@
 <template>
   <MainLayout>
     <SidebarLayout
+        :sidebar-collapsed="sidebarCollapsed"
         :showDetailPanel="showDetailPanel"
+        @sidebar-toggle="handleSidebarToggle"
         @moveToLocation="handleMoveToLocation"
         @showDetailPanel="handleShowPanel"
         @closeDetailPanel="handleCloseDetailPanel"
@@ -50,15 +52,31 @@ export default {
   setup() {
     const mapCenter = ref({ lat: 37.5665, lng: 126.9780 })
     const naverMapRef = ref(null)
+    const sidebarCollapsed = ref(false) //  사이드바 상태 추가
 
     // 정보패널 로직을 Composable로 분리
     const {
       showDetailPanel,
       selectedBinData,
-      handleMarkerClick,
+      handleMarkerClick: originalHandleMarkerClick,
       handleShowPanel,
       closeDetailPanel
     } = useDetailPanel()
+
+    const handleMarkerClick = (binData) => {
+      // 1. 정보패널 표시
+      originalHandleMarkerClick(binData)
+
+      // 2. 사이드바가 접혀있다면 열기
+      if (sidebarCollapsed.value) {
+        sidebarCollapsed.value = false
+      }
+    }
+
+// 🆕 사이드바 토글 이벤트 핸들러 추가
+    const handleSidebarToggle = (toggleData) => {
+      sidebarCollapsed.value = toggleData.isCollapsed
+    }
 
     // 🆕 토글용 임시 저장소
     const tempSavedBinData = ref(null)
@@ -101,7 +119,9 @@ export default {
       handleShowPanel,
       closeDetailPanel,           // 일반 닫기 (X 버튼용)
       handleCloseDetailPanel,     // 🆕 토글용 닫기
-      handleRestoreDetailPanel    // 🆕 토글용 복원
+      handleRestoreDetailPanel,    // 🆕 토글용 복원
+      sidebarCollapsed,         //  추가
+      handleSidebarToggle       //  추가
     }
   }
 }

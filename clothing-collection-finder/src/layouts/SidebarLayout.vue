@@ -39,9 +39,10 @@
 </template>
 
 <script>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import SidebarContent from '../components/common/SidebarContent.vue'
 import SidebarToggleButton from '../components/ui/SidebarToggleButton.vue'
+
 
 export default {
   name: 'SidebarLayout',
@@ -53,11 +54,21 @@ export default {
     showDetailPanel: {
       type: Boolean,
       default: false
+    },
+    sidebarCollapsed: {        // 이 부분 추가
+      type: Boolean,
+      default: false
     }
   },
   emits: ['sidebar-toggle', 'moveToLocation', 'showDetailPanel', 'closeDetailPanel', 'restoreDetailPanel'],
   setup(props, { emit }) {
-    const isCollapsed = ref(false)
+    const isCollapsed = computed({
+      get: () => props.sidebarCollapsed,
+      set: (value) => {
+        emit('sidebar-toggle', { isCollapsed: value })
+      }
+    })
+
     const savedDetailPanelState = ref({
       wasOpen: false,
       binData: null
