@@ -6,7 +6,7 @@ export function useMapMarkers() {
     const showDetailPanel = ref(false) // 패널 상태 추가
     let clusterer = null // 클러스터러 인스턴스 저장
 
-    // 🔄 수정: onMarkerClick 콜백 함수를 받도록 변경
+    //  수정: onMarkerClick 콜백 함수를 받도록 변경
     const addMarkersToMap = async (map, clothingBins, onMarkerClick = null) => {
         await import('../utils/markerClustering.js')
         clearMarkers()
@@ -18,7 +18,7 @@ export function useMapMarkers() {
                 title: bin.roadAddress
             })
 
-            // 🔄 수정: 마커 클릭 이벤트
+            //  수정: 마커 클릭 이벤트
             window.naver.maps.Event.addListener(marker, 'click', () => {
                 if (onMarkerClick) {
                     // 콜백 함수가 있으면 호출 (이벤트 방식)
@@ -80,7 +80,7 @@ export function useMapMarkers() {
                 // 글자 크기 설정
                 clusterDiv.style.fontSize = `${fontSize}px`
 
-                // 🎨 마커 개수에 따라 배경색을 다르게 설정 (그라데이션 효과)
+                //  마커 개수에 따라 배경색을 다르게 설정 (그라데이션 효과)
                 if (count < 10) {
                     clusterDiv.style.backgroundColor = '#ffd5e1' // 연한 핑크
                 } else if (count < 20) {
@@ -118,7 +118,7 @@ export function useMapMarkers() {
                 clusterDiv.style.alignItems = 'center' // 수직 중앙 정렬
                 clusterDiv.style.cursor = 'pointer' // 마우스 올리면 커서 변경
 
-                // ✨ 호버 효과 추가
+                //  호버 효과 추가
                 clusterDiv.addEventListener('mouseenter', () => {
                     clusterDiv.style.transform = 'scale(1.1)'
                     clusterDiv.style.transition = 'transform 0.2s ease'
@@ -133,7 +133,7 @@ export function useMapMarkers() {
         // markers.value에 저장 (정리용)
         markers.value = allMarkers
 
-        console.log(`🎯 클러스터링 적용 완료: ${allMarkers.length}개 마커`)
+        console.log(` 클러스터링 적용 완료: ${allMarkers.length}개 마커`)
     }
 
     // 패널 닫기 함수 추가 ✨
@@ -164,7 +164,7 @@ export function useMapMarkers() {
             window.selectedInfoWindow = null
         }
 
-        console.log('🧹 마커 정리 완료')
+        console.log(' 마커 정리 완료')
     }
 
     // 줌 레벨에 따른 클러스터링 제어 (추가 기능)

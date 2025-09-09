@@ -84,27 +84,27 @@ apiClient.interceptors.response.use(
 
 // 기본 HTTP 메서드 함수들
 export const api = {
-    // GET 요청 - 현재 사용 가능 ✅
+    // GET 요청 - 현재 사용 가능
     get: (url, config = {}) => {
         return apiClient.get(url, config)
     },
 
-    // POST 요청 - 백엔드 미완성으로 주석 처리 ❌
+    // POST 요청 - 백엔드 미완성으로 주석 처리
     // post: (url, data = {}, config = {}) => {
     //   return apiClient.post(url, data, config)
     // },
 
-    // PUT 요청 - 백엔드 미완성으로 주석 처리 ❌
+    // PUT 요청 - 백엔드 미완성으로 주석 처리
     // put: (url, data = {}, config = {}) => {
     //   return apiClient.put(url, data, config)
     // },
 
-    // DELETE 요청 - 백엔드 미완성으로 주석 처리 ❌
+    // DELETE 요청 - 백엔드 미완성으로 주석 처리
     // delete: (url, config = {}) => {
     //   return apiClient.delete(url, config)
     // },
 
-    // PATCH 요청 - 백엔드 미완성으로 주석 처리 ❌
+    // PATCH 요청 - 백엔드 미완성으로 주석 처리
     // patch: (url, data = {}, config = {}) => {
     //   return apiClient.patch(url, data, config)
     // }
@@ -133,5 +133,5 @@ export default apiClient
 5. 기타 나눔, 즐겨찾기, 로그인 관련 API들
 
 현재 사용 가능한 API:
-✅ GET /api/clothing-bins - 모든 의류수거함 목록 조회
+ GET /api/clothing-bins - 모든 의류수거함 목록 조회
 */

@@ -12,19 +12,19 @@ export function useNaverMapCurrentLocation(
     showCurrentLocationWithNearbyData,     // 현재 위치 + 주변 데이터 표시 함수
     emit                                   // Vue 이벤트 발생 함수
 ) {
-    // 🌍 지오코딩 Composable 사용 (좌표 ↔ 주소 변환)
+    //  지오코딩 Composable 사용 (좌표 ↔ 주소 변환)
     const {
         getAddressFromCoords,              // 좌표를 주소로 변환하는 함수
         currentAddress,                    // 현재 변환된 주소 정보 (reactive)
         isLoading: isGeocodingLoading      // 지오코딩 진행 중인지 여부 (reactive)
     } = useGeocoding()
 
-    // 📍 좌표 관리 Composable 사용
+    //  좌표 관리 Composable 사용
     const {
         setCurrentCoords                   // 현재 좌표를 전역 상태에 저장하는 함수
     } = useCoordinates()
 
-    // 🎯 현재 위치 찾기 성공 시 실행되는 메인 핸들러
+    //  현재 위치 찾기 성공 시 실행되는 메인 핸들러
     const handleLocationSuccess = async (result) => {
         console.log('현재 위치 찾기 성공:', result)
 
@@ -65,7 +65,7 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // 📍 현재 위치 좌표를 useCoordinates 전역 상태에 저장하는 함수
+    //  현재 위치 좌표를 useCoordinates 전역 상태에 저장하는 함수
     const saveCurrentCoords = async (position) => {
         try {
             console.log('🔄 현재 위치 좌표 저장 시작:', position)
@@ -78,27 +78,27 @@ export function useNaverMapCurrentLocation(
             })
 
             if (success) {
-                console.log('✅ 현재 위치 좌표 저장 성공:', {
+                console.log(' 현재 위치 좌표 저장 성공:', {
                     lat: position.lat,
                     lng: position.lng,
                     source: position.isRealLocation ? 'GPS' : 'Fallback'
                 })
             } else {
-                console.warn('⚠️ 현재 위치 좌표 저장 실패')
+                console.warn(' 현재 위치 좌표 저장 실패')
             }
 
             return success
 
         } catch (error) {
-            console.error('❌ 현재 위치 좌표 저장 오류:', error.message)
+            console.error(' 현재 위치 좌표 저장 오류:', error.message)
             return false
         }
     }
 
-    // 🌍 현재 위치 좌표를 주소로 변환하는 함수
+    //  현재 위치 좌표를 주소로 변환하는 함수
     const convertLocationToAddress = async (position) => {
         try {
-            console.log('🌍 현재 위치 주소 변환 시작:', position)
+            console.log(' 현재 위치 주소 변환 시작:', position)
 
             // 좌표를 주소로 변환 (네이버 지오코딩 API 사용)
             const addressInfo = await getAddressFromCoords(position.lat, position.lng, {
@@ -108,7 +108,7 @@ export function useNaverMapCurrentLocation(
             })
 
             if (addressInfo) {
-                console.log('✅ 현재 위치 주소 변환 성공:', {
+                console.log(' 현재 위치 주소 변환 성공:', {
                     shortAddress: addressInfo.shortAddress,    // 간단한 주소 (예: "강남구 역삼동")
                     fullAddress: addressInfo.fullAddress,      // 전체 주소
                     position: position
@@ -123,7 +123,7 @@ export function useNaverMapCurrentLocation(
 
                 return addressInfo
             } else {
-                console.warn('⚠️ 현재 위치 주소 변환 실패 - 결과 없음')
+                console.warn('️ 현재 위치 주소 변환 실패 - 결과 없음')
 
                 // 실패해도 기본 위치 정보는 전달
                 emit('address-updated', {
@@ -137,7 +137,7 @@ export function useNaverMapCurrentLocation(
             }
 
         } catch (error) {
-            console.error('❌ 현재 위치 주소 변환 오류:', error.message)
+            console.error(' 현재 위치 주소 변환 오류:', error.message)
 
             // 에러 정보도 부모에게 전달
             emit('address-error', {
@@ -150,7 +150,7 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // ❌ 현재 위치 찾기 실패 시 실행되는 에러 핸들러
+    //  현재 위치 찾기 실패 시 실행되는 에러 핸들러
     const handleLocationError = (errorData) => {
         console.error('현재 위치 찾기 실패:', errorData)
 
@@ -158,7 +158,7 @@ export function useNaverMapCurrentLocation(
         emit('location-error', errorData)
     }
 
-    // 🗺️ 주변 의류수거함 표시 처리 함수
+    //  주변 의류수거함 표시 처리 함수
     const handleNearbyBinsDisplay = async (currentPosition) => {
         if (clothingBins.value && clothingBins.value.length > 0) {
             // 현재 위치 근처의 의류수거함 필터링 (예: 2km 반경)
@@ -172,7 +172,7 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // 📏 주변 의류수거함 필터링 함수 (지정된 반경 내 수거함만 반환)
+    //  주변 의류수거함 필터링 함수 (지정된 반경 내 수거함만 반환)
     const filterNearbyBins = (currentPosition, bins, radiusInMeters) => {
         return bins.filter(bin => {
             // 좌표가 없는 수거함 제외
@@ -192,14 +192,14 @@ export function useNaverMapCurrentLocation(
         })
     }
 
-    // 👻 현재 위치 마커 숨기기 (래퍼 함수)
+    //  현재 위치 마커 숨기기 (래퍼 함수)
     const hideCurrentLocationMarker = () => {
         const result = hideCurrentLocation()
         console.log('현재 위치 마커 숨김:', result.message)
         return result
     }
 
-    // 🎛️ 현재 위치 설정 커스터마이징 (옵션 설정 가능한 고급 함수)
+    // 🎛 현재 위치 설정 커스터마이징 (옵션 설정 가능한 고급 함수)
     const showCurrentLocationWithOptions = async (options = {}) => {
         const defaultOptions = {
             animate: true,                 // 애니메이션 사용 여부
@@ -252,7 +252,7 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // 🔍 수동으로 특정 좌표의 주소 가져오기 (개별 좌표 주소 변환)
+    //  수동으로 특정 좌표의 주소 가져오기 (개별 좌표 주소 변환)
     const getAddressForCoords = async (lat, lng) => {
         try {
             const addressInfo = await getAddressFromCoords(lat, lng, {
@@ -268,7 +268,7 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // 📍 현재 주소 정보 조회 (상태 정보 종합 반환)
+    //  현재 주소 정보 조회 (상태 정보 종합 반환)
     const getCurrentAddressInfo = () => {
         return {
             address: currentAddress.value,                                      // 전체 주소 객체
@@ -279,7 +279,7 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // 🔧 디버깅 및 상태 확인 함수
+    //  디버깅 및 상태 확인 함수
     const getCurrentLocationInfo = () => {
         return {
             hasClothingBins: clothingBins.value ? clothingBins.value.length : 0,  // 의류수거함 개수
@@ -289,29 +289,29 @@ export function useNaverMapCurrentLocation(
         }
     }
 
-    // 📤 외부에서 사용할 수 있도록 반환
+    //  외부에서 사용할 수 있도록 반환
     return {
-        // 🔧 기본 핸들러들
+        //  기본 핸들러들
         handleLocationSuccess,          // 현재 위치 찾기 성공 시 실행되는 메인 핸들러
         handleLocationError,            // 현재 위치 찾기 실패 시 실행되는 에러 핸들러
         hideCurrentLocationMarker,      // 현재 위치 마커 숨기기
 
-        // 🌍 주소 변환 관련 함수들
+        //  주소 변환 관련 함수들
         convertLocationToAddress,       // 좌표를 주소로 변환 (지오코딩)
         saveCurrentCoords,             // 좌표를 전역 상태에 저장
         getAddressForCoords,           // 특정 좌표의 주소를 개별적으로 가져오기
         getCurrentAddressInfo,         // 현재 주소 정보 상태 조회
 
-        // 🚀 고급 기능들
+        //  고급 기능들
         showCurrentLocationWithOptions,  // 옵션 설정 가능한 현재 위치 표시 함수
         filterNearbyBins,               // 지정된 반경 내 의류수거함 필터링
         handleNearbyBinsDisplay,        // 주변 의류수거함 표시 처리
 
-        // 🔄 지오코딩 반응형 상태
+        //  지오코딩 반응형 상태
         currentAddress,                 // 현재 변환된 주소 정보 (reactive)
         isGeocodingLoading,            // 지오코딩 진행 중인지 여부 (reactive)
 
-        // 🛠️ 유틸리티
+        //  유틸리티
         getCurrentLocationInfo          // 전체 상태 정보 디버깅용 함수
     }
 }

@@ -73,15 +73,15 @@ export default {
       }
     }
 
-// 🆕 사이드바 토글 이벤트 핸들러 추가
+//  사이드바 토글 이벤트 핸들러 추가
     const handleSidebarToggle = (toggleData) => {
       sidebarCollapsed.value = toggleData.isCollapsed
     }
 
-    // 🆕 토글용 임시 저장소
+    //  토글용 임시 저장소
     const tempSavedBinData = ref(null)
 
-    // 🆕 토글에 의한 패널 닫기 (데이터 보존)
+    //  토글에 의한 패널 닫기 (데이터 보존)
     const handleCloseDetailPanel = () => {
       if (selectedBinData.value) {
         tempSavedBinData.value = { ...selectedBinData.value } // 🆕 데이터 임시 저장
@@ -89,7 +89,7 @@ export default {
       closeDetailPanel()
     }
 
-    // 🆕 토글에 의한 패널 복원
+    //  토글에 의한 패널 복원
     const handleRestoreDetailPanel = () => {
       if (tempSavedBinData.value) {
         selectedBinData.value = tempSavedBinData.value
@@ -118,10 +118,10 @@ export default {
       handleMarkerClick,
       handleShowPanel,
       closeDetailPanel,           // 일반 닫기 (X 버튼용)
-      handleCloseDetailPanel,     // 🆕 토글용 닫기
-      handleRestoreDetailPanel,    // 🆕 토글용 복원
-      sidebarCollapsed,         //  추가
-      handleSidebarToggle       //  추가
+      handleCloseDetailPanel,     //  토글용 닫기
+      handleRestoreDetailPanel,    //  토글용 복원
+      sidebarCollapsed,
+      handleSidebarToggle
     }
   }
 }

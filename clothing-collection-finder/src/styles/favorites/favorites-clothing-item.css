@@ -66,6 +66,7 @@
     align-items: center;
     gap: 4px;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    margin-top: -5px;
 }
 
 /* 거리 라벨 ("내 위치에서") */
@@ -84,6 +85,7 @@
     color: #7c3aed;
     white-space: nowrap;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    margin-top: -1px;
 }
 
 /* 즐겨찾기 버튼 영역 */

@@ -1,7 +1,7 @@
 <!-- src/components/common/SidebarContent.vue (FavoriteButton 적용 수정 버전) -->
 <template>
   <div class="sidebar-content-wrapper">
-    <!-- 🔄 검색창 섹션을 컴포넌트로 교체 -->
+    <!--  검색창 섹션을 컴포넌트로 교체 -->
     <SearchContainer
         :search-data="allBins"
         @search-results="handleSearchResults"
@@ -80,7 +80,7 @@
             </div>
           </div>
 
-          <!-- 🔄 기존 bookmark-container를 FavoriteButton으로 교체 -->
+          <!-- FavoriteButton -->
           <FavoriteButton
               :is-active="isFavorite(bin.id)"
               @click="handleBookmarkClick(bin.id)"
@@ -99,17 +99,17 @@ import { useCoordinates } from '@/composables/currentlocation/useCoordinates'
 import { useDistanceCalculator } from '@/composables/currentlocation/useDistanceCalculator'
 import { useGeolocation } from '@/composables/currentlocation/useGeolocation'
 import { useSortedDistance } from '@/composables/sorted/useSortedDistance'
-// 🔄 검색 컴포넌트 import
+//  검색 컴포넌트 import
 import SearchContainer from '@/components/ui/search/SearchContainer.vue'
-// 🔄 FavoriteButton과 즐겨찾기 기능 import 추가
+//  FavoriteButton과 즐겨찾기 기능 import 추가
 import FavoriteButton from '@/components/ui/favorites/FavoriteButton.vue'
 import { useFavorites } from '@/composables/favorites/useFavorites'
 
 export default {
   name: 'SidebarContent',
   components: {
-    SearchContainer,  // 🔄 컴포넌트 등록
-    FavoriteButton    // 🔄 추가
+    SearchContainer,  //  컴포넌트 등록
+    FavoriteButton
   },
   props: {
     locationUpdate: Number
@@ -117,12 +117,12 @@ export default {
   setup(props, { emit }) {
     const clotheBinStore = useClotheBinStore()
 
-    // 🔄 검색 상태를 로컬에서 관리
+    //  검색 상태를 로컬에서 관리
     const searchResults = ref([])
     const isSearchMode = ref(false)
     const isSearching = ref(false)
 
-    // 🔄 즐겨찾기 기능 추가
+    //  즐겨찾기 기능 추가
     const { isFavorite, toggleFavorite } = useFavorites()
 
     // 지오코딩 관련
@@ -147,7 +147,7 @@ export default {
       calculateDistance: calculateDistanceRaw
     } = useDistanceCalculator()
 
-    // 🔄 거리순 정렬
+    //  거리순 정렬
     const { sortByDistanceComputed, sortByDistance } = useSortedDistance()
 
     // 위치 정보
@@ -172,9 +172,9 @@ export default {
     const first2Bins = computed(() => {
       if (allBins.value.length === 0) return []
 
-      // 거리순으로 정렬한 후 상위 10개
+      // 거리순으로 정렬한 후 상위 15개
       const sorted = sortByDistanceComputed(allBins, 'latitude', 'longitude') // 실제 필드명으로 변경 필요
-      return sorted.value.slice(0, 10)
+      return sorted.value.slice(0, 15)
     })
 
     // 표시할 데이터 결정
@@ -210,7 +210,7 @@ export default {
       }
     })
 
-    // 🔄 검색 결과 핸들러
+    //  검색 결과 핸들러
     const handleSearchResults = (searchData) => {
       const sortedResults = sortByDistance(searchData.results, 'latitude', 'longitude')
       searchResults.value = sortedResults
@@ -218,14 +218,14 @@ export default {
       isSearching.value = false
     }
 
-    // 🔄 검색 초기화 핸들러
+    //  검색 초기화 핸들러
     const handleSearchCleared = () => {
       searchResults.value = []
       isSearchMode.value = false
       isSearching.value = false
     }
 
-    // 🔄 북마크 클릭 핸들러 추가
+    //  즐겨찾기 클릭 핸들러 추가
     const handleBookmarkClick = (binId) => {
       toggleFavorite(binId)
       console.log(`사이드바에서 즐겨찾기 토글: ${binId}`)
@@ -237,34 +237,34 @@ export default {
         console.log('🔄 SidebarContent: 위치 업데이트 감지 (', oldValue, '→', newValue, ')')
 
         try {
-          console.log('📍 새로운 위치 정보 요청 중...')
+          console.log(' 새로운 위치 정보 요청 중...')
           await getGeoPosition()
-          console.log('✅ 새 좌표 업데이트 완료:', geoCoordinates.value)
-          console.log('🎯 실제 위치 여부:', isRealLocation())
-          console.log('🔄 거리 계산이 새로운 좌표 기준으로 업데이트됩니다')
+          console.log(' 새 좌표 업데이트 완료:', geoCoordinates.value)
+          console.log(' 실제 위치 여부:', isRealLocation())
+          console.log(' 거리 계산이 새로운 좌표 기준으로 업데이트됩니다')
         } catch (error) {
-          console.error('❌ 위치 업데이트 중 오류:', error)
+          console.error(' 위치 업데이트 중 오류:', error)
         }
       }
     }, { immediate: false })
 
     // 데이터 로드
     onMounted(async () => {
-      console.log('🚀 SidebarContent 초기 로드 시작')
+      console.log(' SidebarContent 초기 로드 시작')
       await getGeoPosition()
       await clotheBinStore.fetchClothingBins()
-      console.log('📦 로드된 데이터 개수:', allBins.value.length)
-      console.log('👀 표시할 데이터:', first2Bins.value)
-      console.log('📍 초기 위치 설정 완료:', geoCoordinates.value)
-      console.log('🎯 실제 위치 여부:', isRealLocation())
+      console.log(' 로드된 데이터 개수:', allBins.value.length)
+      console.log(' 표시할 데이터:', first2Bins.value)
+      console.log(' 초기 위치 설정 완료:', geoCoordinates.value)
+      console.log(' 실제 위치 여부:', isRealLocation())
       if (geoError.value) {
-        console.log('⚠️ 위치 에러:', geoError.value)
+        console.log('위치 에러:', geoError.value)
       }
     })
 
     // 클릭 핸들러
     const handleBinClick = (bin) => {
-      console.log('🎯 클릭된 수거함:', bin)
+      console.log(' 클릭된 수거함:', bin)
 
       if (isSearchMode.value) {
       }
@@ -283,12 +283,12 @@ export default {
     const calculateDistance = (bin) => {
       try {
         if (!geoCoordinates.value) {
-          console.warn('⚠️ geoCoordinates가 없습니다.')
+          console.warn(' geoCoordinates가 없습니다.')
           return '위치 요청 중'
         }
 
         if (!bin.latitude || !bin.longitude) {
-          console.warn('⚠️ 의류수거함 좌표 정보 없음:', bin)
+          console.warn(' 의류수거함 좌표 정보 없음:', bin)
           return '좌표 정보 없음'
         }
 
@@ -311,7 +311,7 @@ export default {
         })
 
       } catch (error) {
-        console.error('❌ 거리 계산 중 오류:', error)
+        console.error(' 거리 계산 중 오류:', error)
         return '계산 오류'
       }
     }
@@ -328,7 +328,7 @@ export default {
       handleBinClick,
       calculateDistance,
       formatAddress,
-      allBins,  // 🔄 SearchContainer에 전달하기 위해 추가
+      allBins,  //  SearchContainer에 전달하기 위해 추가
 
       // 현재 위치 관련
       currentLocationAddress,
@@ -345,7 +345,7 @@ export default {
       isRealLocation,
       geoError,
 
-      // 🔄 검색 관련 (로컬 상태)
+      //  검색 관련 (로컬 상태)
       searchResults,
       isSearchMode,
       isSearching,
@@ -357,7 +357,7 @@ export default {
       sectionTitle,
       filterText,
 
-      // 🔄 즐겨찾기 관련 추가
+      //  즐겨찾기 관련 추가
       isFavorite,
       handleBookmarkClick
     }

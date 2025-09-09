@@ -15,7 +15,7 @@ export function useCurrentLocation() {
         getCurrentPosition,        // GPS로 현재 위치 가져오기 + 권한 처리
         isRealLocation,           // GPS 실제 위치인지 기본값인지 구분
         clearCurrentCoords: clearCoordinates,  // 현재 좌표 및 권한 상태 모두 초기화
-        // 🆕 useCoordinates만의 추가 기능들
+        //  useCoordinates만의 추가 기능들
         setCurrentCoords,         // 수동으로 좌표 설정
         getCurrentLatLng,         // 간단한 {lat, lng} 객체 반환
         coordsHistory,            // 위치 히스토리 배열
@@ -24,7 +24,7 @@ export function useCurrentLocation() {
         logCurrentState           // 디버깅용 상태 로그
     } = useCoordinates()
 
-    // 🔧 useCoordinates에 없는 기능들 직접 구현
+    //  useCoordinates에 없는 기능들 직접 구현
     const DEFAULT_LOCATION = {    // 서울시청 기본 좌표 상수
         lat: 37.5665,
         lng: 126.9780,
@@ -73,7 +73,7 @@ export function useCurrentLocation() {
         showAreaAroundCurrentLocation     // 현재 위치 중심으로 지정된 반경 영역 표시
     } = useCurrentLocationMove()
 
-    // 🎯 통합 함수: 현재 위치 가져오기 + 지도에 표시
+    //  통합 함수: 현재 위치 가져오기 + 지도에 표시
     const showCurrentLocationOnMap = async (map, options = {}) => {
         if (!map) {
             console.error('지도가 없습니다')
@@ -109,7 +109,7 @@ export function useCurrentLocation() {
         }
     }
 
-    // 🎯 통합 함수: 현재 위치 + 주변 데이터와 함께 보기
+    //  통합 함수: 현재 위치 + 주변 데이터와 함께 보기
     const showCurrentLocationWithData = async (map, nearbyData = [], options = {}) => {
         if (!map) {
             console.error('지도가 없습니다')
@@ -146,13 +146,13 @@ export function useCurrentLocation() {
         }
     }
 
-    // 📍 현재 위치 숨기기
+    //  현재 위치 숨기기
     const hideCurrentLocation = () => {
         removeCurrentLocationMarker()
         return { success: true, message: '현재 위치가 숨겨졌습니다' }
     }
 
-    // 📊 현재 위치 상태 확인
+    //  현재 위치 상태 확인
     const getCurrentLocationStatus = () => {
         return {
             hasMarker: hasCurrentLocationMarker(),      // 마커 표시 여부
@@ -164,7 +164,7 @@ export function useCurrentLocation() {
         }
     }
 
-    // 🔄 현재 위치 새로고침
+    //  현재 위치 새로고침
     const refreshCurrentLocation = async (map, options = {}) => {
         // 기존 위치 정보 초기화
         clearCoordinates()
@@ -175,17 +175,17 @@ export function useCurrentLocation() {
     }
 
     return {
-        // 🔄 반응형 상태들
+        //  반응형 상태들
         coordinates,              // 현재 위치 좌표 (reactive)
         isLoading,               // 위치 가져오는 중 상태 (reactive)
         error,                   // 에러 메시지 (reactive)
         hasPermission,           // 위치 권한 상태 (reactive)
         currentLocationMarker,   // 현재 위치 마커 객체 (reactive)
 
-        // 📍 상수
+        //  상수
         DEFAULT_LOCATION,        // 서울시청 기본 좌표 {lat, lng, isDefault: true}
 
-        // 🔧 기본 위치 관련 함수들
+        //  기본 위치 관련 함수들
         getCurrentPosition,      // GPS + 권한 처리로 현재 위치 가져오기 (Promise)
         getDefaultLocation,      // 서울시청 기본 위치 반환
         isRealLocation,         // GPS 실제 위치인지 기본값인지 구분 (boolean)
@@ -193,7 +193,7 @@ export function useCurrentLocation() {
         clearCoordinates,       // 좌표 및 권한 상태 모두 초기화
         checkPermission,        // 브라우저 위치 권한 상태 확인 (Promise)
 
-        // 🆕 useCoordinates 추가 기능들
+        //  useCoordinates 추가 기능들
         setCurrentCoords,       // 수동으로 좌표 설정 (lat, lng, options)
         getCurrentLatLng,       // 간단한 {lat, lng} 객체 반환
         coordsHistory,          // 위치 히스토리 배열 (최대 50개)
@@ -201,12 +201,12 @@ export function useCurrentLocation() {
         stopTracking,           // 실시간 위치 추적 중단 (watchId 필요)
         logCurrentState,        // 디버깅용 상태 로그 출력
 
-        // 🗺️ 마커 관련 함수들
+        //  마커 관련 함수들
         addCurrentLocationMarker,     // 지도에 현재 위치 마커 추가 (map, position)
         removeCurrentLocationMarker,  // 지도에서 현재 위치 마커 제거
         hasCurrentLocationMarker,     // 현재 위치 마커 표시 여부 확인 (boolean)
 
-        // 🎯 지도 이동 관련 함수들
+        //  지도 이동 관련 함수들
         moveToCurrentLocation,            // 현재 위치로 애니메이션 이동 (map, position, options)
         jumpToCurrentLocation,            // 현재 위치로 즉시 이동 (map, position)
         smoothMoveToCurrentLocation,      // 부드러운 애니메이션으로 이동 (map, position, duration)
@@ -214,7 +214,7 @@ export function useCurrentLocation() {
         fitCurrentLocationWithNearbyBins, // 현재 위치 + 주변 데이터 모두 보이도록 범위 조정
         showAreaAroundCurrentLocation,    // 현재 위치 중심 지정 반경 영역 표시
 
-        // 🚀 통합 고급 함수들 (추천 사용)
+        //  통합 고급 함수들 (추천 사용)
         showCurrentLocationOnMap,      // 위치 가져오기 + 마커 표시 + 지도 이동 통합 (map, options)
         showCurrentLocationWithData,   // 현재 위치 + 주변 데이터 함께 표시 (map, nearbyData, options)
         hideCurrentLocation,           // 현재 위치 마커 숨기기 (간단한 래퍼)

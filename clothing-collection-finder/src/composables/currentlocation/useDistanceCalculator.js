@@ -8,12 +8,12 @@ export function useDistanceCalculator() {
     // 좌표 Composable 사용
     const { getCurrentLatLng } = useCoordinates()
 
-    // 🔄 로컬 반응형 상태
+    //  로컬 반응형 상태
     const lastCalculation = ref(null)    // 마지막 계산 결과 저장
     const calculationError = ref(null)   // 계산 에러 메시지
 
     /**
-     * 🧮 하버사인 공식을 사용한 두 좌표 간 거리 계산 (정확한 계산)
+     *  하버사인 공식을 사용한 두 좌표 간 거리 계산 (정확한 계산)
      * @param {number} lat1 - 첫 번째 지점 위도 (-90 ~ 90)
      * @param {number} lng1 - 첫 번째 지점 경도 (-180 ~ 180)
      * @param {number} lat2 - 두 번째 지점 위도 (-90 ~ 90)
@@ -75,7 +75,7 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * 📍 현재 위치에서 특정 지점까지의 거리 계산
+     *  현재 위치에서 특정 지점까지의 거리 계산
      * @param {number} targetLat - 목표 지점 위도
      * @param {number} targetLng - 목표 지점 경도
      * @returns {number|null} 거리 (미터), 실패 시 null
@@ -112,7 +112,7 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * 📏 거리를 사용자 친화적인 형태로 포맷팅
+     * 거리를 사용자 친화적인 형태로 포맷팅
      * @param {number} distanceInMeters - 거리 (미터 단위)
      * @param {Object} options - 포맷 옵션
      * @returns {string} 포맷된 거리 문자열 (예: "1.5KM", "500M")
@@ -162,7 +162,7 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * 🎯 여러 지점 중 현재 위치에서 가장 가까운 지점 찾기
+     *  여러 지점 중 현재 위치에서 가장 가까운 지점 찾기
      * @param {Array} locations - 지점 배열 [{lat, lng, ...}, ...]
      * @param {string} latKey - 위도 키 이름 (기본: 'lat')
      * @param {string} lngKey - 경도 키 이름 (기본: 'lng')
@@ -237,7 +237,7 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * 📊 현재 위치 기준으로 위치 배열을 거리순으로 정렬
+     *  현재 위치 기준으로 위치 배열을 거리순으로 정렬
      * @param {Array} locations - 위치 배열
      * @param {string} latKey - 위도 키 이름 (기본: 'lat')
      * @param {string} lngKey - 경도 키 이름 (기본: 'lng')
@@ -311,7 +311,7 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * ✅ 좌표 유효성 검증 (위도: -90~90, 경도: -180~180)
+     *  좌표 유효성 검증 (위도: -90~90, 경도: -180~180)
      * @param {number} lat - 위도
      * @param {number} lng - 경도
      * @returns {boolean} 유효성 여부
@@ -328,7 +328,7 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * 🔄 도를 라디안으로 변환 (삼각함수 계산용)
+     *  도를 라디안으로 변환 (삼각함수 계산용)
      * @param {number} degrees - 도 단위 각도
      * @returns {number} 라디안 단위 각도
      */
@@ -365,46 +365,46 @@ export function useDistanceCalculator() {
     }
 
     /**
-     * 🧹 에러 상태 초기화
+     *  에러 상태 초기화
      */
     const clearError = () => {
         calculationError.value = null
     }
 
     /**
-     * 🧹 마지막 계산 결과 초기화
+     *  마지막 계산 결과 초기화
      */
     const clearLastCalculation = () => {
         lastCalculation.value = null
     }
 
-    // 🔢 Computed 상태들
+    //  Computed 상태들
     const hasError = computed(() => !!calculationError.value)           // 에러 발생 여부
     const hasLastCalculation = computed(() => !!lastCalculation.value)  // 계산 결과 존재 여부
 
-    // 📤 외부에서 사용할 수 있도록 반환
+    //  외부에서 사용할 수 있도록 반환
     return {
-        // 🔄 반응형 상태
+        //  반응형 상태
         lastCalculation,        // 마지막 계산 결과 {from, to, distance, timestamp}
         calculationError,       // 계산 에러 메시지
         hasError,              // 에러 발생 여부 (computed)
         hasLastCalculation,    // 계산 결과 존재 여부 (computed)
 
-        // 🧮 기본 거리 계산 함수들
+        //  기본 거리 계산 함수들
         calculateDistance,                    // 두 좌표 간 정확한 거리 계산 (하버사인 공식)
         getDistanceFromCurrentLocation,       // 현재 위치에서 특정 지점까지 거리 계산
 
-        // 📏 거리 포맷팅
+        //  거리 포맷팅
         formatDistance,                       // 거리를 사용자 친화적 형태로 포맷 (1.5KM, 500M)
 
-        // 🚀 고급 기능들
+        //  고급 기능들
         findNearestLocation,                  // 여러 지점 중 가장 가까운 지점 찾기
         sortLocationsByDistance,              // 현재 위치 기준 거리순 정렬
 
-        // ⚡ 성능 최적화용
+        // 성능 최적화용
         calculateApproximateDistance,         // 빠른 근사 거리 계산 (정확도 낮음)
 
-        // 🛠️ 유틸리티 함수들
+        // ️ 유틸리티 함수들
         isValidCoordinates,                   // 좌표 유효성 검증
         toRadians,                           // 도 → 라디안 변환
         clearError,                          // 에러 초기화

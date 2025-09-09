@@ -4,11 +4,11 @@
 import { ref } from 'vue'
 
 export function useCurrentLocationMarker() {
-    // 🔄 반응형 상태들
+    //  반응형 상태들
     const currentLocationMarker = ref(null)  // 현재 위치 마커 객체 (네이버 지도 Marker)
     const accuracyCircle = ref(null)         // 위치 정확도 표시 원 객체 (네이버 지도 Circle)
 
-    // 🎯 현재 위치 마커 생성 및 지도에 추가
+    //  현재 위치 마커 생성 및 지도에 추가
     const addCurrentLocationMarker = (map, position) => {
         if (!map || !position) {
             console.error('지도 또는 위치 정보가 없습니다')
@@ -42,7 +42,7 @@ export function useCurrentLocationMarker() {
         }
     }
 
-    // 🎨 마커 HTML 콘텐츠 생성 (파란색 원형 점 + 펄스 애니메이션)
+    //  마커 HTML 콘텐츠 생성 (파란색 원형 점 + 펄스 애니메이션)
     const createMarkerContent = () => {
         return `
             <div class="current-location-blue-dot">
@@ -109,7 +109,7 @@ export function useCurrentLocationMarker() {
         `
     }
 
-    // 🎯 위치 정확도 원 추가 (GPS 정확도 시각화)
+    //  위치 정확도 원 추가 (GPS 정확도 시각화)
     const addAccuracyCircle = (map, position) => {
         removeAccuracyCircle()  // 기존 원 제거
 
@@ -128,7 +128,7 @@ export function useCurrentLocationMarker() {
         })
     }
 
-    // 🧹 정확도 원 제거
+    //  정확도 원 제거
     const removeAccuracyCircle = () => {
         if (accuracyCircle.value) {
             accuracyCircle.value.setMap(null)  // 지도에서 제거
@@ -136,7 +136,7 @@ export function useCurrentLocationMarker() {
         }
     }
 
-    // 🧹 현재 위치 마커 완전 제거 (마커 + 정확도 원)
+    // 현재 위치 마커 완전 제거 (마커 + 정확도 원)
     const removeCurrentLocationMarker = () => {
         // 마커 제거
         if (currentLocationMarker.value) {
@@ -147,12 +147,12 @@ export function useCurrentLocationMarker() {
         removeAccuracyCircle()
     }
 
-    // ✅ 마커 존재 여부 확인
+    //  마커 존재 여부 확인
     const hasCurrentLocationMarker = () => {
         return currentLocationMarker.value !== null  // null이 아니면 존재함
     }
 
-    // 📤 외부에서 사용할 수 있도록 반환
+    //  외부에서 사용할 수 있도록 반환
     return {
         // 🔄 반응형 상태
         currentLocationMarker,     // 현재 위치 마커 객체 (네이버 Marker)

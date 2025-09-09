@@ -1,4 +1,4 @@
-<!-- src/components/ui/favorites/FavoriteButton.vue - 북마크 이미지 컴포넌트 -->
+<!-- src/components/ui/favorites/FavoriteButton.vue - 즐겨찾기 이미지 컴포넌트 -->
 <template>
   <div
       class="bookmark-container"
@@ -6,7 +6,7 @@
   >
     <img
         :src="isActive ? '/src/assets/images/bookmark-filled.png' : '/src/assets/images/bookmark.png'"
-        alt="북마크"
+        alt="즐겨찾기"
         class="bookmark-icon"
         :class="{ 'bookmark-active': isActive }"
     />

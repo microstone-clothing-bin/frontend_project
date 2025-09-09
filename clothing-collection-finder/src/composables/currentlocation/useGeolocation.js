@@ -6,11 +6,11 @@ import { useGpsCoordinates } from './coordinates/gpsCoordinates'
 import { useLocationPermission } from './coordinates/locationPermission'
 
 export function useGeolocation() {
-    // 🔧 내부 모듈들 가져오기
+    //  내부 모듈들 가져오기
     const gpsModule = useGpsCoordinates()
     const permissionModule = useLocationPermission()
 
-    // 🔄 기존 API와 동일한 반응형 상태들 (100% 호환성)
+    //  기존 API와 동일한 반응형 상태들 (100% 호환성)
 
     /**
      * 현재 좌표 (기존과 동일)
@@ -40,13 +40,13 @@ export function useGeolocation() {
      */
     const hasPermission = computed(() => permissionModule.hasPermission.value)
 
-    // 🔧 기존 상수들 (100% 호환성)
+    //  기존 상수들 (100% 호환성)
     const DEFAULT_LOCATION = permissionModule.DEFAULT_LOCATION
 
-    // 🔧 기존 함수들을 내부 모듈들로 연결 (API 100% 동일)
+    //  기존 함수들을 내부 모듈들로 연결 (API 100% 동일)
 
     /**
-     * 📍 GPS로 현재 위치 가져오기 + 권한 처리 (기존과 동일한 API)
+     *  GPS로 현재 위치 가져오기 + 권한 처리 (기존과 동일한 API)
      * @param {Object} options - 위치 옵션 {enableHighAccuracy, timeout, maximumAge}
      * @returns {Promise<Object>} 좌표 정보 {lat, lng, accuracy, timestamp, isDefault}
      */
@@ -109,7 +109,7 @@ export function useGeolocation() {
     }
 
     /**
-     * 🏢 서울시청 기본 위치 설정 및 반환 (기존과 동일한 API)
+     *  서울시청 기본 위치 설정 및 반환 (기존과 동일한 API)
      * @returns {Object} 서울시청 좌표 {lat: 37.5665, lng: 126.9780, isDefault: true}
      */
     const getDefaultLocation = () => {
@@ -130,7 +130,7 @@ export function useGeolocation() {
     }
 
     /**
-     * ✅ 실제 GPS 위치인지 기본값인지 구분 (기존과 동일한 API)
+     *  실제 GPS 위치인지 기본값인지 구분 (기존과 동일한 API)
      * @returns {boolean} 실제 GPS 위치 여부 (true: GPS, false: 서울시청 기본값)
      */
     const isRealLocation = () => {
@@ -139,7 +139,7 @@ export function useGeolocation() {
     }
 
     /**
-     * 🧹 에러 메시지 초기화 (기존과 동일한 API)
+     *  에러 메시지 초기화 (기존과 동일한 API)
      */
     const clearError = () => {
         permissionModule.error.value = null
@@ -148,7 +148,7 @@ export function useGeolocation() {
     }
 
     /**
-     * 🧹 좌표 및 권한 상태 모두 초기화 (기존과 동일한 API)
+     *  좌표 및 권한 상태 모두 초기화 (기존과 동일한 API)
      */
     const clearCoordinates = () => {
         gpsModule.clearCurrentCoords()
@@ -157,7 +157,7 @@ export function useGeolocation() {
     }
 
     /**
-     * 🔐 브라우저 위치 권한 상태 확인 (기존과 동일한 API)
+     *  브라우저 위치 권한 상태 확인 (기존과 동일한 API)
      * @returns {Promise<string>} 권한 상태 ('granted', 'denied', 'prompt', 'unsupported')
      */
     const checkPermission = async () => {
@@ -169,10 +169,10 @@ export function useGeolocation() {
         }
     }
 
-    // 🆕 추가 유틸리티 함수들 (기존 코드 호환성 유지하면서 확장)
+    //  추가 유틸리티 함수들 (기존 코드 호환성 유지하면서 확장)
 
     /**
-     * 📊 현재 위치 관련 모든 상태 정보 반환 (새로 추가된 유틸리티)
+     *  현재 위치 관련 모든 상태 정보 반환 (새로 추가된 유틸리티)
      * @returns {Object} 전체 상태 정보 객체
      */
     const getLocationStatus = () => {
@@ -188,7 +188,7 @@ export function useGeolocation() {
     }
 
     /**
-     * 🔧 디버깅용 전체 상태 콘솔 출력 (새로 추가된 유틸리티)
+     *  디버깅용 전체 상태 콘솔 출력 (새로 추가된 유틸리티)
      */
     const logCurrentState = () => {
         console.log('[useGeolocation] 전체 상태:', getLocationStatus())
@@ -196,18 +196,18 @@ export function useGeolocation() {
         gpsModule.logCurrentState()
     }
 
-    // 🔄 기존 API 100% 동일하게 반환 (하위 호환성 완벽 보장)
+    //  기존 API 100% 동일하게 반환 (하위 호환성 완벽 보장)
     return {
-        // 🔄 기존 반응형 상태들 (API 변경 없음)
+        //  기존 반응형 상태들 (API 변경 없음)
         coordinates,        // 현재 위치 좌표 (reactive)
         isLoading,         // 위치 가져오는 중 상태 (reactive)
         error,             // 에러 메시지 (reactive)
         hasPermission,     // 위치 권한 상태 (reactive)
 
-        // 🔄 기존 상수들 (API 변경 없음)
+        //  기존 상수들 (API 변경 없음)
         DEFAULT_LOCATION,  // 서울시청 기본 좌표 상수
 
-        // 🔄 기존 함수들 (API 변경 없음)
+        // 기존 함수들 (API 변경 없음)
         getCurrentPosition,   // GPS + 권한 처리로 현재 위치 가져오기
         getDefaultLocation,   // 서울시청 기본 위치 설정
         isRealLocation,      // GPS vs 기본값 구분
@@ -215,11 +215,11 @@ export function useGeolocation() {
         clearCoordinates,    // 좌표 및 권한 상태 초기화
         checkPermission,     // 브라우저 위치 권한 상태 확인
 
-        // 🆕 추가 유틸리티 (기존 코드에 영향 없음)
+        //  추가 유틸리티 (기존 코드에 영향 없음)
         getLocationStatus,   // 전체 상태 정보 반환
         logCurrentState,     // 디버깅용 상태 로그 출력
 
-        // 🔧 내부 모듈 접근 (고급 사용자용)
+        //  내부 모듈 접근 (고급 사용자용)
         _gpsModule: gpsModule,           // GPS 좌표 모듈 직접 접근
         _permissionModule: permissionModule  // 권한 관리 모듈 직접 접근
     }

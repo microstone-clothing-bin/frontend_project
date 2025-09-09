@@ -75,11 +75,11 @@ export function extractRegion(address, options = { includeDistrict: false }) {
         }
 
         // 결과가 없으면 기본값 반환
-        return region || '알 수 없는 지역'
+        return region || '기타 지역'
 
     } catch (error) {
         console.error('지역 추출 중 오류:', error)
-        return '알 수 없는 지역'
+        return '기타 지역'
     }
 }
 

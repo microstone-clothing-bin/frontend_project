@@ -262,10 +262,10 @@ export default {
         nickname: '',
         email: '',
         agreeAll: false,           // 전체 동의
-        agreeTerms: false,
+        agreeTerms: false,         // 회원가입 이용약관 동의
         agreePrivacy: false,       //  개인정보 동의 추가
         agreeLocation: false,      // 위치기반 서비스 동의 추가
-        agreeAge: false,           // 🆕 만 14세 이상 동의 추가
+        agreeAge: false,           //  만 14세 이상 동의 추가
       },
       showPassword: false,        // 비밀번호 보이기/숨기기 상태
       showPasswordConfirm: false

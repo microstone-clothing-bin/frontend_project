@@ -136,7 +136,7 @@ export default {
       // 배열 형태로 변환하고 정렬
       const groupedArray = convertGroupsToArray(grouped)
 
-      console.log('🏘️ 지역별 그룹화 결과:', groupedArray)
+      console.log(' 지역별 그룹화 결과:', groupedArray)
 
       return groupedArray
     })
@@ -145,12 +145,12 @@ export default {
     const calculateDistance = (bin) => {
       try {
         if (!geoCoordinates.value) {
-          console.warn('⚠️ geoCoordinates가 없습니다.')
+          console.warn(' geoCoordinates가 없습니다.')
           return '위치 요청 중'
         }
 
         if (!bin.latitude || !bin.longitude) {
-          console.warn('⚠️ 의류수거함 좌표 정보 없음:', bin)
+          console.warn(' 의류수거함 좌표 정보 없음:', bin)
           return '좌표 정보 없음'
         }
 
@@ -173,7 +173,7 @@ export default {
         })
 
       } catch (error) {
-        console.error('❌ 거리 계산 중 오류:', error)
+        console.error(' 거리 계산 중 오류:', error)
         return '계산 오류'
       }
     }
@@ -186,7 +186,7 @@ export default {
 
     // 컴포넌트 마운트 시 데이터 로드
     onMounted(async () => {
-      console.log('🎯 FavoritesView 로드 시작')
+      console.log(' FavoritesView 로드 시작')
 
       // 위치 정보 먼저 가져오기 (이 부분 추가 필요!)
       await getGeoPosition()
@@ -196,9 +196,9 @@ export default {
         await clotheBinStore.fetchClothingBins()
       }
 
-      console.log('📋 즐겨찾기 개수:', favoriteCount.value)
-      console.log('📦 즐겨찾기 데이터:', favoriteClothingBins.value)
-      console.log('📍 현재 위치:', geoCoordinates.value)
+      console.log(' 즐겨찾기 개수:', favoriteCount.value)
+      console.log(' 즐겨찾기 데이터:', favoriteClothingBins.value)
+      console.log(' 현재 위치:', geoCoordinates.value)
     })
 
     return {
@@ -243,11 +243,6 @@ export default {
   color: #666;
 }
 
-.empty-icon {
-  font-size: 48px;
-  margin-bottom: 20px;
-}
-
 .empty-favorites h3 {
   margin: 20px 0 10px 0;
   color: #333;
@@ -260,8 +255,8 @@ export default {
 .favorites-page-container {
   height: calc(100vh - 80px);  /* 현재 설정 */
   overflow-y: auto;
-  padding-top: 20px;           /* 🆕 상단 여백 추가 */
-  padding-bottom: 20px;        /* 🆕 하단 여백 추가 */
-  margin-top: 80px;            /* 🆕 네비게이션 높이만큼 밀어내기 */
+  padding-top: 20px;           /*  상단 여백 추가 */
+  padding-bottom: 20px;        /*  하단 여백 추가 */
+  margin-top: 80px;            /*  네비게이션 높이만큼 밀어내기 */
 }
 </style>

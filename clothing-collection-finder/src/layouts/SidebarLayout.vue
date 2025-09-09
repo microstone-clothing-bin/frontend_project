@@ -55,7 +55,7 @@ export default {
       type: Boolean,
       default: false
     },
-    sidebarCollapsed: {        // 이 부분 추가
+    sidebarCollapsed: {
       type: Boolean,
       default: false
     }
@@ -72,9 +72,9 @@ export default {
     const savedDetailPanelState = ref({
       wasOpen: false,
       binData: null
-    }) // 🆕 이전 정보패널 상태 저장
+    }) //  이전 정보패널 상태 저장
 
-    // 🆕 전체 토글 핸들러
+    //  전체 토글 핸들러
     const handleFullToggle = async () => {
       if (!isCollapsed.value) {
         // 열린 상태 → 접기
@@ -121,7 +121,7 @@ export default {
 
     return {
       isCollapsed,
-      handleFullToggle,  // 🆕 전체 토글 핸들러
+      handleFullToggle,  //  전체 토글 핸들러
       toggleSidebar,
       handleSidebarToggle
     }

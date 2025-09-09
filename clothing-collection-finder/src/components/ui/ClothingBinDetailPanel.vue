@@ -108,7 +108,7 @@ const calculateDistance = (bin) => {
       shortUnit: true
     })
   } catch (error) {
-    console.error('❌ 거리 계산 중 오류:', error)
+    console.error(' 거리 계산 중 오류:', error)
     return '계산 오류'
   }
 }
