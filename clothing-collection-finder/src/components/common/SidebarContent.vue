@@ -253,6 +253,8 @@ export default {
       console.log(' SidebarContent 초기 로드 시작')
       await getGeoPosition()
       await clotheBinStore.fetchClothingBins()
+
+
       console.log(' 로드된 데이터 개수:', allBins.value.length)
       console.log(' 표시할 데이터:', first2Bins.value)
       console.log(' 초기 위치 설정 완료:', geoCoordinates.value)

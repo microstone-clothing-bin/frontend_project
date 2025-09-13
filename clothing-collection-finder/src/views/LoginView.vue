@@ -32,9 +32,9 @@
           </button>
         </div>
         <div class="auth-links">
-          <a href="#" class="auth-link">회원가입</a>
-          <a href="#" class="auth-link">아이디 찾기</a>
-          <a href="#" class="auth-link">비밀번호 찾기</a>
+          <a @click="goToSignup" class="auth-link">회원가입</a>
+          <a @click="goToFindId" class="auth-link">아이디 찾기</a>
+          <a @click="goToFindPassword" class="auth-link">비밀번호 찾기</a>
         </div>
       </div>
     </div>
@@ -70,9 +70,20 @@ export default {
         username: this.username,
         password: this.password
       })
+      // 홈페이지로 이동
+      this.$router.push('/');
     },
-    togglePassword() {          // ← 이 함수 추가!
+    togglePassword() {
       this.showPassword = !this.showPassword
+    },
+    goToSignup() {
+      this.$router.push('/signup');
+    },
+    goToFindId() {
+      this.$router.push('/find-id');
+    },
+    goToFindPassword() {
+      this.$router.push('/find-password');
     }
   }
 }

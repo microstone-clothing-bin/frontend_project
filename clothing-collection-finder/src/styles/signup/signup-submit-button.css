@@ -1,0 +1,38 @@
+/* 가입하기 버튼 컨테이너 */
+.signup-submit-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+/* 가입하기 버튼 */
+.signup-submit-btn {
+    width: 901px;
+    height: 65px;
+    background-image: url('/src/assets/images/signup-terms-button.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 버튼 텍스트 */
+.signup-btn-text {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    pointer-events: none;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 호버 효과 */
+.signup-submit-btn:hover {
+    opacity: 0.9;
+}

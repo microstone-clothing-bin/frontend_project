@@ -1,7 +1,7 @@
 // src/stores/favoritesStore.js - 즐겨찾기 상태 관리 스토어
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
+// 현재 localStorage 기반으로 만들어져 있음 나중에 백엔드 연결하면 api기반으로 수정
 export const useFavoritesStore = defineStore('favorites', () => {
     // 상태 정의
     const favoriteIds = ref(new Set())  // 즐겨찾기 ID들을 Set으로 관리 (중복 방지, 빠른 검색)

@@ -52,6 +52,26 @@
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
+/* 성공 메시지 - 기본 스타일 복사 + 색상 변경 */
+.userid-success-message {
+    font-size: 12px;
+    color: #15A947;
+    margin-top: 1px;
+    margin-right: 165px;
+    text-align: left;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 에러 메시지 - 기본 스타일 복사 + 색상 변경 */
+.userid-error-message {
+    font-size: 12px;
+    color: #F26464;
+    margin-top: 1px;
+    margin-right: 150px;
+    text-align: left;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
 /* 중복 확인 버튼 */
 .duplicate-check-btn {
     cursor: pointer;
@@ -81,4 +101,5 @@
     max-height: 60%;
     object-fit: contain;
     pointer-events: none;
+
 }

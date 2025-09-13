@@ -50,6 +50,7 @@
 │   │   ├── apiService.js           ←  기본 HTTP 요청 기능 백엔드랑 연결 기본 axios 설정
 │   │   ├── clothesBinService.js         ← 의류수거함 API 호출 서비스        
 │   │   └── geocodingService.js   ← 네이버 지도 Geocoding API  (신규 추가)
+│   │   └── authService.js ← 회원가입 api 연결 (신규 추가)
 │   ├── composables/                       Vue 3 Composition API 재사용 로직
 │   │   │	      └── currentlocation/                  ← 현재 위치 관련 모든 기능  (신규 추가)
 │   │   │	      │    │   └── coordinates/ ← 좌표 권한 관리 (신규 추가)
@@ -76,7 +77,8 @@
 │   │   └── useGeocoding.js            ← 지오코딩 관련 반응형 상태 관리 (신규 추가)
 │   ├── utils/  유틸리티용
 │   │   ├ markerClustering.js   ← 마커 클러스터링을 정의
-│   │   └ regionExtractor.js ← 지역 추출 및 그룹화 함수 (신규 추가)
+│   │   ├ regionExtractor.js ← 지역 추출 및 그룹화 함수 (신규 추가)
+│   │   └ validationUtils.js ←  회원가입 (신규 추가)
 │   ├── assets/                        이미지, 폰트, 아이콘 등 정적 자원  정적 파일용
 │   └── styles/                         CSS/SCSS 스타일 파일들
 │	  │ ├─── sidebar/       ← 사이드바 세부사항 css
@@ -86,7 +88,8 @@
 │ 	  │ │        ├── clothing-bin-image.css ← 정보패널 의류수거함 사진 css (신규 추가)
 │ 	  │ │        ├── clothing-bin-data.css ← 정보패널 의류수거함 데이터 글씨 css (신규 추가)
 │ 	  │ │        ├── distance-info.css ← 거리 정보 css (신규 추가)
-│ 	  │ │        └──favorite-divider.css ← 즐겨찾기 버튼, 구분선 css (신규 추가) 
+│ 	  │ │        ├── favorite-divider.css ← 즐겨찾기 버튼, 구분선 css (신규 추가) 
+│ 	  │ │        └── review-section.css ← 리뷰 css (신규추가)
 │ 	  │ ├─── favorites/ ← 즐겨찾기 css  (신규 추가)
 │ 	  │ │          ├── favorites-layout.css ← 전체 레이아웃 (신규 추가)
 │ 	  │ │          ├── favorites-header.css ← 헤더 스타일 (신규 추가)
@@ -110,6 +113,7 @@
 │ 	  │ │            ├── signup-terms-location.css ← 위치기반 서비스 css (신규추가)
 │ 	  │ │            ├── signup-terms-privacy.css ← 개인정보 약관 css (신규추가)
 │ 	  │ │            ├── signup-terms-age.css ← 만 14세 이상 약관 css (신규추가)
+│ 	  │ │            ├── signup-submit-button.css ← 가입버튼 css (신규추가)
 │ 	  │ ├─── findid/ ← 아이디 찾기 css (신규추가) 
 │ 	  │ │            ├── findid-layout.css     ← 전체 레이아웃 (신규 추가)
 │ 	  │ │            ├── findid-nickname.css     ← 닉네임 css (신규 추가)

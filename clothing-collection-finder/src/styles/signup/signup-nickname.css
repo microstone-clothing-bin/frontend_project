@@ -4,11 +4,38 @@
     margin-top: 3rem;
 }
 
+/* 닉네임 메시지 영역 - 고정 높이로 레이아웃 안정화 */
+.nickname-message-area {
+    height: 2px; /* 메시지 한 줄 높이만큼 고정 */
+    margin-top: 1px;
+    margin-bottom: 10px;
+}
+
+/* 닉네임 성공 메시지 */
+.nickname-success-message {
+    font-size: 12px;
+    color: #15A947;
+    margin-top: 1px;
+    margin-right: 165px;
+    text-align: left;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 닉네임 에러 메시지 */
+.nickname-error-message {
+    font-size: 12px;
+    color: #F26464;
+    margin-top: 1px;
+    margin-right: 150px;
+    text-align: left;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+/* 중복 버튼 */
 .nickname-duplicate-btn {
     cursor: pointer;
     transition: transform 0.2s ease;
     margin-left: 1060px;
-    margin-top: -66px;      /* 아이디 버튼과 같은 위치 */
+    margin-top: -78px;      /* 아이디 버튼과 같은 위치 */
     position: relative;
     display: inline-block;
 }

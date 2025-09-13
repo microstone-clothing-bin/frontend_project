@@ -54,7 +54,7 @@ export function useCurrentLocationMove() {
         moveToCurrentLocation(map, position, {
             zoomLevel,              // 원하는 줌 레벨
             animate: true,          // 애니메이션 활성화
-            duration: 2500          // 긴 애니메이션 (2.5초)
+            duration: 1000          // 긴 애니메이션 (2.5초)
         })
     }
 

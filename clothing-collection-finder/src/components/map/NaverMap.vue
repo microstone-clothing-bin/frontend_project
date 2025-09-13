@@ -14,26 +14,30 @@
     <!-- 지도 -->
     <div :id="mapContainerId" class="map"></div>
 
-    <!--  지도 확대/축소 버튼들 추가 -->
-    <MapZoomInButton
-        :map="map"
-        :current-zoom="currentZoom"
-        :max-zoom="21"
-        @zoom-changed="handleZoomChanged"
-    />
+    <!-- 지도 컨트롤 버튼들을 하나의 컨테이너로 묶기 -->
+    <div class="map-controls-container">
+      <!-- 줌 컨트롤 그룹 -->
+      <div class="zoom-controls-group">
+        <MapZoomInButton
+            :map="map"
+            :current-zoom="currentZoom"
+            :max-zoom="21"
+            @zoom-changed="handleZoomChanged"
+        />
+        <MapZoomOutButton
+            :map="map"
+            :current-zoom="currentZoom"
+            :min-zoom="6"
+            @zoom-changed="handleZoomChanged"
+        />
+      </div>
 
-    <MapZoomOutButton
-        :map="map"
-        :current-zoom="currentZoom"
-        :min-zoom="6"
-        @zoom-changed="handleZoomChanged"
-    />
-
-    <!--  현재 위치 버튼 추가 -->
-    <CurrentLocationButton
-        @location-success="currentLocationHandlers.handleLocationSuccess"
-        @location-error="currentLocationHandlers.handleLocationError"
-    />
+      <!-- 현재 위치 버튼 -->
+      <CurrentLocationButton
+          @location-success="currentLocationHandlers.handleLocationSuccess"
+          @location-error="currentLocationHandlers.handleLocationError"
+      />
+    </div>
   </div>
 </template>
 
@@ -116,7 +120,6 @@ const currentLocationHandlers = useNaverMapCurrentLocation(
 
 //  줌 변경 핸들러 추가
 const handleZoomChanged = (zoomInfo) => {
-  console.log('줌 변경:', zoomInfo)
   currentZoom.value = zoomInfo.newZoom
 }
 
@@ -152,7 +155,6 @@ onMounted(async () => {
       // 줌 변경 이벤트 리스너 추가
       naver.maps.Event.addListener(map.value, 'zoom_changed', () => {
         currentZoom.value = map.value.getZoom()
-        console.log('지도 줌 변경됨:', currentZoom.value)
       })
     }
 
@@ -209,5 +211,33 @@ defineExpose({
 
 .error {
   color: #6029b7;
+}
+
+/* 지도 컨트롤 버튼들 컨테이너 */
+.map-controls-container {
+  position: absolute;
+  right: 20px;
+  bottom: 50px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+/* 줌 버튼들 그룹 */
+.zoom-controls-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .map-controls-container {
+    right: 15px;
+    bottom: 15px;
+    gap: 10px;
+  }
 }
 </style>

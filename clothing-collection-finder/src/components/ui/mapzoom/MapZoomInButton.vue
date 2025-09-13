@@ -45,7 +45,6 @@ const isMaxZoom = computed(() => props.currentZoom >= props.maxZoom)
 // 확대 버튼 클릭 핸들러
 const handleZoomIn = () => {
   if (!props.map || isMaxZoom.value) {
-    console.warn('지도 확대 불가능 - 최대 줌 레벨 도달')
     return
   }
 
@@ -53,7 +52,6 @@ const handleZoomIn = () => {
     const newZoom = Math.min(props.currentZoom + 1, props.maxZoom)
     props.map.setZoom(newZoom, true) // 애니메이션 적용
 
-    console.log(`지도 확대: ${props.currentZoom} → ${newZoom}`)
 
     // 부모 컴포넌트에 줌 변경 알림
     emit('zoom-changed', {
@@ -69,9 +67,7 @@ const handleZoomIn = () => {
 
 <style scoped>
 .map-zoom-in-btn {
-  position: absolute;
-  top: 645px;
-  right: 20px;
+  position: relative; /* 추가 */
   z-index: 1000;
   width: 48px;
   height: 48px;
@@ -139,8 +135,6 @@ const handleZoomIn = () => {
   .map-zoom-in-btn {
     width: 36px;
     height: 36px;
-    top: 15px;
-    right: 15px;
   }
 
   .btn-plus-icon {
@@ -152,8 +146,7 @@ const handleZoomIn = () => {
 /* 태블릿 대응 */
 @media (max-width: 1024px) {
   .map-zoom-in-btn {
-    top: 18px;
-    right: 18px;
+
   }
 }
 

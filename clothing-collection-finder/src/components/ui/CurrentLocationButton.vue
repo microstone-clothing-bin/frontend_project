@@ -180,9 +180,7 @@ const handleUseDefaultLocation = () => {
 
 <style scoped>
 .current-location-btn {
-  position: absolute;
-  bottom: 140px;
-  right: 20px;
+  position: relative; /* 추가 */
   z-index: 1000;
   width: 48px;
   height: 48px;
@@ -280,21 +278,12 @@ const handleUseDefaultLocation = () => {
   .current-location-btn {
     width: 44px;
     height: 44px;
-    bottom: 70px;
-    right: 15px;
+
   }
 
   .btn-target-icon {
     width: 22px;
     height: 22px;
-  }
-}
-
-/* 태블릿 대응 */
-@media (max-width: 1024px) {
-  .current-location-btn {
-    bottom: 75px;
-    right: 15px;
   }
 }
 

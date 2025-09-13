@@ -46,6 +46,71 @@
         <div v-else class="no-data">
           <p class="placeholder-text">정보가 여기에 표시됩니다</p>
         </div>
+
+        <!-- 리뷰 탭 섹션 -->
+        <div class="review-section">
+          <!-- 탭 버튼 -->
+          <div class="review-tabs">
+            <button
+                class="review-tab"
+                :class="{ active: activeTab === 'view' }"
+                @click="setActiveTab('view')"
+            >
+              리뷰 보기
+            </button>
+            <button
+                class="review-tab"
+                :class="{ active: activeTab === 'write' }"
+                @click="setActiveTab('write')"
+            >
+              리뷰 쓰기
+            </button>
+          </div>
+
+          <!-- 탭 내용 -->
+          <div class="review-content">
+            <!-- 리뷰 보기 내용 -->
+            <div v-if="activeTab === 'view'" class="review-view">
+              <p>리뷰 목록 내용</p>
+            </div>
+
+            <!-- 리뷰 쓰기 내용 -->
+            <div v-if="activeTab === 'write'" class="review-write">
+              <div class="user-profile">
+                <img src="@/assets/images/clothing-bin-group.png" alt="사용자 프로필" class="profile-image">
+                <span class="username">user nickname 1</span>
+              </div>
+
+              <!-- 댓글 입력창 -->
+              <div class="comment-input-wrapper">
+    <textarea
+        v-model="commentText"
+        placeholder="이 의류수거함에 대한 의견을 댓글로 남겨주세요."
+        class="comment-input-field"
+    ></textarea>
+              </div>
+
+              <!-- 하단 버튼 영역 -->
+              <div class="comment-actions">
+              <!-- 카메라 버튼 -->
+              <div class="camera-button-container">
+                <button class="camera-btn" @click="openCamera">
+                  <div class="camera-button-bg">
+                    <img src="@/assets/images/camera-icon.png" alt="카메라" class="camera-icon">
+                  </div>
+                </button>
+              </div>
+
+              <!-- 등록 버튼 -->
+              <button class="submit-btn" @click="submitComment">
+                <img src="@/assets/images/comment-button.png" alt="등록" class="submit-button-bg">
+                <span class="submit-text">등록</span>
+              </button>
+            </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -69,9 +134,25 @@ import { useGeolocation } from '@/composables/currentlocation/useGeolocation'
 import FavoriteButton from '@/components/ui/favorites/FavoriteButton.vue'
 import { useFavoritesStore } from '@/stores/favoritesStore'
 import '@/styles/detailpanel/favorite-divider.css'
+import '@/styles/detailpanel/review-section.css'
+import { ref } from 'vue'
+
 
 const favoritesStore = useFavoritesStore()
 const { isFavorite, toggleFavorite } = favoritesStore
+const commentText = ref('')
+
+const openCamera = () => {
+  console.log('카메라 버튼 클릭')
+  // 카메라 기능 구현
+}
+
+const submitComment = () => {
+  if (commentText.value.trim()) {
+    console.log('댓글 등록:', commentText.value)
+    commentText.value = ''
+  }
+}
 
 // 거리 계산 composables
 const {
@@ -82,6 +163,14 @@ const {
 const {
   coordinates: geoCoordinates
 } = useGeolocation()
+
+// 활성 탭 상태 (기본값: 리뷰 보기)
+const activeTab = ref('view')
+
+// 탭 전환 함수
+const setActiveTab = (tab) => {
+  activeTab.value = tab
+}
 
 // 거리 계산 함수
 const calculateDistance = (bin) => {
@@ -166,40 +255,5 @@ const props = defineProps({
   }
 }
 
-/* 패널 내용 */
-.panel-content {
-  padding: 0;
-  height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  position: relative;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-  .detail-panel {
-    width: calc(100% - 40px);
-    height: 60vh;
-    top: 40vh;
-    left: 20px !important;
-    border-radius: 20px 20px 0 0;
-    animation: slideUp 0.3s ease-out;
-  }
-
-  @keyframes slideUp {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
-
-  .panel-content {
-    height: 100%;
-  }
-}
 
 </style>

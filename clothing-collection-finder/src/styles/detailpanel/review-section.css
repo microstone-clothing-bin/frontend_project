@@ -1,0 +1,187 @@
+/* 패널 내용 */
+.panel-content {
+    padding: 0;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    position: relative;
+
+}
+
+/* 탭 헤더 */
+.review-tabs {
+    display: flex;
+    margin-top: 40px;
+    padding: 0 10px; /* 양쪽에 패딩 추가 */
+}
+
+/* 탭 버튼 기본 스타일 */
+.review-tab {
+    flex: 1;
+    border: none;
+    cursor: pointer;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width:199px;
+    height: 42px;
+    transition: all 0.2s ease;
+    color: #1A1A1A;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    /* 기본 상태 - 비활성 (회색) */
+    background-image: url('@/assets/images/review-tab-inactive.png');
+}
+
+/* 활성 상태 - 흰색 */
+.review-tab.active {
+    background-image: url('@/assets/images/review-tab-active.png');
+    color: #1A1A1A;
+    font-weight: 500;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 탭 내용 */
+.review-content {
+    background: white;
+    min-height: 300px;
+    padding: 16px;
+}
+
+/* 프로필 섹션 */
+.user-profile {
+    display: flex;
+    align-items: center;
+
+}
+
+/* 프로필 이미지 */
+.profile-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* 원형으로 만들기 */
+    border: 2px solid #ddd;
+    margin-right: 12px;
+    object-fit: cover; /* 이미지 비율 유지하며 크기 맞추기 */
+}
+
+/* 사용자명 */
+.username {
+    font-size: 18px;
+    font-weight: 500;
+    color:#1A1A1A;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 댓글 입력창 래퍼 */
+.comment-input-wrapper {
+    position: relative;
+    margin-top: 10px;
+
+}
+
+/* 댓글 입력 필드 */
+.comment-input-field {
+    width: 100%;
+    min-height: 150px;
+    padding: 14px;
+    border: 1px solid #DCDCDC;
+    resize: none;
+    font-size: 14px;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 400;
+    background: #FFFFFF;
+    outline: none;
+    line-height: 1;
+}
+
+.comment-input-field:focus {
+    border-color: #DCDCDC;
+    background: white;
+}
+
+.comment-input-field::placeholder {
+    color: #DCDCDC;
+}
+
+/* 하단 액션 버튼들 */
+.comment-actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 150px;
+    padding: 0 16px;
+    margin-top: 10px;
+}
+
+
+/* 카메라 버튼 컨테이너 */
+.camera-button-container {
+    display: inline-block;
+    margin-right: 12px;
+}
+
+/* 카메라 버튼 */
+.camera-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+}
+
+/* 카메라 버튼 배경 */
+.camera-button-bg {
+    width: 65px;
+    height: 46px;
+    background-image: url('@/assets/images/camera-button.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 카메라 아이콘 */
+.camera-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+/* 등록 버튼 */
+.submit-btn {
+    position: relative;
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-button-bg {
+    width: 80px;
+    height: 46px;
+    object-fit: cover;
+}
+
+.submit-text {
+    position: absolute;
+    color: white;
+    font-size: 16px;
+    font-weight: 400;
+    pointer-events: none;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 호버 효과 */
+.camera-btn:hover .camera-button-bg,
+.submit-btn:hover {
+    opacity: 0.8;
+}

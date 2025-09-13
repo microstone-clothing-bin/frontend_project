@@ -45,7 +45,6 @@ const isMinZoom = computed(() => props.currentZoom <= props.minZoom)
 // 축소 버튼 클릭 핸들러
 const handleZoomOut = () => {
   if (!props.map || isMinZoom.value) {
-    console.warn('지도 축소 불가능 - 최소 줌 레벨 도달')
     return
   }
 
@@ -53,7 +52,6 @@ const handleZoomOut = () => {
     const newZoom = Math.max(props.currentZoom - 1, props.minZoom)
     props.map.setZoom(newZoom, true) // 애니메이션 적용
 
-    console.log(`지도 축소: ${props.currentZoom} → ${newZoom}`)
 
     // 부모 컴포넌트에 줌 변경 알림
     emit('zoom-changed', {
@@ -69,9 +67,8 @@ const handleZoomOut = () => {
 
 <style scoped>
 .map-zoom-out-btn {
-  position: absolute;
-  top: 697px;    /* 확대 버튼(20px) + 버튼 높이(40px) + 간격(10px) */
-  right: 20px;
+  position: relative;
+
   z-index: 1000;
   width: 48px;
   height: 48px;
@@ -139,8 +136,7 @@ const handleZoomOut = () => {
   .map-zoom-out-btn {
     width: 36px;
     height: 36px;
-    top: 61px;    /* 모바일에서 확대 버튼 아래 */
-    right: 15px;
+
   }
 
   .btn-minus-icon {
@@ -152,8 +148,7 @@ const handleZoomOut = () => {
 /* 태블릿 대응 */
 @media (max-width: 1024px) {
   .map-zoom-out-btn {
-    top: 68px;    /* 태블릿에서 확대 버튼 아래 */
-    right: 18px;
+
   }
 }
 

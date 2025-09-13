@@ -4,11 +4,8 @@
     justify-content: flex-end; /* 오른쪽 정렬 */
     margin-top: 10px; /* 위쪽 여백으로 간격 조정 */
     padding-right: 5px;
-}
-
-.favorite-section {
     position: relative;
-    top: 35px; /* 버튼만 아래로 */
+    top: 35px;
 }
 
 /* 구분선 */
@@ -17,4 +14,5 @@
     height: 1px;
     background-color: #e0e0e0;
     margin-top: -10px;
+    margin-bottom: -350px;
 }
