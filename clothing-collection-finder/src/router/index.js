@@ -16,6 +16,8 @@ import ResetPasswordView from '../views/ResetPasswordView.vue'
 import SignupTermsView from '../views/SignupTermsView.vue'
 import SignupPrivacyView from '../views/SignupPrivacyView.vue'
 import SignupLocationView from '../views/SignupLocationView.vue'
+import WritingView from "@/views/WritingView.vue";
+import PostView from "@/views/PostView.vue";
 
 const routes = [
     {
@@ -27,6 +29,16 @@ const routes = [
         path: '/share',
         name: 'share',
         component: ShareView
+    },
+    {
+        path: '/share-writing',
+        name: 'share-writing',
+        component: WritingView
+    },
+    {
+        path: '/share-post',
+        name: 'share-post',
+        component: PostView
     },
     {
       path: '/favorites',

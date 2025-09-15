@@ -1,0 +1,200 @@
+/* 작성된 나눔 글 컴포넌트 */
+
+.posting-page-wrapper {
+    width: 100vw;                   /* 1920px */
+    min-height: 100vh;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+.posting-frame {
+    margin-top: 4.17vw;             /* 80px */
+    height: calc(100vh - 4.17vw);   /* 100vh - 80px */
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* post-wrapper를 3열 grid(좌,간격,우)로 세팅 */
+.post-wrapper {
+    display: grid;
+    grid-template-columns: 34.27vw 3.07vw 1fr; /* 658px 59px 1fr */
+    height: 43.91vw;                /* 843px */
+    width: 73.18vw;                 /* 1406px */
+    margin-left: 13.44vw;           /* 258px */
+    margin-top: 4.74vw;             /* 91px */
+    background-color: #fff;
+    border-bottom: 0.05vw solid #dcdcdc; /* 1px */
+    column-gap: 0;
+}
+
+.post-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 34.27vw;             /* 658px */
+}
+
+.clothes-img {
+    width: 34.27vw;                 /* 658px */
+    height: 34.27vw;                /* 658px */
+    object-fit: cover;
+}
+
+.user-meta {
+    display: flex;
+    align-items: center;
+    margin-top: 1.46vw;             /* 28px */
+}
+
+.user-photo {
+    width: 3.13vw;                  /* 60px */
+    height: 3.13vw;                 /* 60px */
+    object-fit: cover;
+    margin-right: 1vw;              /* 19px */
+}
+.nickname {
+    color: #1a1a1a;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    font-size: 1.35vw;              /* 26px */
+    white-space: nowrap;
+}
+
+/* 우측 영역 */
+.post-right {
+    display: flex;
+    flex-direction: column;
+    gap: 0.80vw;                    /* 15px */
+}
+
+.post-title {
+    font-size: 2.08vw;              /* 40px */
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.post-timeline {
+    font-size: 0.94vw;              /* 18px */
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    color: #9e9e9e;
+}
+
+.post-content {
+    font-size: 1.04vw;              /* 20px */
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 500;
+    color: #1a1a1a;
+    line-height: 1.77vw;            /* 34px */
+    margin-top: 1.75vw;             /* 34px */
+}
+
+.location-row {
+    display: flex;
+    align-items: center;
+    gap: 0.42vw;                    /* 8px */
+    margin-top: 3.40vw;             /* 65px */
+}
+.fi-rs-marker-icon {
+    width: 1.88vw;                  /* 36px */
+    height: 1.88vw;                 /* 36px */
+    display: inline-block;
+}
+
+.post-location {
+    font-size: 1.35vw;              /* 26px */
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+}
+
+.map-wrapper {
+    position: relative;
+    width: 35.68vw;                     /* 685px */
+    height: 17.51vw;                    /* 336px */
+    border-radius: 0.50vw 0.50vw 0 0;   /* 10px 10px 0 0 */
+    margin-top: 0.61vw;                 /* 12px */
+    overflow: hidden;
+}
+
+.other-post-view {
+    margin-left: 13.44vw;           /* 258px */
+    margin-top: 4.06vw;             /* 78px */
+    color: #1a1a1a;
+    font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+    font-size: 1.46vw;              /* 28px */
+    font-weight: 600;
+    line-height: 1.98vw;            /* 38px */
+    white-space: nowrap;
+}
+
+.other-post-list {
+    display: flex;
+    flex-wrap: wrap;                /* 한 줄에 5개 초과 시 자동 줄바꿈 */
+    gap: 3.33vw 1.67vw;             /* 64px 32px */
+    margin-left: 13.44vw;           /* 258px */
+    margin-top: 1.67vw;             /* 32px */
+    padding-bottom: calc(3.13vw + env(safe-area-inset-bottom));     /* 60px */
+    width: calc(13.44vw * 5 + 1.67vw * 4);                          /* 카드 5개 + gap4개 너비 */
+    justify-content: flex-start;    /* 왼쪽부터 배치 */
+}
+
+.rectangle {
+    background-color: #fff;
+    border-radius: 1.04vw;          /* 20px */
+    box-sizing: border-box;
+    overflow: hidden;
+    width: 13.44vw;                 /* 258px */
+    height: 19.79vw;                /* 380px */
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0.13vw 0.42vw rgba(0,0,0,0.03);
+}
+
+.other-post-img {
+    width: 100%;
+    height: 13.44vw;                    /* 258px */
+    object-fit: cover;
+    border-radius: 1.04vw 1.04vw 0 0;   /* 20px 20px 0 0 */
+    display: block;
+}
+.other-post-title {
+    margin: 0.94vw 0.78vw 0 0.78vw;     /* 18px 15px 0 15px */
+    height: 1.41vw;                     /* 27px */
+    width: 11.88vw;                     /* 228px */
+    color: #1a1a1a;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 0.94vw;                  /* 18px */
+    font-weight: 600;
+    line-height: 1.09vw;                /* 21px */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.other-post-location {
+    margin: 0.68vw 0.78vw 0 0.78vw;     /* 13px 15px 0 15px */
+    height: 1.46vw;                     /* 28px */
+    width: 11.77vw;                     /* 226px */
+    color: #1a1a1a;
+    font-family: 'Pretendard', sans-serif;
+    font-style: normal;
+    font-size: 0.83vw;                  /* 16px */
+    font-weight: 500;
+    line-height: 0.99vw;                /* 19px */
+}
+.other-post-timeline {
+    margin: 0 0.78vw; /* 0 15px */
+    height: 0.94vw;                     /* 18px */
+    width: 11.77vw;                     /* 226px */
+    color: #9e9e9e;
+    font-family: 'Pretendard', sans-serif;
+    font-size: 0.73vw;                  /* 14px */
+    font-weight: 450;
+    line-height: 0.89vw;                /* 17px */
+}

@@ -4,8 +4,13 @@
 │   │   ├── common/ 공통 UI 컴포넌트
 │   │   │   ├── NavigationBar.vue        ← 상단 네비게이션 바 컴포넌트
 │   │   │   └── SidebarContent.vue       ← 사이드바 콘텐츠 컴포넌트
+│   │   ├── share/ ← 나눔 페이지 UI 컴포넌트
+│   │   │   ├── ShareContent.vue ← 나눔페이지 뷰
+│   │   │   ├── SharePost ← 작성된 나눔 글 페이지 뷰
+│   │   │   └── ShareWriting.vue ← 글쓰기 페이지 컴포넌트 뷰
 │   │   ├── map/ 지도 관련 컴포넌트
-│   │   │   └── NaverMap.vue             ← 네이버 지도 컴포넌트
+│   │   │   ├── NaverMap.vue             ← 네이버 지도 컴포넌트
+│   │   │   └── SmallMap.vue             ← 글쓰기 페이지 지도 컴포넌트
 │   │   └── ui/    기본 UI 요소들   
 │   │          │  ├── mapzoom/     지도 맵 축소 확대 버튼 vue   (신규 추가)
 │   │          │  │        ├─ MapZoomInButton.vue ← 지도 확대 버튼 vue  (신규 추가)
@@ -39,7 +44,9 @@
 │   │   ├── ResetPasswordView.vue ← 비밀번호 재설정 페이지 (신규추가)
 │   │   ├── SignupPrivacyView.vue ← 개인정보 수집 및 이용 동의서 페이지 (신규추가)
 │   │   ├── SignupTermsView ← 회원가입 이용약관 페이지 (신규추가)
-│   │   └── SignupLocationView.vue ← 위치정보 서비스 이용약관 페이지 (신규추가)
+│   │   ├── SignupLocationView.vue ← 위치정보 서비스 이용약관 페이지 (신규추가)
+│   │   ├── PostView.vue ← 작성된 나눔 글 페이지
+│   │   └── WritingView ← 글쓰기 페이지 
 │   ├── router/  Vue Router 라우팅 설정 및 경로 정의
 │   │   └── index.js                     ← 라우터 설정
 │   ├── stores/    상태관리용
@@ -178,7 +185,10 @@
 │       ├── global.css                   ← 전역 스타일 + CSS import 관리
 │       ├── components.css               ← 레이아웃, 지도 컴포넌트 스타일
 │       ├── navigation.css               ← 네비게이션 바 전용 스타일
-│       └── sidebar.css                  ← 사이드바 전용 스타일 (통합버전)
+│       ├── sidebar.css                  ← 사이드바 전용 스타일 (통합버전)
+│       ├── post.css                      ← 작성된 나눔 글 컴포넌트
+│       ├── share.css                     ← 나눔페이지 컴포넌트
+│       └── shareWriting.css           ← 글쓰기 페이지 컴포넌트
 ├── App.vue                              ← 메인 앱 컴포넌트
 └── .env                                 ← 네이버 지도 API 키  .env 파일 네이버지도 키 변수설정 VITE_NAVER_MAP_CLIENT_ID
 

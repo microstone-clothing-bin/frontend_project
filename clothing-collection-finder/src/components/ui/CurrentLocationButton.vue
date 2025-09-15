@@ -194,6 +194,8 @@ const handleUseDefaultLocation = () => {
   transition: all 0.2s ease;
   user-select: none;
   padding: 0;
+  margin-top: 17px;
+  left: 0px;
 }
 
 /* 버튼 배경 이미지 */

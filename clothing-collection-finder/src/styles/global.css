@@ -2,6 +2,9 @@
 @import './components.css';
 @import './navigation.css';
 @import './sidebar.css';
+@import './share.css';
+@import './shareWriting.css';
+@import './post.css';
 
 
 * {
