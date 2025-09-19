@@ -2,30 +2,58 @@
 .mypage-logout-button {
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin-top: 3rem;
-    margin-right: 300px;
+    margin-top: 3.13vw;             /* 3rem → 60px → 3.13vw */
+    margin-right: 15.63vw;          /* 300px */
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 176px;
-    height: 65px;
+    width: 9.17vw;                  /* 176px */
+    height: 3.39vw;                 /* 65px */
     background-image: url('/src/assets/images/mypage-logout.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-mypage-logout-button:hover {
+.mypage-logout-button:hover {
     transform: scale(1.05);
 }
 
 .mypage-btn-logout {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-weight: 500;
     color: #FFFFFF;
     text-align: center;
     position: relative;
     z-index: 1;
+}
+
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+    .mypage-logout-button {
+        width: 11vw;
+        height: 4vw;
+        margin-right: 18vw;
+        margin-top: 3.8vw;
+    }
+
+    .mypage-btn-logout {
+        font-size: 1.1vw;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 (4K 등) */
+@media (min-width: 2560px) {
+    .mypage-logout-button {
+        width: 176px;               /* 최대 크기 제한 */
+        height: 65px;
+        margin-right: 300px;
+        margin-top: 60px;
+    }
+
+    .mypage-btn-logout {
+        font-size: 20px;           /* 최대 크기 제한 */
+    }
 }

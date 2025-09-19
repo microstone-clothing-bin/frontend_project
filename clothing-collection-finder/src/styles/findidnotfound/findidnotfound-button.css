@@ -1,14 +1,14 @@
-/* 로그인 돌아가기 버튼 */
+/* 로그인 돌아가기 버튼 - 화면 크기에 따라 자연스럽게 변화 */
 .find-id-back-button {
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin-top: 20rem;
+    margin-top: 22vw;               /* 화면 크기에 비례 */
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 899px;
-    height: 65px;
+    width: clamp(300px, 44.82vw, 899px);  /* 최소 300px, 최대 899px */
+    height: clamp(50px, 3.39vw, 65px);    /* 최소 50px, 최대 65px */
     background-image: url('/src/assets/images/login-backbutton.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -21,7 +21,7 @@
 
 .find-id-back-btn-text {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-    font-size: 18px;
+    font-size: clamp(14px, 0.94vw, 20px);  /* 최소 14px, 최대 20px */
     font-weight: 600;
     color: #FFFFFF;
     text-align: center;
@@ -29,25 +29,27 @@
     z-index: 1;
 }
 
-/* 반응형 - 백 버튼 */
-@media (max-width: 768px) {
+/* 추가 세밀한 반응형 */
+@media (max-width: 1200px) {
     .find-id-back-button {
-        width: 80%;
-        max-width: 250px;
-        height: auto;
-        aspect-ratio: 287/65;
-    }
-    .find-id-back-btn-text {
-        font-size: 14px;
+        width: 44vw;
+        height: 4vw;
+        margin-top: 12vw;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
     .find-id-back-button {
-        width: 90%;
-        max-width: 200px;
+        width: 44vw;
+        height: 5vw;
+        margin-top: 10vw;
     }
-    .find-id-back-btn-text {
-        font-size: 13px;
+}
+
+@media (max-width: 600px) {
+    .find-id-back-button {
+        width: 43vw;
+        height: 6vw;
+        margin-top: 8vw;
     }
 }

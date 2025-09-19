@@ -1,36 +1,61 @@
 .member-info-section {
     width: 100%;
-    max-width: 899px;
-    margin-top: -1px;
+    max-width: 46.82vw;             /* 899px */
+    margin-top: -0.05vw;            /* -1px */
     text-align: left;
-    margin-left: -390px;
+    margin-left: -20.31vw;          /* -390px */
 }
 
-/* 회원정보 수정 섹션 , 계정 보안도 같이 사용 */
+/* 회원정보 수정 섹션, 계정 보안도 같이 사용 */
 .member-edit-section {
     width: 100%;
-    max-width: 899px;
-    margin-top: -30px; /* 기존 -1px에서 변경 */
+    max-width: 46.82vw;             /* 899px */
+    margin-top: -1.56vw;            /* -30px */
     text-align: left;
-    margin-left: -400px;
+    margin-left: -20.83vw;          /* -400px */
 }
 
 .section-title {
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-weight: 600;
     color: #1A1A1A;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     margin: 0;
 }
 
-/* 반응형 대응 */
-@media (max-width: 768px) {
-    .member-info-section,
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+    .member-info-section {
+        max-width: 55vw;
+        margin-left: -24vw;
+    }
+
     .member-edit-section {
-        width: 90%;
+        max-width: 55vw;
+        margin-left: -25vw;
+        margin-top: -2vw;
     }
 
     .section-title {
-        font-size: 16px;
+        font-size: 1.1vw;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 (4K 등) */
+@media (min-width: 2560px) {
+    .member-info-section {
+        max-width: 899px;           /* 최대 크기 제한 */
+        margin-left: -390px;
+        margin-top: -1px;
+    }
+
+    .member-edit-section {
+        max-width: 899px;
+        margin-left: -400px;
+        margin-top: -30px;
+    }
+
+    .section-title {
+        font-size: 20px;            /* 최대 크기 제한 */
     }
 }

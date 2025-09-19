@@ -134,7 +134,7 @@ export default {
 .sidebar-layout {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -161,7 +161,6 @@ export default {
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 100;
   transform: translateX(0);
-  transition: transform 0.3s ease;
 }
 
 /* 사이드바 접힘 상태 */

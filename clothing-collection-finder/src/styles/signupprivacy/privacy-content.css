@@ -1,13 +1,13 @@
 /* 개인정보 수집 및 이용 동의서 내용 스타일 */
 .privacy-header {
     text-align: center;
-    margin-bottom: 70px;
+    margin-bottom: 3.65vw;          /* 70px */
 }
 
 .privacy-title {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 800;
-    font-size: 32px;
+    font-size: 1.67vw;              /* 32px */
     color: #6029B7;
     margin: 0;
     padding: 0;
@@ -17,19 +17,19 @@
 .privacy-body {
     text-align: left;
     line-height: 1.6;
-    max-width: 899px;
+    max-width: 46.82vw;             /* 899px */
     width: 100%;
-    margin-top: 40px;
+    margin-top: 2.08vw;             /* 40px */
 }
 
 .privacy-section {
-    margin-bottom: 1px;
+    margin-bottom: 0.05vw;          /* 1px */
 }
 
 .privacy-section-title {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     color: #1A1A1A;
 }
 
@@ -39,35 +39,35 @@
 
 .privacy-item {
     display: flex;
-    margin-bottom: 1px;
+    margin-bottom: 0.05vw;          /* 1px */
     align-items: flex-start;
 }
 
 .privacy-text {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     color: #1A1A1A;
     margin: 0;
     flex: 1;
 }
 
 .privacy-sublist {
-    margin-left: 20px;
-    margin-top: 1px;
+    margin-left: 1.04vw;            /* 20px */
+    margin-top: 0.05vw;             /* 1px */
 }
 
 .privacy-subitem {
     display: flex;
-    margin-bottom: 1px;
+    margin-bottom: 0.05vw;          /* 1px */
     align-items: flex-start;
 }
 
 .privacy-bullet {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     color: #1A1A1A;
-    margin-right: 8px;
-    min-width: 15px;
+    margin-right: 0.42vw;           /* 8px */
+    min-width: 0.78vw;              /* 15px */
 }

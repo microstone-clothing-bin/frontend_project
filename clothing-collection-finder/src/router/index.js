@@ -45,11 +45,11 @@ const routes = [
       name: 'favorites',
       component: FavoritesView
     },
-    {
-      path: '/guide',
-      name: 'guide',
-      component: GuideView
-    },
+    // {
+    //   path: '/guide',
+    //   name: 'guide',
+    //   component: GuideView
+    // },
     {
       path: '/login',
         name: 'login',

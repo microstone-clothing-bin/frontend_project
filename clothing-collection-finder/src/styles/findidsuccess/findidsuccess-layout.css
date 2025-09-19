@@ -1,55 +1,140 @@
 /* 전체 레이아웃 */
 .find-id-success-page-container {
-    height: calc(100vh - 80px);
+    height: calc(100vh - 4.17vw);   /* calc(100vh - 80px) */
     overflow-y: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    margin-top: 80px;
+    padding-top: 1.04vw;            /* 20px */
+    padding-bottom: 1.04vw;         /* 20px */
+    margin-top: 4.17vw;             /* 80px */
 }
 
 .find-id-success-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2rem;
+    padding: 2.08vw 1.04vw;
+    width: 90%;
+    max-width: 46.67vw;
+    min-width: 20vw;
+    margin: 0 auto;
+    /* 기본 상태에서는 margin-top 없음 */
 }
 
 .find-id-success-header {
     text-align: left;
-    margin-bottom: 3rem;
+    margin-bottom: 3.13vw;          /* 3rem → 60px */
+    width: 100%;
 }
 
 .find-id-success-title {
-    font-size: 25px;
+    font-size: 1.30vw;              /* 25px */
     font-weight: 800;
     color: #6029b7;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-    margin-bottom: 3rem;
+    margin-bottom: 3.13vw;          /* 3rem → 60px */
 }
 
 .find-id-success-divider-line {
-    width: 899px;
-    height: 0.5px;
+    width: 100%;                    /* 부모 컨테이너 전체 너비 */
+    max-width: 46.82vw;             /* 899px → 최대 너비 제한 */
+    height: 0.026vw;                /* 0.5px */
+    min-height: 1px;                /* 최소 두께 보장 */
     background-color: #9E9E9E;
+}
+
+/* 화면이 줄어들기 시작하면서 점점 아래로 */
+@media (max-width: 1400px) {
+    .find-id-success-content {
+        margin-top: 5vw;            /* 살짝 아래로 */
+    }
+}
+
+@media (max-width: 1200px) {
+    .find-id-success-content {
+        margin-top: 10vw;           /* 더 아래로 */
+    }
+}
+
+@media (max-width: 900px) {
+    .find-id-success-content {
+        margin-top: 15vw;           /* 계속 아래로 */
+    }
+}
+
+@media (max-width: 700px) {
+    .find-id-success-content {
+        margin-top: 20vw;           /* 더 많이 아래로 */
+    }
+}
+
+@media (max-width: 500px) {
+    .find-id-success-content {
+        margin-top: 25vw;           /* 가장 아래로 */
+    }
+}
+
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+    .find-id-success-content {
+        width: 60vw;
+    }
+
+    .find-id-success-title {
+        font-size: 1.8vw;
+    }
+}
+
+/* 화면이 좁을 때 추가 대응 */
+@media (max-width: 1200px) {
+    .find-id-success-content {
+        width: 95%;
+        padding: 3vw 2vw;
+    }
+
+    .find-id-success-title {
+        font-size: 2vw;
+    }
+
+    .find-id-success-divider-line {
+        height: 1px;                /* 고정 높이 */
+    }
 }
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-    .find-id-success-title {
-        font-size: 28px;
+    .find-id-success-content {
+        width: 98%;
+        padding: 4vw 2vw;
     }
 
-    .find-id-success-divider-line {
-        width: 80vw;
+    .find-id-success-title {
+        font-size: 10px;            /* 고정 크기 */
+        margin-bottom: 10px;
+    }
+
+    .find-id-success-header {
+        margin-bottom: 40px;        /* 고정 마진 */
     }
 }
 
 @media (max-width: 480px) {
     .find-id-success-title {
-        font-size: 24px;
+        font-size: 22px;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 */
+@media (min-width: 2560px) {
+    .find-id-success-content {
+        width: 800px;
+        padding: 40px 20px;
+    }
+
+    .find-id-success-title {
+        font-size: 28px;
     }
 
     .find-id-success-divider-line {
-        width: 90vw;
+        max-width: 899px;
+        height: 2px;
     }
 }

@@ -2,13 +2,13 @@
 .signup-terms-agree-button {
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin-top: 2rem;
+    margin-top: 1.04vw;             /* 2rem → 32px → 1.04vw */
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 899px;
-    height: 65px;
+    width: 46.82vw;                 /* 899px */
+    height: 3.38vw;                 /* 65px */
     background-image: url('/src/assets/images/signup-terms-button.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -21,7 +21,7 @@
 
 .signup-terms-agree-btn-text {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-weight: 600;
     color: #FFFFFF;
     text-align: center;
@@ -29,27 +29,55 @@
     z-index: 1;
 }
 
+/* 화면이 줄어들기 시작하면서 점점 아래로 */
+@media (max-width: 1400px) {
+    .signup-terms-agree-button {
+        margin-top: 8vw;
+    }
+}
+
+@media (max-width: 1200px) {
+    .signup-terms-agree-button {
+        margin-top: 12vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .signup-terms-agree-button {
+        margin-top: 9vw;
+    }
+}
+
+@media (max-width: 700px) {
+    .signup-terms-agree-button {
+        margin-top: 20vw;
+    }
+}
+
+@media (max-width: 500px) {
+    .signup-terms-agree-button {
+        margin-top: 25vw;
+    }
+}
+
 /* 반응형 - 동의 버튼 */
 @media (max-width: 768px) {
     .signup-terms-agree-button {
-        width: 80%;
-        max-width: 250px;
-        height: auto;
-        aspect-ratio: 287/65;
+        width:47vw;
     }
 
     .signup-terms-agree-btn-text {
-        font-size: 14px;
+        font-size: 0.73vw;          /* 14px */
     }
 }
 
 @media (max-width: 480px) {
     .signup-terms-agree-button {
         width: 90%;
-        max-width: 200px;
+        max-width: 10.42vw;         /* 200px */
     }
 
     .signup-terms-agree-btn-text {
-        font-size: 13px;
+        font-size: 0.68vw;          /* 13px */
     }
 }

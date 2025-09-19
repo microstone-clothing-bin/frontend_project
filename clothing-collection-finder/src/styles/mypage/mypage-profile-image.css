@@ -1,10 +1,10 @@
 .profile-image-container {
-    margin-top: 1rem;
+    margin-top: 1.04vw;             /* 1rem → 20px → 1.04vw */
 }
 
 .profile-image-circle {
-    width: 247px;
-    height: 247px;
+    width: 12.86vw;                 /* 247px */
+    height: 12.86vw;                /* 247px */
     border-radius: 50%;
     overflow: hidden;
 }
@@ -17,14 +17,14 @@
 
 /* 별도 요소들 */
 .separate-elements {
-    margin-top: 2rem;
+    margin-top: 2.08vw;             /* 2rem → 40px → 2.08vw */
 }
 
 .ellipse-wrapper {
     position: relative;
     display: inline-block;
-    left: 80px;
-    top: -100px;
+    left: 4.17vw;                   /* 80px */
+    top: -5.21vw;                   /* -100px */
     cursor: pointer;
     transition: transform 0.2s;
 }
@@ -34,16 +34,64 @@
 }
 
 .ellipse-image {
-    width: 64px;
-    height: 64px;
+    width: 3.33vw;                  /* 64px */
+    height: 3.33vw;                 /* 64px */
     display: block;
 }
 
 .camera-image {
     position: absolute;
-    width: 32px;
-    height: 32px;
+    width: 1.67vw;                  /* 32px */
+    height: 1.67vw;                 /* 32px */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+
+    .profile-image-circle {
+        width: 15vw;
+        height: 15vw;
+    }
+
+    .ellipse-wrapper {
+        left: 5vw;
+        top: -6vw;
+    }
+
+    .ellipse-image {
+        width: 4vw;
+        height: 4vw;
+    }
+
+    .camera-image {
+        width: 2vw;
+        height: 2vw;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 (4K 등) */
+@media (min-width: 2560px) {
+    .profile-image-circle {
+        width: 247px;               /* 최대 크기 제한 */
+        height: 247px;
+    }
+
+    .ellipse-wrapper {
+        left: 80px;
+        top: -100px;
+    }
+
+    .ellipse-image {
+        width: 64px;
+        height: 64px;
+    }
+
+    .camera-image {
+        width: 32px;
+        height: 32px;
+    }
+}
+

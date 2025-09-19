@@ -6,6 +6,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 /* 검색창 섹션 */
@@ -172,5 +173,70 @@
     color: #374151;
     font-weight: 500;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 태블릿 크기부터 사이드바 축소 시작 */
+@media (max-width: 1024px) {
+    .sidebar-content-wrapper {
+        width: 280px;               /* 기본보다 축소 */
+    }
+
+    .search-input-wrapper {
+        width: 350px;               /* 검색창도 축소 */
+        margin-left: 9px;
+    }
+
+    .section-header {
+        padding: 15px 20px;         /* 패딩 축소 */
+    }
+
+    .section-header::after {
+        right: 10px;
+        right: -80px;
+    }
+
+    .section-header h3{
+        margin-left: 1.3vw;
+    }
+
+    .filter-text{
+        display: none !important;
+    }
+}
+
+/* 작은 태블릿 크기 */
+@media (max-width: 768px) {
+    .sidebar-content-wrapper {
+        width: 250px;               /* 더 축소 */
+    }
+
+    .search-input-wrapper {
+        width: 287px;
+        height: 45px;               /* 높이도 축소 */
+        margin-left: 1px;
+    }
+
+    .search-section {
+        padding: 46px 15px 15px 15px; /* 패딩 축소 */
+    }
+
+    .current-location {
+        padding: 5px;
+    }
+
+    .current-location h3,
+    .section-header h3 {
+        font-size: 0.8rem;          /* 폰트 축소 */
+
+    }
+
+    .location-text .location-name {
+        font-size: 1.0rem;          /* 폰트 축소 */
+    }
+
+    .section-header::after{
+        left: 30px;
+        right: -24px;
+    }
 }
 

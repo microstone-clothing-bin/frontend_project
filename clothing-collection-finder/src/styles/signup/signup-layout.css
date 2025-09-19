@@ -3,45 +3,137 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 2.04vw;            /* 2rem → 32px → 1.04vw */
 }
 
 .signup-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.56vw;          /* 3rem → 48px → 1.56vw */
 }
 
 .signup-title {
-    font-size: 25px;
+    font-size: 1.30vw;              /* 25px */
     font-weight: 800;
     color: #6029b7;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-    margin-bottom: 3rem;
+    margin-bottom: 2.56vw;          /* 3rem → 48px → 1.56vw */
 }
 
 .divider-line {
-    width: 899px;
-    height: 0.5px;
+    width: 46.82vw;                 /* 899px */
+    height: 0.026vw;                /* 0.5px */
     background-color: #9E9E9E;
 }
 
 /* 스크롤 컨테이너 추가 */
 .signup-page-container {
-    height: calc(100vh - 80px);
+    height: calc(98vh - 4.17vw);   /* 80px */
     overflow-y: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    margin-top: 80px;
+    padding-top: 1.04vw;            /* 20px */
+    padding-bottom: 1.04vw;         /* 20px */
+    margin-top: 5.17vw;             /* 80px */
+
+    /* 스크롤바 숨기기 */
+    scrollbar-width: none;          /* Firefox */
+    -ms-overflow-style: none;       /* IE/Edge */
+}
+.required
+/* 화면이 줄어들기 시작하면서 점점 아래로 */
+@media (max-width: 1400px) {
+    .signup-page-container {
+        margin-top: 8vw;
+    }
+    .divider-line {
+        width: 46.8vw;
+    }
+    .required {
+        font-size: 0.85vw;
+    }
+    .agree-button-image {
+        height: 1.1vw;              /* 조금 크게 */
+    }
+
+}
+
+@media (max-width: 1200px) {
+    .signup-page-container {
+        margin-top: 12vw;
+    }
+    .divider-line {
+        width: 58.8vw;
+    }
+    .required {
+        font-size: 0.9vw;           /* 더 크게 */
+    }
+    .agree-button-image {
+        height: 1.4vw;              /* 더 크게 */
+    }
+
+}
+
+@media (max-width: 900px) {
+    .signup-page-container {
+        margin-top: 16vw;
+    }
+    .required {
+        font-size: 0.9vw;           /* 더 크게 */
+    }
+    .agree-button-image {
+        height: 1.4vw;              /* 더 크게 */
+    }
+
 }
 
 @media (max-width: 768px) {
     .signup-title {
-        font-size: 28px;
+        font-size: 1.46vw;          /* 28px */
     }
+    .required {
+        font-size: 0.9vw;           /* 더 크게 */
+    }
+    .agree-button-image {
+        height: 1.4vw;              /* 더 크게 */
+    }
+    .input-container .input-field {
+        font-size: 7px;
+
+    }
+}
+
+@media (max-width: 700px) {
+    .signup-page-container {
+        margin-top: 20vw;
+    }
+    .required {
+        font-size: 0.9vw;           /* 더 크게 */
+    }
+    .agree-button-image {
+        height: 1.4vw;              /* 더 크게 */
+    }
+
+}
+
+@media (max-width: 500px) {
+    .signup-page-container {
+        margin-top: 25vw;
+    }
+    .required {
+        font-size: 0.9vw;           /* 더 크게 */
+    }
+    .agree-button-image {
+        height: 1.4vw;              /* 더 크게 */
+    }
+
 }
 
 @media (max-width: 480px) {
     .signup-title {
-        font-size: 24px;
+        font-size: 1.25vw;          /* 24px */
+    }
+    .required {
+        font-size: 0.9vw;           /* 더 크게 */
+    }
+    .agree-button-image {
+        height: 1.4vw;              /* 더 크게 */
     }
 }

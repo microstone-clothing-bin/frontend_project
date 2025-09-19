@@ -2,25 +2,23 @@
 
 /* 상단 네비게이션 바 컴포넌트 */
 .navigation-bar {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
+    display: flex ;
+    align-items: center ;
+    justify-content: flex-start ;
     height: 80px;
     background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
     padding: 0;
-    position: fixed !important;
+    position: fixed ;
     top: 0;
-    left: 0 !important;
-    width: 100% !important;
+    left: 0 ;
+    width: 100% ;
     z-index: 1000;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .navigation-bar .nav-brand {
     flex-shrink: 0;
-    width: 248px;
-    height: 43px;
     margin-top: 0;
     margin-left: 50px;
     display: flex;
@@ -40,16 +38,15 @@
 }
 
 .navigation-bar .nav-menu {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
+    display: flex;
+    flex-direction: row ;
+    align-items: center ;
     gap: 80px;
     margin-left: 0;
     height: 100%;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    left: 540px;
 }
 
 .navigation-bar .nav-item {
@@ -59,13 +56,13 @@
     font-size: 1rem;
     min-width:78px;
     height: 80px;
-    padding: 0 10px;
+    padding: 0 30px;
     transition: all 0.2s ease;
     position: relative;
     border-bottom: 3px solid transparent;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
+    display: flex ;
+    align-items: center ;
+    justify-content: center;
     white-space: nowrap;
     box-sizing: border-box;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
@@ -189,7 +186,7 @@
 
     .navigation-bar .nav-menu {
         gap: 15px;
-        left: 250px;
+        left: 320px;
     }
 
     .navigation-bar .nav-item {
@@ -208,35 +205,111 @@
     }
 }
 
-/* 모바일 (768px 이하) - 메뉴 숨김 */
+/* 모바일 (768px 이하) - 메뉴 크기 축소하여 표시 */
 @media (max-width: 768px) {
     .navigation-bar {
-        padding: 0 16px;
+        padding: 0 8px;             /* 패딩 더 줄임 */
         height: 80px;
         justify-content: space-between;
     }
 
     .navigation-bar .nav-brand {
-        width: auto;
-        margin-left: 0;
+        display: none !important; /* 완전히 숨김 */
     }
 
     .navigation-bar .brand-text {
-        font-size: 1.4rem;
+        font-size: 0.9rem;          /* 브랜드 텍스트 더 작게 */
     }
 
+    /* 메뉴 다시 표시하되 크기 축소 */
     .navigation-bar .nav-menu {
-        display: none !important; /* 완전히 숨김 */
+        display: flex ;   /* 다시 표시 */
+        gap: 14px;                   /* 간격 줄임 (기본 16px에서) */
+    }
+
+    .navigation-bar .nav-menu .menu-link {
+        font-size: 0.7rem;          /* 폰트 크기 대폭 축소 */
+        padding: 4px 8px;           /* 패딩 줄임 */
+        white-space: nowrap;        /* 텍스트 줄바꿈 방지 */
     }
 
     .navigation-bar .nav-user {
         position: static;
         transform: none;
         right: auto;
-        gap: 12px;
+        gap: 10px;                   /* 간격 더 줄임 */
+        margin-left: 430px;
     }
 
     .navigation-bar .user-link {
+        font-size: 0.7rem;          /* 사용자 링크도 더 작게 */
+        padding: 4px 6px;           /* 패딩 줄임 */
+    }
+}
+
+/* 모바일 (768px 이하) - 메뉴 크기 축소하여 표시 */
+@media (max-width: 670px) {
+    .navigation-bar {
+        padding: 0 8px;             /* 패딩 더 줄임 */
+        height: 80px;
+        justify-content: space-between;
+    }
+
+    .navigation-bar .nav-brand {
+        display: none !important; /* 완전히 숨김 */
+    }
+
+    .navigation-bar .brand-text {
+        font-size: 0.9rem;          /* 브랜드 텍스트 더 작게 */
+    }
+
+    /* 메뉴 다시 표시하되 크기 축소 */
+    .navigation-bar .nav-menu {
+        display: flex ;   /* 다시 표시 */
+        gap: 1px;                   /* 간격 줄임 (기본 16px에서) */
+    }
+
+    .navigation-bar .nav-menu .menu-link {
+        font-size: 0.7rem;          /* 폰트 크기 대폭 축소 */
+        padding: 4px 8px;           /* 패딩 줄임 */
+        white-space: nowrap;        /* 텍스트 줄바꿈 방지 */
+    }
+
+    .navigation-bar .nav-user {
+        position: static;
+        transform: none;
+        right: auto;
+        gap: 1px;                   /* 간격 더 줄임 */
+        margin-left: 330px;
+    }
+
+    .navigation-bar .user-link {
+        font-size: 0.7rem;          /* 사용자 링크도 더 작게 */
+        padding: 4px 6px;           /* 패딩 줄임 */
+    }
+}
+
+/* 더 작은 화면 (480px 이하)에서 추가 조정 */
+@media (max-width: 480px) {
+    .navigation-bar {
+        padding: 0 4px;
+    }
+
+    .navigation-bar .brand-text {
         font-size: 0.8rem;
+    }
+
+    .navigation-bar .nav-menu {
+        gap: 4px;
+    }
+
+    .navigation-bar .nav-menu .menu-link {
+        font-size: 0.6rem;
+        padding: 2px 4px;
+    }
+
+    .navigation-bar .user-link {
+        font-size: 0.6rem;
+        padding: 2px 4px;
     }
 }

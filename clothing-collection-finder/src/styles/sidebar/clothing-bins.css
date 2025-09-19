@@ -164,3 +164,117 @@
     position: relative;
     justify-content: space-between; /* 양쪽 끝 정렬 */
 }
+
+/* 태블릿 크기부터 의류수거함 리스트 확장 */
+@media (max-width: 1024px) {
+    .bins-container {
+        width: 45vw;                /* 전체 너비 사용 */
+        margin-right: 4vw;
+    }
+
+    .bin-item {
+        width: calc(100% - 20px);   /* 패딩 고려한 너비 */
+        padding: 20px 25px;         /* 패딩 조정 */
+        margin: 0 auto;             /* 가운데 정렬 */
+    }
+
+    .bin-item::after {
+        left: 25px;                 /* 구분선 시작점 조정 */
+        right: 25px;                /* 구분선 끝점 조정 */
+    }
+
+    .bin-icon {
+        width: 70px;                /* 아이콘 크기 축소 */
+        height: 70px;
+    }
+
+    .bin-distance {
+        font-size: 1.2rem;          /* 폰트 크기 축소 */
+    }
+
+    .distance-label {
+        font-size: 0.65rem;         /* 라벨 크기 축소 */
+    }
+}
+
+/* 작은 태블릿 크기 */
+@media (max-width: 768px) {
+    .bins-container {
+        width: 42.5vw;
+        margin-right: 4vw;
+    }
+
+    .bin-item {
+        padding: 18px 20px;         /* 패딩 더 축소 */
+        gap: 12px;                  /* 간격 축소 */
+    }
+
+    .bin-item::after {
+        left: 20px;
+        right: 20px;
+    }
+
+    .bin-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .bin-distance {
+        font-size: 1.1rem;
+    }
+
+    .distance-label,
+    .bin-address {
+        font-size: 0.6rem;
+    }
+
+    .bookmark-container {
+        margin-top: -65px;          /* 북마크 위치 조정 */
+    }
+
+    .bookmark-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* 작은 태블릿 크기 */
+@media (max-width: 700px) {
+    .bins-container {
+        width: 57.5vw;
+        margin-right: 4vw;
+    }
+
+    .bin-item {
+        padding: 18px 20px;         /* 패딩 더 축소 */
+        gap: 12px;                  /* 간격 축소 */
+    }
+
+    .bin-item::after {
+        left: 20px;
+        right: 20px;
+    }
+
+    .bin-icon {
+        width: 65px;
+        height: 65px;
+    }
+
+    .bin-distance {
+        font-size: 1.1rem;
+    }
+
+    .distance-label,
+    .bin-address {
+        font-size: 0.6rem;
+    }
+
+    .bookmark-container {
+        margin-top: -65px;          /* 북마크 위치 조정 */
+    }
+
+    .bookmark-icon {
+        width: 18px;
+        height: 18px;
+    }
+}

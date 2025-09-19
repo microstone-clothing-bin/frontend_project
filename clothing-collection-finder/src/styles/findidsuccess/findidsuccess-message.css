@@ -1,30 +1,48 @@
-/* 성공 메시지 스타일 */
+/* 성공 메시지 - 화면 크기에 따라 자연스럽게 변화 */
 .find-id-success-message {
     text-align: left;
-    margin-top: -10px;
-    margin-bottom: 2rem;
-    margin-right: 597px;
+    width: 100%;
+    margin-top: -0.52vw;
+    margin-bottom: clamp(20px, 2.08vw, 40px);  /* 최소 20px, 최대 40px */
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 .find-id-success-text {
-    font-size: 16px;
+    font-size: clamp(14px, 0.83vw, 18px);     /* 최소 14px, 최대 18px */
     font-weight: 500;
     color: #1A1A1A;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     line-height: 1.6;
-    margin: 0.5rem 0;
+    margin: clamp(5px, 0.26vw, 10px) 0;       /* 최소 5px, 최대 10px */
 }
 
-/* 반응형 - 메시지 */
-@media (max-width: 768px) {
+.find-id-success-bold-text {
+    font-weight: 700;
+    color: #1A1A1A;
+}
+
+/* 더 세밀한 화면별 조정 */
+@media (max-width: 1200px) {
+    .find-id-success-message {
+        margin-bottom: 3vw;
+    }
+
     .find-id-success-text {
-        font-size: 14px;
+        font-size: 1.2vw;
+        margin: 0.4vw 0;
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
     .find-id-success-text {
-        font-size: 13px;
+        font-size: 1.5vw;
+        margin: 0.5vw 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .find-id-success-text {
+        font-size: 2vw;
+        margin: 0.8vw 0;
     }
 }

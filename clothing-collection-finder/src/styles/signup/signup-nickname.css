@@ -1,41 +1,42 @@
 /* 닉네임 창*/
 .nickname-label {
-    margin-right: 53.5rem;
-    margin-top: 3rem;
+    margin-right: 27.90vw;          /* 53.5rem → 856px → 27.86vw */
+    margin-top: 1.56vw;             /* 3rem → 48px → 1.56vw */
 }
 
 /* 닉네임 메시지 영역 - 고정 높이로 레이아웃 안정화 */
 .nickname-message-area {
-    height: 2px; /* 메시지 한 줄 높이만큼 고정 */
-    margin-top: 1px;
-    margin-bottom: 10px;
+    height: 0.10vw;                 /* 2px */
+    margin-top: 0.05vw;             /* 1px */
+    margin-bottom: 0.52vw;          /* 10px */
 }
 
 /* 닉네임 성공 메시지 */
 .nickname-success-message {
-    font-size: 12px;
+    font-size: 0.63vw;              /* 12px */
     color: #15A947;
-    margin-top: 1px;
-    margin-right: 165px;
+    margin-top: 0.05vw;             /* 1px */
+    margin-right: 8.59vw;           /* 165px */
     text-align: left;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
 /* 닉네임 에러 메시지 */
 .nickname-error-message {
-    font-size: 12px;
+    font-size: 0.63vw;              /* 12px */
     color: #F26464;
-    margin-top: 1px;
-    margin-right: 150px;
+    margin-top: 0.05vw;             /* 1px */
+    margin-right: 7.81vw;           /* 150px */
     text-align: left;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
+
 /* 중복 버튼 */
 .nickname-duplicate-btn {
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin-left: 1060px;
-    margin-top: -78px;      /* 아이디 버튼과 같은 위치 */
+    margin-left: 55.21vw;           /* 1060px */
+    margin-top: -4.06vw;            /* -78px */
     position: relative;
     display: inline-block;
 }

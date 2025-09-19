@@ -1,27 +1,32 @@
 /* 개별 약관 컨테이너 */
 .individual-terms {
-    margin-top: 10px;
-    padding-left: 300px; /* 들여쓰기 효과 */
+    margin-top: 0.52vw;             /* 10px */
+    padding-left: 15.63vw;          /* 300px */
 }
 
 /* 개별 약관 항목 */
 .individual-agreement {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 0.63vw;          /* 12px */
     cursor: pointer;
     font-weight: 500;
     color: #1A1A1A;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 회원가입 이용약관 동의 전용 (필요시 추가) */
+.individual-terms .individual-agreement {
+    margin-left: 1.2vw;
 }
 
 /* 필수 텍스트 */
 .required-text {
     color: #9E9E9E;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-weight: 500;
-    margin-left: 5px;
+    margin-left: 1.26vw;            /* 5px */
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
 
@@ -30,9 +35,9 @@
     background: none;
     border: none;
     color: #6029B7;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     cursor: pointer;
-    margin-left: 300px;
+    margin-left: 15.63vw;           /* 300px */
     text-decoration: none;
     font-weight: 500;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
@@ -41,4 +46,3 @@
 .view-details-btn:hover {
     text-decoration: underline;
 }
-

@@ -1,14 +1,45 @@
 /* 개인정보 관련 구분선 스타일 */
 .signup-privacy-divider-line {
-    width: 899px;
-    height: 0.5px;
+    width: 46.82vw;                 /* 899px */
+    height: 0.026vw;                /* 0.5px */
     background-color: #9E9E9E;
 }
 
 .signup-privacy-bottom-divider-line {
-    width: 899px;
-    height: 0.5px;
+    width: 46.82vw;                 /* 899px */
+    height: 0.026vw;                /* 0.5px */
     background-color: #9E9E9E;
-    margin-top: 40px;
-    margin-bottom: 50px;
+    margin-top: 2.08vw;             /* 40px */
+    margin-bottom: 2.60vw;          /* 50px */
+}
+
+/* 화면이 줄어들기 시작하면서 구분선도 조정 */
+@media (max-width: 1400px) {
+    .signup-privacy-divider-line,
+    .signup-privacy-bottom-divider-line {
+        width: 46.8vw;
+    }
+}
+
+@media (max-width: 1200px) {
+    .signup-privacy-divider-line,
+    .signup-privacy-bottom-divider-line {
+        width: 43.8vw;
+        margin-right: 4vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .signup-privacy-divider-line,
+    .signup-privacy-bottom-divider-line {
+        width: 44vw;
+        margin-right: 4vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .signup-privacy-divider-line,
+    .signup-privacy-bottom-divider-line {
+        width: 90vw;
+    }
 }

@@ -278,9 +278,9 @@ const handleUseDefaultLocation = () => {
 /* 모바일 대응 */
 @media (max-width: 768px) {
   .current-location-btn {
-    width: 44px;
-    height: 44px;
-
+    width: 36px;
+    height: 36px;
+    margin-top: 1vw;
   }
 
   .btn-target-icon {

@@ -2,37 +2,61 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 2rem;
+    padding: 2.08vw;                /* 40px (1920px 기준) */
+    width: 41.67vw;                 /* 800px */
+    min-height: calc(100vh - 4.17vw); /* 네비게이션 바 제외 */
+    margin: 0 auto;
 }
 
 /* 구분선 */
 .divider-line {
-    width: 1000px;
-    height: 0.5px;
+    width: 52.08vw;                 /* 1000px */
+    height: 0.026vw;                /* 0.5px */
     background-color: #9E9E9E;
-    margin-top: 1rem;
-    margin-left: 163px;
+    margin-top: 1.04vw;             /* 20px */
+    margin-left: 8.49vw;            /* 163px */
 }
 
-/* 추가 구분선 스타일 (기존과 다르게 하고 싶다면) */
+/* 추가 구분선 스타일 */
 .additional-divider {
-    margin-top: 3rem; /* 위 간격 조정 */
-    margin-bottom: 2rem; /* 아래 간격 추가 */
+    margin-top: 3.13vw;             /* 60px */
+    margin-bottom: 2.08vw;          /* 40px */
 }
 
-/* 반응형 대응 */
-@media (max-width: 768px) {
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+    .mypage-content {
+        width: 50vw;
+        padding: 2.5vw;
+    }
+
     .divider-line {
-        width: 90%;
+        width: 60vw;
+        margin-left: 10vw;
     }
 }
+
+/* 큰 화면에서 최대값 제한 (4K 등) */
+@media (min-width: 2560px) {
+    .mypage-content {
+        width: 800px;               /* 최대 크기 제한 */
+        padding: 40px;
+    }
+
+    .divider-line {
+        width: 1000px;
+        margin-left: 163px;
+        height: 1px;                /* 최소 두께 보장 */
+    }
+}
+
 
 /* 공통 입력 스타일 */
 .label-text {
     color: #1A1A1A;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     font-weight: 600;
-    margin-right: 4px;
+    margin-right: 0.21vw;           /* 4px */
 }
 
 .input-field {
@@ -40,9 +64,9 @@
     height: 100%;
     border: none;
     background: transparent;
-    padding: 15px;
-    padding-top: 10px;
-    font-size: 16px;
+    padding: 0.78vw;                /* 15px */
+    padding-top: 0.52vw;            /* 10px */
+    font-size: 0.83vw;              /* 16px */
     outline: none;
     color: #333333;
 }
@@ -50,3 +74,86 @@
 .input-field::placeholder {
     color: #9E9E9E;
 }
+
+/* 큰 화면에서 텍스트 최대 크기 제한 */
+@media (min-width: 2560px) {
+    .label-text {
+        font-size: 18px;
+    }
+
+    .input-field {
+        font-size: 18px;
+        padding: 20px;
+        padding-top: 15px;
+    }
+}
+
+/* 입력 필드들을 2열로 배치 */
+.mypage-id-label,
+.mypage-email-label,
+.mypage-nickname-label,
+.mypage-password-label,
+.mypage-passwordcheck-label {
+    display: inline-block;
+    width: 4.63vw;                 /* 300px */
+    vertical-align: top;
+}
+
+/* 작은 노트북 대응 */
+@media (max-width: 1366px) {
+    .mypage-id-label,
+    .mypage-email-label,
+    .mypage-nickname-label,
+    .mypage-password-label,
+    .mypage-passwordcheck-label {
+        width: 18vw;
+        font-size: 1vw;
+        margin-bottom: 0.6vw;
+    }
+
+    .mypage-id-container,
+    .mypage-email-container,
+    .mypage-nickname-container,
+    .mypage-password-container,
+    .mypage-passwordcheck-container {
+        width: 18vw;
+        height: 4vw;
+        margin-right: 2.5vw;
+        margin-top: -0.6vw;
+    }
+
+    .mypage-email-container,
+    .mypage-passwordcheck-container {
+        margin-right: 0;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 */
+@media (min-width: 2560px) {
+    .mypage-id-label,
+    .mypage-email-label,
+    .mypage-nickname-label,
+    .mypage-password-label,
+    .mypage-passwordcheck-label {
+        width: 300px;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .mypage-id-container,
+    .mypage-email-container,
+    .mypage-nickname-container,
+    .mypage-password-container,
+    .mypage-passwordcheck-container {
+        width: 300px;
+        height: 65px;
+        margin-right: 40px;
+        margin-top: -10px;
+    }
+
+    .mypage-email-container,
+    .mypage-passwordcheck-container {
+        margin-right: 0;
+    }
+}
+

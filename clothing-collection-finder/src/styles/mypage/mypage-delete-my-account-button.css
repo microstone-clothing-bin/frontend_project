@@ -1,30 +1,58 @@
 .mypage-delete-my-account-button {
     cursor: pointer;
     transition: transform 0.2s ease;
-    margin-top: -67px;
-    margin-left: 450px;
+    margin-top: -3.49vw;            /* -67px */
+    margin-left: 23.44vw;           /* 450px */
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 176px;
-    height: 65px;
+    width: 9.17vw;                  /* 176px */
+    height: 3.39vw;                 /* 65px */
     background-image: url('/src/assets/images/delete-my-account-button.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-mypage-delete-my-account-button:hover {
+.mypage-delete-my-account-button:hover {
     transform: scale(1.05);
 }
 
 .mypage-btn-delete-my-account {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-weight: 500;
     color: #6029B7;
     text-align: center;
     position: relative;
     z-index: 1;
+}
+
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+    .mypage-delete-my-account-button {
+        width: 11vw;
+        height: 4vw;
+        margin-left: 28vw;
+        margin-top: -4vw;
+    }
+
+    .mypage-btn-delete-my-account {
+        font-size: 1.1vw;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 (4K 등) */
+@media (min-width: 2560px) {
+    .mypage-delete-my-account-button {
+        width: 176px;               /* 최대 크기 제한 */
+        height: 65px;
+        margin-left: 450px;
+        margin-top: -67px;
+    }
+
+    .mypage-btn-delete-my-account {
+        font-size: 20px;           /* 최대 크기 제한 */
+    }
 }

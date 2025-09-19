@@ -1,14 +1,16 @@
 /* 입력창 컨테이너 */
 .find-id-input-container {
+    display: block;
+    width: 100%;
+    max-width: 31.88vw;             /* 612px */
+    height: 3.39vw;                 /* 65px */
     position: relative;
-    width: 612px;
-    height: 65px;
     background-image: url('/src/assets/images/signup-rectangle.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    margin-right: -305px;
-    margin-top: -43px;
+    margin: -2.50vw auto 1.56vw auto;     /* 중앙 정렬 + 30px 아래 여백 */
+    margin-left: 15.21vw;            /* 100px 왼쪽으로 이동 */
 }
 
 /* 입력 필드 */
@@ -17,9 +19,9 @@
     height: 100%;
     border: none;
     background: transparent;
-    padding: 15px;
-    padding-top: 10px;
-    font-size: 16px;
+    padding: 0.78vw;                /* 15px */
+    padding-top: 0.52vw;            /* 10px */
+    font-size: 0.83vw;              /* 16px */
     outline: none;
     color: #9E9E9E;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
@@ -34,10 +36,47 @@
     color: #9E9E9E;
 }
 
-/* 반응형 - 입력창 */
+/* 화면 크기별 대응 창 글씨 */
+@media (max-width: 1200px) {
+    .find-id-input-container,
+    .find-id-email-container {
+        width: 71%;
+        max-width: none;            /* 최대 너비 제한 제거 */
+        min-width: 250px;           /* 픽셀 단위로 최소 보장 */
+        height: 4vw;
+    }
+}
+
 @media (max-width: 768px) {
+    .find-id-input-container,
+    .find-id-email-container {
+        width: 98%;
+        height: 30px;               /* 고정 높이 */
+        min-width: 200px;
+    }
+
     .find-id-input-field {
+        font-size: 16px;            /* 고정 폰트 크기 */
+        padding: 15px;
+        padding-top: 10px;
+    }
+
+    .find-id-input-field::placeholder {
+        font-size: 7px;            /* placeholder 크기 조정 */
+
+    }
+}
+
+@media (max-width: 480px) {
+    .find-id-input-container,
+    .find-id-email-container {
         width: 100%;
-        max-width: 350px;
+        min-width: 180px;
+    }
+
+    .find-id-input-field {
+        font-size: 14px;
+        padding: 12px;
+        padding-top: 8px;
     }
 }

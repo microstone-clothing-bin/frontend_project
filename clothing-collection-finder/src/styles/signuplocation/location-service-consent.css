@@ -1,13 +1,13 @@
 /* 위치기반 서비스 이용 동의서 스타일 */
 .location-service-header {
     text-align: center;
-    margin-bottom: 70px;
+    margin-bottom: 3.65vw;          /* 70px */
 }
 
 .location-service-title {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 800;
-    font-size: 32px;
+    font-size: 1.67vw;              /* 32px */
     color: #6029B7;
     margin: 0;
     padding: 0;
@@ -15,41 +15,41 @@
 }
 
 .location-service-section {
-    margin-bottom: 1px;
+    margin-bottom: 0.05vw;          /* 1px */
 }
 
 .location-service-section-title {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     color: #1A1A1A;
 }
 
 .location-service-text {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     color: #1A1A1A;
     margin: 0;
-    margin-bottom: 8px;
+    margin-bottom: 0.42vw;          /* 8px */
 }
 
 .location-service-sublist {
-    margin-left: 20px;
-    margin-top: 1px;
+    margin-left: 1.04vw;            /* 20px */
+    margin-top: 0.05vw;             /* 1px */
 }
 
 .location-service-subitem {
     display: flex;
-    margin-bottom: 1px;
+    margin-bottom: 0.05vw;          /* 1px */
     align-items: flex-start;
 }
 
 .location-service-bullet {
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     color: #1A1A1A;
-    margin-right: 8px;
-    min-width: 15px;
+    margin-right: 0.42vw;           /* 8px */
+    min-width: 0.78vw;              /* 15px */
 }

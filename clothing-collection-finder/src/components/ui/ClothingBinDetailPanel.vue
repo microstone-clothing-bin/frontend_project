@@ -237,8 +237,6 @@ const props = defineProps({
   background: white;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   z-index: 9999;
-  animation: slideIn 0.3s ease-out;
-  transition: left 0.3s ease;
   border-radius: 10px;
   overflow: hidden;
   max-height: 800px;

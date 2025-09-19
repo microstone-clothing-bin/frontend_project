@@ -3,13 +3,49 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 2rem;
+    padding-top: 1.04vw;            /* 2rem → 32px → 1.04vw */
 }
 
 .signup-privacy-page-container {
-    height: calc(100vh - 80px);
-    overflow-y: auto;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    margin-top: 80px;
+    height: calc(100vh - 4.17vw);   /* 80px */
+    overflow-y: scroll;             /* auto에서 scroll로 변경 */
+    padding-top: 1.04vw;            /* 20px */
+    padding-bottom: 1.04vw;         /* 20px */
+    margin-top: 4.17vw;             /* 80px */
+}
+
+/* 커스텀 스크롤바 스타일 */
+.signup-privacy-page-container::-webkit-scrollbar {
+    width: 0.52vw;                  /* 10px - 스크롤바 너비 */
+}
+
+/* 화면이 줄어들기 시작하면서 점점 아래로 */
+@media (max-width: 1400px) {
+    .signup-privacy-page-container {
+        margin-top: 5vw;
+    }
+}
+
+@media (max-width: 1200px) {
+    .signup-privacy-page-container {
+        margin-top: 7vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .signup-privacy-page-container {
+        margin-top: 16vw;
+    }
+}
+
+@media (max-width: 700px) {
+    .signup-privacy-page-container {
+        margin-top: 20vw;
+    }
+}
+
+@media (max-width: 500px) {
+    .signup-privacy-page-container {
+        margin-top: 25vw;
+    }
 }

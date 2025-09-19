@@ -1,17 +1,17 @@
 /* 만 14세 이상 약관 컨테이너 */
 .individual-age-terms {
-    margin-top: 6px;
-    padding-right: 94px; /* 들여쓰기 효과 */
+    margin-top: 0.31vw;             /* 6px */
+    padding-right: 3.51vw;          /* 94px */
 }
 
 /* 만 14세 이상 약관 항목 */
 .individual-age-agreement {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 0.63vw;          /* 12px */
     cursor: pointer;
     font-weight: 500;
     color: #1A1A1A;
-    font-size: 18px;
+    font-size: 0.94vw;              /* 18px */
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }

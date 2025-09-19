@@ -23,5 +23,16 @@ export default {
 </script>
 
 <style scoped>
-/* 동적 스타일이 필요한 경우만 여기에 */
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.content-below-nav {
+  flex: 1;
+  min-height: 0; /* 중요: flex item이 축소될 수 있도록 */
+  overflow: hidden;
+}
 </style>

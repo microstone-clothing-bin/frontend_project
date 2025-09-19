@@ -6,6 +6,29 @@
 @import './shareWriting.css';
 @import './post.css';
 
+/* CSS 변수 정의 - 네비게이션 높이 */
+:root {
+    --nav-height: 70px;
+}
+
+/* 반응형 네비게이션 높이 */
+@media (max-width: 1366px) {
+    :root {
+        --nav-height: 65px;
+    }
+}
+
+@media (max-width: 1024px) {
+    :root {
+        --nav-height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --nav-height: 55px;
+    }
+}
 
 * {
     margin: 0;

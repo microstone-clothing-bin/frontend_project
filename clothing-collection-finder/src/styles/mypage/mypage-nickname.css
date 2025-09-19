@@ -1,9 +1,9 @@
 /* 마이페이지 닉네임 라벨 */
 .mypage-nickname-label {
-    margin-right: 50rem;
-    margin-top: 4rem;
+    margin-right: 39.08vw;          /* 50rem → 1000px → 52.08vw */
+    margin-top: 4.17vw;             /* 4rem → 80px → 4.17vw */
     color: #1A1A1A;
-    font-size: 16px;
+    font-size: 0.83vw;              /* 16px */
     font-weight: 600;
     font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
 }
@@ -11,12 +11,44 @@
 /* 마이페이지 닉네임 입력창 */
 .mypage-nickname-container {
     position: relative;
-    width: 612px;
-    height: 65px;
+    width: 31.88vw;                 /* 612px */
+    height: 3.39vw;                 /* 65px */
     background-image: url('/src/assets/images/mypage-rectangle.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     background-position: center;
-    margin-right: -305px;
-    margin-top: -43px;
+    margin-right: -15.89vw;         /* -305px */
+    margin-top: -2.24vw;            /* -43px */
+}
+
+/* 작은 노트북 대응 (1366px 기준) */
+@media (max-width: 1366px) {
+    .mypage-nickname-label {
+        margin-right: 32vw;
+        margin-top: 5vw;
+        font-size: 1vw;
+    }
+
+    .mypage-nickname-container {
+        width: 38vw;
+        height: 4vw;
+        margin-right: -19vw;
+        margin-top: -2.8vw;
+    }
+}
+
+/* 큰 화면에서 최대값 제한 (4K 등) */
+@media (min-width: 2560px) {
+    .mypage-nickname-label {
+        margin-right: 1000px;       /* 최대 크기 제한 */
+        margin-top: 80px;
+        font-size: 18px;
+    }
+
+    .mypage-nickname-container {
+        width: 612px;
+        height: 65px;
+        margin-right: -305px;
+        margin-top: -43px;
+    }
 }

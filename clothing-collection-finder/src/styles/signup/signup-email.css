@@ -1,5 +1,5 @@
 /* 이메일 라벨 */
 .email-label {
-    margin-right: 53.5rem;
-    margin-top: 3.7rem;
+    margin-right: 27.90vw;          /* 53.5rem → 856px → 27.86vw */
+    margin-top: 2.93vw;             /* 3.7rem → 59.2px → 1.93vw */
 }
