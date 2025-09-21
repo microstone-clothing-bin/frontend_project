@@ -47,6 +47,7 @@ import logoImage from '../assets/images/DropIt-logo.png'
 import rectangleImage from '../assets/images/login-rectangle.png'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
+import authService from '../services/authService'
 
 export default {
   name: 'LoginView',
@@ -61,18 +62,41 @@ export default {
       eyeOpenImage,
       username: '',
       password: '',
-      showPassword: false
+      showPassword: false,
+      isLoading: false,
+      errorMessage: ''
     }
   },
   methods: {
-    handleLogin() {
-      console.log('로그인 시도:', {
-        username: this.username,
-        password: this.password
-      })
-      // 홈페이지로 이동
-      this.$router.push('/');
+    async handleLogin() {
+      if (!this.username || !this.password) {
+        this.errorMessage = '아이디와 비밀번호를 입력해주세요.'
+        return
+      }
+
+      try {
+        this.isLoading = true
+        this.errorMessage = ''
+
+        const result = await authService.login({
+          userId: this.username,
+          password: this.password
+        })
+
+        if (result === 'success') {
+          console.log('로그인 성공!')
+          this.$router.push('/')
+        } else {
+          this.errorMessage = '로그인에 실패했습니다.'
+        }
+      } catch (error) {
+        console.error('로그인 에러:', error)
+        this.errorMessage = error.message || '로그인 중 오류가 발생했습니다.'
+      } finally {
+        this.isLoading = false
+      }
     },
+
     togglePassword() {
       this.showPassword = !this.showPassword
     },

@@ -119,7 +119,8 @@
         />
       </div>
 
-      <div class="mypage-storage-button" >
+      <!-- 변경된 정보 저장 버튼 -->
+      <div class="mypage-storage-button" @click="handlePasswordChange">
         <span class="mypage-btn-storage">변경된 정보 저장</span>
       </div>
 
@@ -130,12 +131,14 @@
       <div class="member-edit-section">
         <h2 class="section-title">계정 보안</h2>
       </div>
-      <!-- 로그아웃 버튼  -->
-      <div class="mypage-logout-button" >
+
+      <!-- 로그아웃 버튼 -->
+      <div class="mypage-logout-button" @click="handleLogout">
         <span class="mypage-btn-logout">로그아웃</span>
       </div>
-      <!-- 회원 탈퇴 버튼   -->
-      <div class="mypage-delete-my-account-button" >
+
+      <!-- 회원 탈퇴 버튼 -->
+      <div class="mypage-delete-my-account-button" @click="handleDeleteAccount">
         <span class="mypage-btn-delete-my-account">회원 탈퇴</span>
       </div>
 
@@ -154,6 +157,7 @@
 
 <script>
 import MainLayout from '../layouts/MainLayout.vue'
+import authService from '../services/authService.js'
 
 export default {
   name: 'MyPageView',
@@ -169,7 +173,8 @@ export default {
         nickname: '',
         password: '',
         passwordcheck: ''
-      }
+      },
+      isLoading: false
     }
   },
   methods: {
@@ -177,17 +182,90 @@ export default {
       this.$refs.fileInput.click();
     },
 
-    handleFileUpload(event) {
+    async handleFileUpload(event) {
       const file = event.target.files[0];
       if (file) {
         if (file.type.startsWith('image/')) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            this.uploadedImage = e.target.result;
-          };
-          reader.readAsDataURL(file);
+          try {
+            this.isLoading = true
+
+            // 미리보기용
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              this.uploadedImage = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // 백엔드에 업로드
+            const result = await authService.uploadProfile(file)
+            if (result === 'success') {
+              alert('프로필 이미지가 업로드되었습니다.')
+            }
+          } catch (error) {
+            alert('이미지 업로드 실패: ' + error.message)
+          } finally {
+            this.isLoading = false
+          }
         } else {
           alert('이미지 파일만 업로드 가능합니다.');
+        }
+      }
+    },
+
+    // 비밀번호 변경
+    async handlePasswordChange() {
+      if (!this.userInfo.password || !this.userInfo.passwordcheck) {
+        alert('새 비밀번호를 입력해주세요.')
+        return
+      }
+
+      if (this.userInfo.password !== this.userInfo.passwordcheck) {
+        alert('비밀번호가 일치하지 않습니다.')
+        return
+      }
+
+      try {
+        this.isLoading = true
+        const result = await authService.resetPassword(this.userInfo.password)
+
+        if (result === 'success') {
+          alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.')
+          this.$router.push('/login')
+        }
+      } catch (error) {
+        alert('비밀번호 변경 실패: ' + error.message)
+      } finally {
+        this.isLoading = false
+      }
+    },
+
+    // 로그아웃
+    async handleLogout() {
+      try {
+        await authService.logout()
+        alert('로그아웃되었습니다.')
+        this.$router.push('/')
+      } catch (error) {
+        console.error('로그아웃 에러:', error)
+        this.$router.push('/')
+      }
+    },
+
+    // 회원 탈퇴
+    async handleDeleteAccount() {
+      if (confirm('정말로 회원 탈퇴하시겠습니까?')) {
+        try {
+          this.isLoading = true
+          const result = await authService.deleteAccount()
+
+          if (result === 'success') {
+            alert('회원 탈퇴가 완료되었습니다.')
+            this.$router.push('/')
+          }
+        } catch (error) {
+          alert('회원 탈퇴 실패: ' + error.message)
+        } finally {
+          this.isLoading = false
         }
       }
     }

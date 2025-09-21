@@ -27,6 +27,24 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
         }
     }
 
+    // 지도 사각형 영역 내 의류수거함 데이터 가져오기 (지도에서 사용)
+    const fetchClothingBinsInBounds = async (swLat, swLng, neLat, neLng) => {
+        try {
+            isLoading.value = true
+            error.value = null
+
+            const data = await clothesBinService.getClothingBinsInBounds(swLat, swLng, neLat, neLng)
+            clothingBins.value = data
+
+            console.log(`사각형 영역 내 의류수거함 데이터 로드 완료: ${data.length}개`)
+        } catch (err) {
+            error.value = err.message
+            console.error('사각형 영역 검색 실패:', err)
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     // getter - 총 개수
     const totalCount = computed(() => clothingBins.value.length)
 
@@ -46,6 +64,7 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
         sidebarClothingBins,
 
         // 액션
-        fetchClothingBins
+        fetchClothingBins,
+        fetchClothingBinsInBounds
     }
 })

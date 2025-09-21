@@ -5,46 +5,14 @@ class AuthService {
     // 회원가입
     async signup(userData) {
         try {
-            const response = await apiService.post('/auth/signup', {
-                userId: userData.userId,
-                password: userData.password,
-                nickname: userData.nickname,
-                email: userData.email,
-                agreeTerms: userData.agreeTerms,
-                agreePrivacy: userData.agreePrivacy,
-                agreeLocation: userData.agreeLocation,
-                agreeAge: userData.agreeAge
-            })
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
+            const formData = new FormData()
+            formData.append('id', userData.userId)
+            formData.append('password', userData.password)
+            formData.append('passwordCheck', userData.password)
+            formData.append('nickname', userData.nickname)
+            formData.append('email', userData.email)
 
-    // 아이디 중복 확인
-    async checkUserIdDuplicate(userId) {
-        try {
-            const response = await apiService.get(`/auth/check-userid/${userId}`)
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
-
-    // 닉네임 중복 확인
-    async checkNicknameDuplicate(nickname) {
-        try {
-            const response = await apiService.get(`/auth/check-nickname/${nickname}`)
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
-
-    // 이메일 중복 확인 (선택사항)
-    async checkEmailDuplicate(email) {
-        try {
-            const response = await apiService.get(`/auth/check-email/${email}`)
+            const response = await apiService.post('/api/user/register', formData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -54,36 +22,54 @@ class AuthService {
     // 로그인
     async login(credentials) {
         try {
-            const response = await apiService.post('/auth/login', {
-                userId: credentials.userId,
-                password: credentials.password
-            })
+            const formData = new FormData()
+            formData.append('id', credentials.userId)
+            formData.append('password', credentials.password)
+
+            const response = await apiService.post('/api/user/login', formData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 아이디 찾기
-    async findUserId(userData) {
+    // 로그아웃
+    async logout() {
         try {
-            const response = await apiService.post('/auth/find-userid', {
-                nickname: userData.nickname,
-                email: userData.email
-            })
+            const response = await apiService.post('/api/user/logout')
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 비밀번호 찾기 (재설정 이메일 발송)
-    async findPassword(userData) {
+    // 아이디 중복 확인
+    async checkUserIdDuplicate(userId) {
         try {
-            const response = await apiService.post('/auth/find-password', {
-                userId: userData.userId,
-                email: userData.email
-            })
+            const response = await apiService.get(`/api/checkDuplicate?type=id&value=${userId}`)
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 닉네임 중복 확인
+    async checkNicknameDuplicate(nickname) {
+        try {
+            const response = await apiService.get(`/api/checkDuplicate?type=nickname&value=${nickname}`)
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 프로필 이미지 업로드
+    async uploadProfile(profileImage) {
+        try {
+            const formData = new FormData()
+            formData.append('profileImage', profileImage)
+
+            const response = await apiService.post('/api/mypage/uploadProfile', formData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -91,12 +77,23 @@ class AuthService {
     }
 
     // 비밀번호 재설정
-    async resetPassword(resetData) {
+    async resetPassword(newPassword) {
         try {
-            const response = await apiService.post('/auth/reset-password', {
-                token: resetData.token,
-                newPassword: resetData.newPassword
-            })
+            const formData = new FormData()
+            formData.append('newPassword', newPassword)
+            formData.append('newPasswordCheck', newPassword)
+
+            const response = await apiService.post('/api/mypage/resetPassword', formData)
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 회원 탈퇴
+    async deleteAccount() {
+        try {
+            const response = await apiService.post('/api/mypage/deleteAccount')
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -106,7 +103,6 @@ class AuthService {
     // 에러 처리
     handleError(error) {
         if (error.response) {
-            // 서버에서 응답을 받았지만 에러 상태코드인 경우
             const { status, data } = error.response
 
             switch (status) {
@@ -119,13 +115,11 @@ class AuthService {
                 case 500:
                     return new Error('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
                 default:
-                    return new Error(data.message || '알 수 없는 오류가 발생했습니다.')
+                    return new Error(data || '알 수 없는 오류가 발생했습니다.')
             }
         } else if (error.request) {
-            // 요청은 보냈지만 응답을 받지 못한 경우
             return new Error('네트워크 연결을 확인해주세요.')
         } else {
-            // 요청 설정 중 오류가 발생한 경우
             return new Error('요청 처리 중 오류가 발생했습니다.')
         }
     }

@@ -1,11 +1,6 @@
 <!-- 네이버 지도 -->
 <template>
   <div class="naver-map-container">
-    <!-- 로딩 중 -->
-    <div v-if="isMapLoading || isDataLoading" class="loading">
-      <p>지도 로딩 중...</p>
-    </div>
-
     <!-- 로딩 에러 -->
     <div v-if="mapError || dataError" class="error">
       <p>{{ mapError || dataError }}</p>
@@ -13,6 +8,12 @@
 
     <!-- 지도 -->
     <div :id="mapContainerId" class="map"></div>
+
+    <!-- 이 위치에서 다시 검색 버튼 추가 -->
+    <SearchAgainButton
+        :visible="true"
+        @search-again="handleSearchAgain"
+    />
 
     <!-- 지도 컨트롤 버튼들을 하나의 컨테이너로 묶기 -->
     <div class="map-controls-container">
@@ -46,6 +47,7 @@ import { ref, onMounted } from 'vue'
 import { useNaverMap } from '../../composables/useNaverMap' // 지도 생성/관리
 import { useMapMarkers } from '../../composables/useMapMarkers' //  마커 생성/제거
 import { useClotheBin } from '../../composables/useClotheBin' // 의류수거함 데이터 관리
+import SearchAgainButton from '../ui/SearchAgainButton.vue' // 이 위치에서 다시 검색 버튼
 //  현재 위치 버튼 컴포넌트 import
 import CurrentLocationButton from '../ui/CurrentLocationButton.vue'
 //  줌 버튼 컴포넌트들 import
@@ -70,14 +72,46 @@ const props = defineProps({
   center: {
     type: Object,
     default: () => ({ lat: 37.5665, lng: 126.9780 })
-  },
-  zoom: {
-    type: Number,
-    default: 10
   }
 })
 
 const mapContainerId = `naver-map-${Date.now()}`
+
+
+// 검색 버튼 클릭 핸들러 완성
+const handleSearchAgain = async () => {
+  if (!map.value) return
+
+  try {
+    console.log('현재 지도 영역에서 검색 시작...')
+
+    // 현재 지도의 사각형 영역 가져오기
+    const bounds = map.value.getBounds()
+    const swLat = bounds.getSW().lat()
+    const swLng = bounds.getSW().lng()
+    const neLat = bounds.getNE().lat()
+    const neLng = bounds.getNE().lng()
+
+    console.log('검색 영역:', { swLat, swLng, neLat, neLng })
+
+    // 기존 마커 제거
+    clearMarkers()
+
+    // 사각형 영역 내 데이터 로드
+    await loadClothingBinsInBounds(swLat, swLng, neLat, neLng)
+
+    // 새 마커 추가
+    if (clothingBins.value && clothingBins.value.length > 0) {
+      addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
+      console.log(`${clothingBins.value.length}개 마커 생성 완료`)
+    } else {
+      console.log('현재 영역에서 검색된 의류수거함이 없습니다.')
+    }
+
+  } catch (error) {
+    console.error('영역 검색 실패:', error)
+  }
+}
 
 //  현재 줌 레벨 상태 추가
 const currentZoom = ref(10)
@@ -105,7 +139,8 @@ const {
   clothingBins,
   isLoading: isDataLoading,
   error: dataError,
-  loadClothingBins
+  loadClothingBins,
+  loadClothingBinsInBounds
 } = useClotheBin()
 
 //  현재 위치 로직을 분리된 composable로 처리
@@ -143,28 +178,30 @@ const moveToLocation = (latitude, longitude) => {
 onMounted(async () => {
   try {
     // 1. 지도 초기화
-    await initMap({
-      zoom: props.zoom
-    })
+    await initMap()
 
     //  지도 초기화 후 줌 이벤트 리스너 추가
     if (map.value) {
-      // 초기 줌 레벨 설정
-      currentZoom.value = map.value.getZoom()
-
-      // 줌 변경 이벤트 리스너 추가
-      naver.maps.Event.addListener(map.value, 'zoom_changed', () => {
-        currentZoom.value = map.value.getZoom()
-      })
+      map.value.setZoom(15)  // 원하는 줌 레벨
     }
 
-    // 2. 의류수거함 데이터 로드
-    await loadClothingBins()
+    // 2. 초기 화면의 사각형 영역 내 의류수거함 데이터 로드
+    if (map.value) {
+      const bounds = map.value.getBounds()
+      const swLat = bounds.getSW().lat()
+      const swLng = bounds.getSW().lng()
+      const neLat = bounds.getNE().lat()
+      const neLng = bounds.getNE().lng()
 
-    //  수정: 콜백 함수와 함께 마커 추가
-    if (map.value && clothingBins.value && clothingBins.value.length > 0) {
-      addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
-      console.log(' 마커 생성 완료 - 이벤트 방식으로 연결됨')
+      console.log('초기 영역:', { swLat, swLng, neLat, neLng })
+
+      await loadClothingBinsInBounds(swLat, swLng, neLat, neLng)
+
+      // 마커 추가
+      if (clothingBins.value && clothingBins.value.length > 0) {
+        addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
+        console.log(`초기 로딩: ${clothingBins.value.length}개 마커 생성 완료`)
+      }
     }
   } catch (error) {
     console.error('NaverMap 초기화 에러:', error)
@@ -195,7 +232,6 @@ defineExpose({
   height: 100%;
 }
 
-.loading,
 .error {
   position: absolute;
   top: 50%;
@@ -207,9 +243,6 @@ defineExpose({
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.error {
   color: #6029b7;
 }
 

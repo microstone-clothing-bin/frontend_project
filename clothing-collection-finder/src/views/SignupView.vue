@@ -299,6 +299,7 @@ import checkGreenImage from '../assets/images/check-green.png'  // 초록색 체
 import checkRedImage from '../assets/images/check-red.png'      // 빨간색 체크 추가
 
 
+
 export default {
   name: 'SignupView',
   components: {
@@ -379,13 +380,12 @@ export default {
         this.isLoading = true
         const response = await authService.checkUserIdDuplicate(this.formData.userId)
 
-        if (response.isAvailable) {
-          // 사용 가능한 아이디
-          this.userIdCheckResult = 'available' // 사용 가능 상태로 변경
-          this.duplicateChecks.userId = true  // 중복 확인 완료 표시
-          this.errors.userId = ''
-        } else {  // 아이디 중복된 경우
-          this.userIdCheckResult = 'unavailable'  // 사용 불가능 상태로 변경
+        // 백엔드 응답에 맞게 수정
+        if (response === 'ok') {  // response.isAvailable → response === 'ok'
+          this.userIdCheckResult = 'available'
+          this.duplicateChecks.userId = true
+        } else if (response === 'duplicate') {  // 명시적으로 처리
+          this.userIdCheckResult = 'unavailable'
           this.duplicateChecks.userId = false
         }
       } catch (error) {
@@ -437,12 +437,13 @@ export default {
         this.isLoading = true
         const response = await authService.checkNicknameDuplicate(this.formData.nickname)
 
-        if (response.isAvailable) { // 사용 가능한 닉네임
-          this.nicknameCheckResult = 'available' // 사용 가능 상태로 변경
-          this.duplicateChecks.nickname = true  // 중복 확인 완료 표시
+        // 백엔드 응답에 맞게 수정
+        if (response === 'ok') {  // response.isAvailable → response === 'ok'
+          this.nicknameCheckResult = 'available'
+          this.duplicateChecks.nickname = true
           this.errors.nickname = ''
-        } else { // 사용 불가능한 닉네임 (중복)
-          this.nicknameCheckResult = 'unavailable' // 사용 불가능 상태로 변경
+        } else if (response === 'duplicate') {  // 명시적으로 처리
+          this.nicknameCheckResult = 'unavailable'
           this.duplicateChecks.nickname = false
         }
       } catch (error) {

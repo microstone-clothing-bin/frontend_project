@@ -2,12 +2,13 @@
 import axios from 'axios'
 
 // 백엔드 API 기본 URL 설정
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://midserver-url.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://clothing-backend-d6qd.onrender.com'
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
     baseURL: BASE_URL,
     timeout: 60000, // 60초 타임아웃
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
@@ -90,9 +91,9 @@ export const api = {
     },
 
     // POST 요청 - 백엔드 미완성으로 주석 처리
-    // post: (url, data = {}, config = {}) => {
-    //   return apiClient.post(url, data, config)
-    // },
+    post: (url, data = {}, config = {}) => {
+      return apiClient.post(url, data, config)
+    },
 
     // PUT 요청 - 백엔드 미완성으로 주석 처리
     // put: (url, data = {}, config = {}) => {
@@ -114,7 +115,7 @@ export const api = {
 export const get = api.get
 
 // 나머지 함수들은 백엔드 완성 후 주석 해제 예정
-// export const post = api.post
+export const post = api.post
 // export const put = api.put
 // export const del = api.delete
 // export const patch = api.patch
