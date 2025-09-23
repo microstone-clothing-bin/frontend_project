@@ -1,7 +1,9 @@
 <template>
   <MainLayout>
     <div class="login-content">
-      <img :src="logoImage" alt="DropIt 로고" class="logo" />
+      <div class="logo-container">
+        <img :src="loginLogoImage" alt="DropIt 로고" class="logo" />
+      </div>
 
       <!-- 로그인 폼 -->
       <div class="login-form">
@@ -43,12 +45,11 @@
 <script>
 
 import MainLayout from '../layouts/MainLayout.vue'
-import logoImage from '../assets/images/DropIt-logo.png'
 import rectangleImage from '../assets/images/login-rectangle.png'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
 import authService from '../services/authService'
-
+import loginLogoImage from '@/assets/images/login-logo.png'
 export default {
   name: 'LoginView',
   components: {
@@ -56,7 +57,7 @@ export default {
   },
   data() {
     return {
-      logoImage,
+      loginLogoImage,
       rectangleImage,
       eyeImage,
       eyeOpenImage,
@@ -118,4 +119,28 @@ export default {
 @import '../styles/login/login-inputs.css';
 @import '../styles/login/login-button.css';
 @import '../styles/login/login-links.css';
+
+/* 로고 컨테이너 스타일 */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.logo {
+  width: 300px;
+  height: 190px;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+  .logo {
+    width: 300px;
+    height: 190px;
+    padding: 16px;
+  }
+}
+
+
 </style>

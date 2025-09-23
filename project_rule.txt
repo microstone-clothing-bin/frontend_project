@@ -24,7 +24,8 @@
 │   │          ├ ClothingBinDetailPanel ← 정보 패널 vue
 │   │          ├ SidebarToggleButton.vue ← 사이드바 정보패널 토글버튼 vue
 │   │          ├ CurrentLocationButton.vue  ← 현재 위치 버튼 vue   (신규 추가)
-│   │          └ LocationPermissionModal.vue ← 현재 위치 버튼 권한 허용 안될때 나오는 vue (신규 추가)
+│   │          ├ LocationPermissionModal.vue ← 현재 위치 버튼 권한 허용 안될때 나오는 vue (신규 추가)
+│   │          └ SearchAgainButton.vue ← "이 위치에서 다시 검색" 보라색 버튼 컴포넌트 (신규 추가)
 │   ├── layouts/ 페이지 레이아웃 컴포넌트 (전체 구조 담당)
 │   │   ├── MainLayout.vue               ← 상단 네비바 레이아웃
 │   │   └── SidebarLayout.vue            ← 사이드바 레이아웃
@@ -52,12 +53,13 @@
 │   ├── stores/    상태관리용
 │   │   ├── clotheBinStore.js            ← 의류수거함 상태 관리 
 │   │   └── favoritesStore.js             ← 즐겨찾기 localStorage 관리 (신규 추가)
+│   │   └── authStore.js ← 로그인 로그아웃 회원가입 상태 관리용 (신규 추가)
 │   ├── services/                        API 호출, 외부 서비스 연동 로직
 │   │   ├── naverMapService.js           ← 네이버 지도 API 서비스 네이버지도 연결
 │   │   ├── apiService.js           ←  기본 HTTP 요청 기능 백엔드랑 연결 기본 axios 설정
 │   │   ├── clothesBinService.js         ← 의류수거함 API 호출 서비스        
 │   │   └── geocodingService.js   ← 네이버 지도 Geocoding API  (신규 추가)
-│   │   └── authService.js ← 회원가입 api 연결 (신규 추가)
+│   │   └── authService.js ← 회원가입 로그인 마이페이지 api 연결 (신규 추가)
 │   ├── composables/                       Vue 3 Composition API 재사용 로직
 │   │   │	      └── currentlocation/                  ← 현재 위치 관련 모든 기능  (신규 추가)
 │   │   │	      │    │   └── coordinates/ ← 좌표 권한 관리 (신규 추가)
@@ -81,7 +83,8 @@
 │   │   ├── useMapMarkers.js             ← 마커 관련 기능 
 │   │   ├── useClotheBin.js              ← 의류수거함 데이터 관리
 │   │   ├── useDetailPanel.js            ← 정보패널 상태 관리
-│   │   └── useGeocoding.js            ← 지오코딩 관련 반응형 상태 관리 (신규 추가)
+│   │   ├── useGeocoding.js            ← 지오코딩 관련 반응형 상태 관리 (신규 추가)
+│   │   └── useAuth.js  ← 인증 관련 Composition API (신규 추가)
 │   ├── utils/  유틸리티용
 │   │   ├ markerClustering.js   ← 마커 클러스터링을 정의
 │   │   ├ regionExtractor.js ← 지역 추출 및 그룹화 함수 (신규 추가)

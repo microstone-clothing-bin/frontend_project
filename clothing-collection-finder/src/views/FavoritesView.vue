@@ -91,7 +91,7 @@
 import { computed, onMounted } from 'vue'
 import MainLayout from '../layouts/MainLayout.vue'
 import FavoriteButton from '@/components/ui/favorites/FavoriteButton.vue'
-import { useFavorites } from '@/composables/favorites/useFavorites'
+import { useFavoritesStore } from '@/stores/favoritesStore'
 import { useClotheBinStore } from '@/stores/clotheBinStore'
 import { groupByRegion, convertGroupsToArray } from '@/utils/regionExtractor'
 import { useDistanceCalculator } from '@/composables/currentlocation/useDistanceCalculator'
@@ -106,23 +106,37 @@ export default {
   },
   setup() {
     const clotheBinStore = useClotheBinStore()
+    const favoritesStore = useFavoritesStore()
+
     const {
-      favoriteCount,
-      favoriteClothingBins,
-      isEmpty,
-      removeFromFavorites
-    } = useFavorites()
-    const {
-      calculateDistance: calculateDistanceRaw,  // 원본 함수를 다른 이름으로
+      calculateDistance: calculateDistanceRaw,
       formatDistance
     } = useDistanceCalculator()
 
     const {
-      coordinates: geoCoordinates,              // 현재 좌표
-      getCurrentPosition: getGeoPosition        // 위치 가져오는 함수
+      coordinates: geoCoordinates,
+      getCurrentPosition: getGeoPosition
     } = useGeolocation()
-    // 로딩 상태
-    const isLoading = computed(() => clotheBinStore.isLoading)
+
+    // 로딩 상태 (두 스토어 모두 고려)
+    const isLoading = computed(() =>
+        clotheBinStore.isLoading || favoritesStore.isLoading
+    )
+
+    // 즐겨찾기한 의류수거함 데이터
+    const favoriteClothingBins = computed(() => {
+      if (!clotheBinStore.clothingBins || favoritesStore.favoriteList.length === 0) {
+        return []
+      }
+
+      // 즐겨찾기 ID에 해당하는 의류수거함 데이터 필터링
+      return clotheBinStore.clothingBins.filter(bin =>
+          favoritesStore.isFavorite(bin.id)
+      )
+    })
+
+    // 빈 상태 확인
+    const isEmpty = computed(() => favoritesStore.favoriteCount === 0)
 
     // 지역별 그룹화된 데이터
     const groupedFavorites = computed(() => {
@@ -130,27 +144,21 @@ export default {
         return []
       }
 
-      // 즐겨찾기 데이터를 지역별로 그룹화 (시/구 단위)
       const grouped = groupByRegion(favoriteClothingBins.value, { includeDistrict: false })
-
-      // 배열 형태로 변환하고 정렬
       const groupedArray = convertGroupsToArray(grouped)
 
-      console.log(' 지역별 그룹화 결과:', groupedArray)
-
+      console.log('지역별 그룹화 결과:', groupedArray)
       return groupedArray
     })
 
-    // 거리 계산 함수 (사이드바와 동일한 로직)
+    // 거리 계산 함수
     const calculateDistance = (bin) => {
       try {
         if (!geoCoordinates.value) {
-          console.warn(' geoCoordinates가 없습니다.')
           return '위치 요청 중'
         }
 
         if (!bin.latitude || !bin.longitude) {
-          console.warn(' 의류수거함 좌표 정보 없음:', bin)
           return '좌표 정보 없음'
         }
 
@@ -173,38 +181,49 @@ export default {
         })
 
       } catch (error) {
-        console.error(' 거리 계산 중 오류:', error)
+        console.error('거리 계산 중 오류:', error)
         return '계산 오류'
       }
     }
 
-    // 즐겨찾기 제거 핸들러
-    const removeFavorite = (binId) => {
-      removeFromFavorites(binId)
-      console.log(`즐겨찾기에서 제거: ${binId}`)
+    // 즐겨찾기 제거 핸들러 (API 호출)
+    const removeFavorite = async (binId) => {
+      try {
+        await favoritesStore.removeFavorite(binId)
+        console.log(`즐겨찾기에서 제거: ${binId}`)
+      } catch (error) {
+        console.error('즐겨찾기 제거 실패:', error)
+        alert('즐겨찾기 제거에 실패했습니다.')
+      }
     }
 
     // 컴포넌트 마운트 시 데이터 로드
     onMounted(async () => {
-      console.log(' FavoritesView 로드 시작')
+      console.log('FavoritesView 로드 시작')
 
-      // 위치 정보 먼저 가져오기 (이 부분 추가 필요!)
-      await getGeoPosition()
+      try {
+        // 위치 정보 가져오기
+        await getGeoPosition()
 
-      // 의류수거함 데이터가 없으면 먼저 로드
-      if (clotheBinStore.clothingBins.length === 0) {
-        await clotheBinStore.fetchClothingBins()
+        // 의류수거함 데이터 로드
+        if (clotheBinStore.clothingBins.length === 0) {
+          await clotheBinStore.fetchClothingBins()
+        }
+
+        // 즐겨찾기 데이터 로드 (API에서)
+        await favoritesStore.loadFavorites()
+
+        console.log('즐겨찾기 개수:', favoritesStore.favoriteCount)
+        console.log('현재 위치:', geoCoordinates.value)
+      } catch (error) {
+        console.error('데이터 로드 실패:', error)
       }
-
-      console.log(' 즐겨찾기 개수:', favoriteCount.value)
-      console.log(' 즐겨찾기 데이터:', favoriteClothingBins.value)
-      console.log(' 현재 위치:', geoCoordinates.value)
     })
 
     return {
       // 상태
       isLoading,
-      favoriteCount,
+      favoriteCount: computed(() => favoritesStore.favoriteCount),
       favoriteClothingBins,
       isEmpty,
       groupedFavorites,

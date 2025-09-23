@@ -3,7 +3,10 @@
   <nav class="navigation-bar">
     <!-- 로고 영역 -->
     <div class="nav-brand">
-      <h1 class="brand-text">DropIt 로고 넣기</h1>
+      <a href="/" to="/" class="brand-link">
+        <img src="@/assets/images/logo.png" alt="DropIt Logo" class="brand-logo" />
+        <img src="@/assets/images/dropit.png" alt="DropIt Text" class="brand-text-img" />
+      </a>
     </div>
 
     <!-- 메뉴 영역 -->
@@ -29,5 +32,45 @@ export default {
 </script>
 
 <style scoped>
-/* 동적 스타일이 필요한 경우만 여기에 */
+/* 로고 영역 스타일 */
+.nav-brand {
+  display: flex;
+  align-items: center;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  gap: 2px; /* 로고와 텍스트 사이 간격 */
+}
+
+.brand-logo {
+  height: 40px; /* 로고 높이 조정 */
+  width: 40px;  /* 정사각형으로 맞춤 */
+  padding: 8px; /* 내부 여백 */
+  margin-bottom: 6px;
+  object-fit: contain;
+  box-sizing: border-box;
+}
+
+.brand-text-img {
+  height: 32px; /* 텍스트 이미지 높이 조정 */
+  width: auto;
+  object-fit: contain;
+  margin-top: 5px;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+  .brand-logo {
+    height: 32px;
+    width: 32px;
+    padding: 6px;
+  }
+
+  .brand-text-img {
+    height: 24px;
+  }
+}
 </style>

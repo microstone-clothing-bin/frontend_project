@@ -83,7 +83,7 @@
           <!-- FavoriteButton -->
           <FavoriteButton
               :is-active="isFavorite(bin.id)"
-              @click="handleBookmarkClick(bin.id)"
+              @click="(event) => handleBookmarkClick(bin.id, event)"
           />
         </div>
       </div>
@@ -103,7 +103,7 @@ import { useSortedDistance } from '@/composables/sorted/useSortedDistance'
 import SearchContainer from '@/components/ui/search/SearchContainer.vue'
 //  FavoriteButton과 즐겨찾기 기능 import 추가
 import FavoriteButton from '@/components/ui/favorites/FavoriteButton.vue'
-import { useFavorites } from '@/composables/favorites/useFavorites'
+import { useFavoritesStore } from '@/stores/favoritesStore'
 
 export default {
   name: 'SidebarContent',
@@ -123,7 +123,12 @@ export default {
     const isSearching = ref(false)
 
     //  즐겨찾기 기능 추가
-    const { isFavorite, toggleFavorite } = useFavorites()
+    const favoritesStore = useFavoritesStore()
+
+    const isFavorite = (binId) => {
+      if (!binId) return false
+      return favoritesStore.isFavorite(binId)
+    }
 
     // 지오코딩 관련
     const {
@@ -226,9 +231,22 @@ export default {
     }
 
     //  즐겨찾기 클릭 핸들러 추가
-    const handleBookmarkClick = (binId) => {
-      toggleFavorite(binId)
-      console.log(`사이드바에서 즐겨찾기 토글: ${binId}`)
+    const handleBookmarkClick = async (binId, event) => {
+      event?.stopPropagation() // 이벤트 버블링 방지
+
+      if (!binId) {
+        console.error('binId가 없습니다.')
+        return
+      }
+      console.log('버튼 클릭 전 isActive:', isFavorite(binId))  // 추가
+      try {
+        await favoritesStore.toggleFavorite(binId)
+        console.log(`사이드바에서 즐겨찾기 토글: ${binId}`)
+        console.log('버튼 클릭 후 isActive:', isFavorite(binId))  // 추가
+      } catch (error) {
+        console.error('즐겨찾기 토글 실패:', error)
+        alert('즐겨찾기 변경에 실패했습니다.')
+      }
     }
 
     // 위치 업데이트 감지

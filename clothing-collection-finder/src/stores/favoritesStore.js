@@ -1,72 +1,124 @@
 // src/stores/favoritesStore.js - 즐겨찾기 상태 관리 스토어
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-// 현재 localStorage 기반으로 만들어져 있음 나중에 백엔드 연결하면 api기반으로 수정
+import wishService from '@/services/wishService'
+
 export const useFavoritesStore = defineStore('favorites', () => {
     // 상태 정의
-    const favoriteIds = ref(new Set())  // 즐겨찾기 ID들을 Set으로 관리 (중복 방지, 빠른 검색)
+    const favoriteIds = ref(new Set())
+    const isLoading = ref(false)
+    const error = ref(null)
 
-    // localStorage 키
-    const STORAGE_KEY = 'clothing_bin_favorites'
+    // 임시 사용자 ID (나중에 authStore에서 가져와야 함)
+    const currentUserId = ref(1)
 
-    // 초기화 - localStorage에서 데이터 로드
-    const initializeFavorites = () => {
+    // 즐겨찾기 목록 로드 (백엔드에서)
+    const loadFavorites = async () => {
         try {
-            const stored = localStorage.getItem(STORAGE_KEY)
-            if (stored) {
-                const favoriteArray = JSON.parse(stored)
-                favoriteIds.value = new Set(favoriteArray)
-                console.log(`즐겨찾기 데이터 로드: ${favoriteArray.length}개`)
-            }
-        } catch (error) {
-            console.error('즐겨찾기 데이터 로드 실패:', error)
+            isLoading.value = true
+            error.value = null
+
+            const wishes = await wishService.getUserWishes(currentUserId.value)
+            favoriteIds.value = new Set(wishes)
+
+            console.log(`즐겨찾기 데이터 로드: ${wishes.length}개`)
+        } catch (err) {
+            error.value = err.message
+            console.error('즐겨찾기 로드 실패:', err)
+            // 에러 시 빈 Set으로 초기화
             favoriteIds.value = new Set()
+        } finally {
+            isLoading.value = false
         }
     }
 
-    // localStorage에 저장
-    const saveFavorites = () => {
+    // 즐겨찾기 추가 (백엔드 API 호출)
+    const addFavorite = async (binId) => {
+        console.log('addFavorite 함수 시작, binId:', binId)
         try {
-            const favoriteArray = Array.from(favoriteIds.value)
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(favoriteArray))
-        } catch (error) {
-            console.error('즐겨찾기 데이터 저장 실패:', error)
+            isLoading.value = true
+            error.value = null
+
+            const result = await wishService.addWish(currentUserId.value, binId)
+
+            console.log('백엔드 응답 결과:', result)  // 이 로그 추가
+            console.log('응답 타입:', typeof result)  // 이 로그 추가
+
+            if (result === 'success') {
+                favoriteIds.value.add(binId)
+                console.log(`즐겨찾기 추가: ${binId}`)
+                console.log('현재 즐겨찾기 목록:', Array.from(favoriteIds.value))  // 이 로그 추가
+            } else {
+                console.log('예상과 다른 응답:', result)  // 이 로그 추가
+            }
+        } catch (err) {
+            error.value = err.message
+            console.error('즐겨찾기 추가 실패:', err)
+            throw err
+        } finally {
+            isLoading.value = false
         }
     }
 
-    // 즐겨찾기 추가
-    const addFavorite = (id) => {
-        favoriteIds.value.add(id)
-        saveFavorites()
-        console.log(`즐겨찾기 추가: ${id}`)
+    // 즐겨찾기 제거 (백엔드 API 호출)
+    const removeFavorite = async (binId) => {
+        try {
+            isLoading.value = true
+            error.value = null
+
+            const result = await wishService.removeWish(currentUserId.value, binId)
+
+            if (result === 'success') {
+                favoriteIds.value.delete(binId)
+                console.log(`즐겨찾기 제거: ${binId}`)
+            }
+        } catch (err) {
+            error.value = err.message
+            console.error('즐겨찾기 제거 실패:', err)
+            throw err
+        } finally {
+            isLoading.value = false
+        }
     }
 
-    // 즐겨찾기 제거
-    const removeFavorite = (id) => {
-        favoriteIds.value.delete(id)
-        saveFavorites()
-        console.log(`즐겨찾기 제거: ${id}`)
-    }
+    // 즐겨찾기 토글 (비동기)
+    const toggleFavorite = async (binId) => {
+        console.log('toggleFavorite 함수 실행됨, binId:', binId)  // 추가
+        console.log('현재 즐겨찾기 상태:', favoriteIds.value.has(binId))  // 추가
 
-    // 즐겨찾기 토글 (있으면 제거, 없으면 추가)
-    const toggleFavorite = (id) => {
-        if (favoriteIds.value.has(id)) {
-            removeFavorite(id)
+        if (favoriteIds.value.has(binId)) {
+            console.log('제거 실행')  // 추가
+            await removeFavorite(binId)
         } else {
-            addFavorite(id)
+            console.log('추가 실행')  // 추가
+            await addFavorite(binId)
         }
     }
 
     // 특정 ID가 즐겨찾기인지 확인
-    const isFavorite = (id) => {
-        return favoriteIds.value.has(id)
+    const isFavorite = (binId) => {
+        return favoriteIds.value.has(binId)
     }
 
-    // 모든 즐겨찾기 제거
-    const clearAllFavorites = () => {
-        favoriteIds.value.clear()
-        saveFavorites()
-        console.log('모든 즐겨찾기 제거')
+    // 모든 즐겨찾기 제거 (실제로는 백엔드에서 모든 항목 제거)
+    const clearAllFavorites = async () => {
+        try {
+            isLoading.value = true
+
+            // 현재 즐겨찾기들을 하나씩 제거 (백엔드에 일괄 삭제 API가 없다면)
+            const promises = Array.from(favoriteIds.value).map(binId =>
+                wishService.removeWish(currentUserId.value, binId)
+            )
+
+            await Promise.all(promises)
+            favoriteIds.value.clear()
+            console.log('모든 즐겨찾기 제거 완료')
+        } catch (err) {
+            error.value = err.message
+            console.error('즐겨찾기 전체 제거 실패:', err)
+        } finally {
+            isLoading.value = false
+        }
     }
 
     // getter - 즐겨찾기 개수
@@ -75,23 +127,23 @@ export const useFavoritesStore = defineStore('favorites', () => {
     // getter - 즐겨찾기 ID 배열
     const favoriteList = computed(() => Array.from(favoriteIds.value))
 
-    // 스토어 초기화
-    initializeFavorites()
-
     return {
         // 상태
         favoriteIds,
+        isLoading,
+        error,
+        currentUserId,
 
         // getter
         favoriteCount,
         favoriteList,
 
         // 액션
+        loadFavorites,
         addFavorite,
         removeFavorite,
         toggleFavorite,
         isFavorite,
-        clearAllFavorites,
-        initializeFavorites
+        clearAllFavorites
     }
 })

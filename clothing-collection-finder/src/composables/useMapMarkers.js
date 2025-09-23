@@ -34,22 +34,9 @@ export function useMapMarkers() {
 
         // 2. 클러스터 스타일 정의
         const clusterStyle = {
-            content: `
-                <div style="
-                    background-color: #2ecc71;
-                    color: white;
-                    font-size: 13px;
-                    font-weight: bold;
-                    border-radius: 50%;
-                    width: 36px;
-                    height: 36px;
-                    line-height: 36px;
-                    text-align: center;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-                    cursor: pointer;">
-                </div>`,
-            size: new window.naver.maps.Size(36, 36),
-            anchor: new window.naver.maps.Point(18, 18)
+            content: `<div class="cluster"></div>`,
+            size: new window.naver.maps.Size(40, 40),
+            anchor: new window.naver.maps.Point(20, 20)
         }
 
         // 3. 고급 클러스터링 적용
@@ -80,31 +67,17 @@ export function useMapMarkers() {
                 // 글자 크기 설정
                 clusterDiv.style.fontSize = `${fontSize}px`
 
-                //  마커 개수에 따라 배경색을 다르게 설정 (그라데이션 효과)
+                // 간단한 5단계 색상
                 if (count < 10) {
-                    clusterDiv.style.backgroundColor = '#ffd5e1' // 연한 핑크
-                } else if (count < 20) {
-                    clusterDiv.style.backgroundColor = '#ffacc3' // 핑크
-                } else if (count < 30) {
-                    clusterDiv.style.backgroundColor = '#ff88bc' // 진한 핑크
-                } else if (count < 40) {
-                    clusterDiv.style.backgroundColor = '#fd6b88' // 빨강-핑크
+                    clusterDiv.style.backgroundColor = '#ffd5e1';
                 } else if (count < 50) {
-                    clusterDiv.style.backgroundColor = '#c637ff' // 보라-핑크
-                } else if (count < 60) {
-                    clusterDiv.style.backgroundColor = '#7b00ff' // 보라
+                    clusterDiv.style.backgroundColor = '#ff88bc';
                 } else if (count < 100) {
-                    clusterDiv.style.backgroundColor = '#000bff' // 파랑
-                } else if (count < 200) {
-                    clusterDiv.style.backgroundColor = '#594dff' // 연한 파랑
-                } else if (count < 300) {
-                    clusterDiv.style.backgroundColor = '#739bff' // 하늘색
-                } else if (count < 400) {
-                    clusterDiv.style.backgroundColor = '#b2c8ff' // 연한 하늘색
+                    clusterDiv.style.backgroundColor = '#c637ff';
                 } else if (count < 500) {
-                    clusterDiv.style.backgroundColor = '#ade4ff' // 아주 연한 파랑
+                    clusterDiv.style.backgroundColor = '#000bff';
                 } else {
-                    clusterDiv.style.backgroundColor = '#d8edff' // 거의 흰색에 가까운 파랑
+                    clusterDiv.style.backgroundColor = '#739bff';
                 }
 
                 // 기타 스타일 지정
@@ -118,15 +91,7 @@ export function useMapMarkers() {
                 clusterDiv.style.alignItems = 'center' // 수직 중앙 정렬
                 clusterDiv.style.cursor = 'pointer' // 마우스 올리면 커서 변경
 
-                //  호버 효과 추가
-                clusterDiv.addEventListener('mouseenter', () => {
-                    clusterDiv.style.transform = 'scale(1.1)'
-                    clusterDiv.style.transition = 'transform 0.2s ease'
-                })
 
-                clusterDiv.addEventListener('mouseleave', () => {
-                    clusterDiv.style.transform = 'scale(1)'
-                })
             }
         })
 

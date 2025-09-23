@@ -137,10 +137,30 @@ import '@/styles/detailpanel/favorite-divider.css'
 import '@/styles/detailpanel/review-section.css'
 import { ref } from 'vue'
 
+const commentText = ref('')
 
 const favoritesStore = useFavoritesStore()
-const { isFavorite, toggleFavorite } = favoritesStore
-const commentText = ref('')
+
+// 즐겨찾기 관련 함수들
+const isFavorite = (binId) => {
+  if (!binId) return false
+  return favoritesStore.isFavorite(binId)
+}
+
+const toggleFavorite = async (binId) => {
+  if (!binId) {
+    console.error('binId가 없습니다.')
+    return
+  }
+
+  try {
+    await favoritesStore.toggleFavorite(binId)
+    console.log(`즐겨찾기 토글: ${binId}`)
+  } catch (error) {
+    console.error('즐겨찾기 토글 실패:', error)
+    alert('즐겨찾기 변경에 실패했습니다.')
+  }
+}
 
 const openCamera = () => {
   console.log('카메라 버튼 클릭')
