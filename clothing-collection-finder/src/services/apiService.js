@@ -10,33 +10,30 @@ const apiClient = axios.create({
     timeout: 60000, // 60초 타임아웃
     headers: {
         'Accept': 'application/json'
-        // Content-Type은 제거 - FormData 사용시 자동으로 설정됨
-    }
+    },
+    withCredentials: true // Spring Security 세션 쿠키(JSESSIONID) 자동 포함
 })
 
 // 요청 인터셉터 (요청을 보내기 전에 실행)
 apiClient.interceptors.request.use(
     (config) => {
-        // 요청이 전송되기 전에 수행할 작업
         console.log('API 요청:', config.method?.toUpperCase(), config.url)
 
-        // 인증이 필요한 API만 withCredentials 적용
-        if (config.url.includes('/api/user/') ||
-            config.url.includes('/api/wish/') ||
-            config.url.includes('/api/mypage/') ||
-            config.url.includes('/api/clothing-bins/')) {  // 이 줄 추가
-            config.withCredentials = true // 쿠키 허용
-        }
-
-        // FormData가 아닌 경우에만 JSON Content-Type 설정
-        if (!(config.data instanceof FormData) && config.method !== 'get') {
+        // Content-Type 자동 설정 로직
+        if (config.data instanceof FormData) {
+            // FormData인 경우 브라우저가 자동으로 multipart/form-data로 설정
+            delete config.headers['Content-Type']
+        } else if (config.data instanceof URLSearchParams) {
+            // URLSearchParams인 경우 form-urlencoded로 설정
+            config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        } else if (config.method !== 'get' && config.data) {
+            // 일반 객체인 경우 JSON으로 설정
             config.headers['Content-Type'] = 'application/json'
         }
 
         return config
     },
     (error) => {
-        // 요청 오류가 있는 경우
         console.error('요청 에러:', error)
         return Promise.reject(error)
     }
@@ -45,18 +42,15 @@ apiClient.interceptors.request.use(
 // 응답 인터셉터 (응답을 받은 후에 실행)
 apiClient.interceptors.response.use(
     (response) => {
-        // 성공적인 응답 처리
         console.log('API 응답 성공:', response.status, response.config.url)
-        console.log('응답 데이터:', response.data) // 디버깅용
+        console.log('응답 데이터:', response.data)
         return response
     },
     (error) => {
-        // 응답 오류 처리
         console.error('API 응답 에러:', error.response?.status, error.config?.url)
-        console.error('에러 상세:', error.response?.data) // 디버깅용
+        console.error('에러 상세:', error.response?.data)
 
         if (error.response) {
-            // 서버가 응답했지만 에러 상태코드
             const { status, data } = error.response
 
             switch (status) {
@@ -64,10 +58,17 @@ apiClient.interceptors.response.use(
                     console.error('잘못된 요청:', data)
                     break
                 case 401:
-                    console.error('인증 실패:', data)
+                    console.error('인증 실패 - 로그인이 필요합니다:', data)
+                    // Spring Security에서 401은 주로 로그인 실패나 세션 만료
+                    if (window.location.pathname !== '/login') {
+                        console.warn('세션이 만료되었거나 로그인이 필요합니다.')
+                        // 필요시 Vue Router나 상태관리로 로그인 처리
+                        // 예: window.dispatchEvent(new CustomEvent('auth-required'))
+                    }
                     break
                 case 403:
                     console.error('권한 없음:', data)
+                    // Spring Security에서 403은 주로 CSRF 토큰 문제나 권한 부족
                     break
                 case 404:
                     console.error('리소스를 찾을 수 없음:', data)
@@ -76,13 +77,12 @@ apiClient.interceptors.response.use(
                     console.error('서버 내부 오류:', data)
                     break
                 default:
-                    console.error('알 수 없는 오류:', data)
+                    console.error('알 수 없는 오류:', status, data)
             }
         } else if (error.request) {
-            // 요청은 보냈지만 응답을 받지 못함
             console.error('네트워크 오류: 서버에 연결할 수 없습니다')
+            console.error('요청 상세:', error.request)
         } else {
-            // 요청 설정 중에 오류 발생
             console.error('요청 설정 오류:', error.message)
         }
 
@@ -115,6 +115,28 @@ export const api = {
     // PATCH 요청
     patch: (url, data = {}, config = {}) => {
         return apiClient.patch(url, data, config)
+    }
+}
+
+// Spring Security 전용 헬퍼 함수들
+export const authApi = {
+    // Spring Security 로그인 (form-urlencoded)
+    login: (credentials) => {
+        const formData = new URLSearchParams()
+        formData.append('id', credentials.userId || credentials.id)
+        formData.append('password', credentials.password)
+
+        return api.post('/login', formData)
+    },
+
+    // Spring Security 로그아웃
+    logout: () => {
+        return api.post('/logout')
+    },
+
+    // 인증 상태 확인 (마이페이지 정보로 확인)
+    checkAuth: () => {
+        return api.get('/api/user/mypage')
     }
 }
 

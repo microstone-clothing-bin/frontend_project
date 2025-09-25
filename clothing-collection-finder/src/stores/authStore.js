@@ -18,14 +18,24 @@ export const useAuthStore = defineStore('auth', () => {
 
             const response = await authService.login(credentials)
 
-            if (response === 'success') {
+            // 수정: 객체의 success 속성 확인
+            if (response.success) {
                 isLoggedIn.value = true
-                // 세션 기반이므로 사용자 정보는 별도 API로 가져와야 함
+
+                // 사용자 정보 가져오기 (선택사항)
+                try {
+                    const userInfo = await authService.getMyPageInfo()
+                    user.value = userInfo
+                } catch (err) {
+                    console.log('사용자 정보 가져오기 실패 (백엔드 문제):', err.message)
+                    // 마이페이지 API가 작동하지 않아도 로그인은 성공으로 처리
+                }
             }
 
             return response
         } catch (err) {
             error.value = err.message
+            isLoggedIn.value = false
             throw err
         } finally {
             isLoading.value = false

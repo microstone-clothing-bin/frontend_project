@@ -2,41 +2,42 @@
 import { api } from './apiService.js'
 
 class AuthService {
-    // 회원가입
-    async signup(userData) {
-        try {
-            const formData = new FormData()
-            formData.append('id', userData.userId)
-            formData.append('password', userData.password)
-            formData.append('passwordCheck', userData.passwordConfirm) // 수정: passwordConfirm 사용
-            formData.append('nickname', userData.nickname)
-            formData.append('email', userData.email)
-
-            const response = await api.post('/api/user/register', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                withCredentials: true
-            })
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
-
-    // 로그인
+    // 로그인 - Spring Security 폼 로그인 방식
     async login(credentials) {
         try {
-            const formData = new FormData()
+            const formData = new URLSearchParams()
             formData.append('id', credentials.userId)
             formData.append('password', credentials.password)
 
+            const response = await api.post('/login', formData)
 
-            const response = await api.post('/api/user/login', formData, {
+            // HTML 응답이 와도 상태코드가 200이면 성공으로 간주
+            if (response.status === 200) {
+                console.log('로그인 성공 (Spring Security 리다이렉트)')
+                return { success: true, message: '로그인 성공' }
+            }
+
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 회원가입
+    async signup(userData) {
+        try {
+            // JSON 형식으로 전송
+            const requestData = {
+                id: userData.userId,
+                password: userData.password,
+                passwordCheck: userData.passwordConfirm,
+                nickname: userData.nickname,
+                email: userData.email
+            }
+
+            const response = await api.post('/api/user/register', requestData, {
                 headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                withCredentials: true
+                    'Content-Type': 'application/json'
+                }
             })
             return response.data
         } catch (error) {
@@ -44,15 +45,75 @@ class AuthService {
         }
     }
 
-    // 로그아웃
+    // 로그아웃 - Spring Security 로그아웃
     async logout() {
         try {
-            const response = await api.post('/api/user/logout', {}, {
-                withCredentials: true
-            })
+            const response = await api.post('/logout')
             return response.data
         } catch (error) {
             throw this.handleError(error)
+        }
+    }
+
+    // 마이페이지 정보 조회 - Spring Security Authentication 사용
+    async getMyPageInfo() {
+        try {
+            const response = await api.get('/api/user/mypage')
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 프로필 이미지 업로드 - FormData 자동 처리
+    async uploadProfile(profileImage) {
+        try {
+            const formData = new FormData()
+            formData.append('profileImage', profileImage)
+
+            // apiService.js가 자동으로 multipart/form-data로 설정
+            const response = await api.post('/api/mypage/uploadProfile', formData)
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 비밀번호 재설정
+    async resetPassword(newPassword) {
+        try {
+            const formData = new URLSearchParams()
+            formData.append('newPassword', newPassword)
+            formData.append('newPasswordCheck', newPassword)
+
+            const response = await api.post('/api/mypage/resetPassword', formData)
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 회원 탈퇴
+    async deleteAccount() {
+        try {
+            const response = await api.post('/api/mypage/deleteAccount')
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // 인증 상태 확인 (로그인 여부 체크용)
+    async checkAuthStatus() {
+        try {
+            const response = await this.getMyPageInfo()
+            return { isAuthenticated: true, user: response }
+        } catch (error) {
+            if (error.message?.includes('로그인이 필요합니다') ||
+                error.response?.status === 401) {
+                return { isAuthenticated: false, user: null }
+            }
+            throw error
         }
     }
 
@@ -76,72 +137,50 @@ class AuthService {
         }
     }
 
-    // 프로필 이미지 업로드
-    async uploadProfile(profileImage) {
+    // Spring Security 로그인 결과 체크 (로그인 성공/실패 판단)
+    async verifyLoginSuccess() {
         try {
-            const formData = new FormData()
-            formData.append('profileImage', profileImage)
-
-            const response = await api.post('/api/mypage/uploadProfile', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                withCredentials: true
-            })
-            return response.data
+            // 로그인 후 마이페이지 정보를 가져올 수 있으면 성공
+            await this.getMyPageInfo()
+            return true
         } catch (error) {
-            throw this.handleError(error)
+            return false
         }
     }
 
-    // 비밀번호 재설정
-    async resetPassword(newPassword) {
-        try {
-            const formData = new FormData()
-            formData.append('newPassword', newPassword)
-            formData.append('newPasswordCheck', newPassword)
-
-            const response = await api.post('/api/mypage/resetPassword', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                },
-                withCredentials: true
-            })
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
-
-    // 회원 탈퇴
-    async deleteAccount() {
-        try {
-            const response = await api.post('/api/mypage/deleteAccount', {}, {
-                withCredentials: true
-            })
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
-
-    // 에러 처리
+    // 에러 처리 - Spring Security 환경에 맞게 개선
     handleError(error) {
         console.error('Auth Service Error:', error)
 
         if (error.response) {
             const { status, data } = error.response
 
-            // 백엔드에서 단순 문자열로 응답하므로 data 자체가 메시지
-            const message = typeof data === 'string' ? data : (data.message || '알 수 없는 오류가 발생했습니다.')
+            // Spring Security에서 오는 다양한 응답 형식 처리
+            let message
+            if (typeof data === 'string') {
+                message = data
+            } else if (data?.message) {
+                message = data.message
+            } else if (data?.error) {
+                message = data.error
+            } else if (data?.status && data?.message) {
+                message = data.message
+            } else {
+                message = '알 수 없는 오류가 발생했습니다.'
+            }
 
             switch (status) {
                 case 400:
-                    return new Error(message)
+                    return new Error(message || '잘못된 요청입니다.')
+                case 401:
+                    return new Error('로그인이 필요합니다.')
+                case 403:
+                    // Spring Security에서 CSRF나 권한 문제
+                    return new Error('접근 권한이 없습니다.')
                 case 409:
-                    return new Error(message)
+                    return new Error(message || '중복된 데이터입니다.')
                 case 404:
-                    return new Error(message)
+                    return new Error(message || '요청한 리소스를 찾을 수 없습니다.')
                 case 500:
                     return new Error('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.')
                 default:

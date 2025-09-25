@@ -84,7 +84,8 @@ export default {
           password: this.password
         })
 
-        if (result === 'success') {
+        // 수정: 객체의 success 속성 확인
+        if (result.success) {
           console.log('로그인 성공!')
           this.$router.push('/')
         } else {
