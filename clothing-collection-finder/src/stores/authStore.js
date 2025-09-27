@@ -18,24 +18,38 @@ export const useAuthStore = defineStore('auth', () => {
 
             const response = await authService.login(credentials)
 
-            // 수정: 객체의 success 속성 확인
-            if (response.success) {
-                isLoggedIn.value = true
-
-                // 사용자 정보 가져오기 (선택사항)
-                try {
-                    const userInfo = await authService.getMyPageInfo()
-                    user.value = userInfo
-                } catch (err) {
-                    console.log('사용자 정보 가져오기 실패 (백엔드 문제):', err.message)
-                    // 마이페이지 API가 작동하지 않아도 로그인은 성공으로 처리
-                }
+            // JSON 응답 처리
+            if (response && response.success) {
+                isLoggedIn.value = true // 이 부분이 실행되어야 함
+                user.value = response.user // 사용자 정보 저장
             }
 
             return response
         } catch (err) {
             error.value = err.message
             isLoggedIn.value = false
+            user.value = null
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    // 회원가입
+    const signup = async (userData) => {
+        try {
+            isLoading.value = true
+            error.value = null
+
+            const response = await authService.signup(userData)
+
+            if (response === 'success') {
+                return { success: true, message: '회원가입이 완료되었습니다.' }
+            } else {
+                throw new Error(response || '회원가입에 실패했습니다.')
+            }
+        } catch (err) {
+            error.value = err.message
             throw err
         } finally {
             isLoading.value = false
@@ -45,20 +59,64 @@ export const useAuthStore = defineStore('auth', () => {
     // 로그아웃
     const logout = async () => {
         try {
+            isLoading.value = true
             await authService.logout()
+        } catch (err) {
+            console.error('로그아웃 API 실패:', err)
+        } finally {
+            // 항상 상태 초기화
             user.value = null
             isLoggedIn.value = false
-        } catch (err) {
-            console.error('로그아웃 실패:', err)
+            error.value = null
+            isLoading.value = false
         }
     }
 
+    // 인증 상태 확인 (간단하게 수정)
+    const checkAuth = async () => {
+        try {
+            isLoading.value = true
+            const authStatus = await authService.checkAuthStatus()
+
+            if (authStatus.isAuthenticated) {
+                isLoggedIn.value = true
+                user.value = authStatus.user
+            } else {
+                isLoggedIn.value = false
+                user.value = null
+            }
+
+            return authStatus.isAuthenticated
+        } catch (err) {
+            console.log('인증 상태 확인 실패 (정상적일 수 있음):', err.message)
+            isLoggedIn.value = false
+            user.value = null
+            return false
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    // 상태 초기화
+    const resetState = () => {
+        user.value = null
+        isLoggedIn.value = false
+        isLoading.value = false
+        error.value = null
+    }
+
     return {
+        // 상태
         user,
         isLoggedIn,
         isLoading,
         error,
+
+        // 액션
         login,
-        logout
+        signup,
+        logout,
+        checkAuth,
+        resetState
     }
 })

@@ -13,7 +13,7 @@ export const clothesBinService = {
     async getAllClothingBins() {
         try {
             // 한국 전체를 커버하는 큰 bounds로 요청
-            const response = await api.get('/api/clothing-bins/in-bounds', {
+            const response = await api.get('/api/clothing-bins', {
                 params: {
                     swLat: 33.0,   // 한국 최남단 (제주도)
                     swLng: 124.0,  // 한국 최서단

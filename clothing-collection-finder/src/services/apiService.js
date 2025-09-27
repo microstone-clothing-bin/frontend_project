@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // 백엔드 API 기본 URL 설정
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-server-tka2.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-server-z67l.onrender.com'
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
@@ -118,25 +118,25 @@ export const api = {
     }
 }
 
-// Spring Security 전용 헬퍼 함수들
+// 수정된 authApi
 export const authApi = {
-    // Spring Security 로그인 (form-urlencoded)
+    // SPA용 REST API 로그인
     login: (credentials) => {
         const formData = new URLSearchParams()
         formData.append('id', credentials.userId || credentials.id)
         formData.append('password', credentials.password)
 
-        return api.post('/login', formData)
+        return api.post('/login', formData) // REST API 엔드포인트
     },
 
-    // Spring Security 로그아웃
+    // SPA용 로그아웃
     logout: () => {
-        return api.post('/logout')
+        return api.post('/logout') // REST API 엔드포인트
     },
 
-    // 인증 상태 확인 (마이페이지 정보로 확인)
+    // 인증 상태 확인 (기존 작동하는 엔드포인트 사용)
     checkAuth: () => {
-        return api.get('/api/user/mypage')
+        return api.get('/api/clothing-bins') // 실제 존재하는 엔드포인트
     }
 }
 

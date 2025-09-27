@@ -71,7 +71,27 @@
           <div class="review-content">
             <!-- 리뷰 보기 내용 -->
             <div v-if="activeTab === 'view'" class="review-view">
-              <p>리뷰 목록 내용</p>
+              <div class="review-item">
+                <div class="user-profile">
+                  <img src="@/assets/images/Ellipse.png" alt="사용자 프로필" class="profile-image">
+                  <span class="username">user nickname 1</span>
+                </div>
+
+                <!-- 리뷰 이미지 -->
+                <div class="review-image-container">
+                  <img src="@/assets/images/image.png" alt="리뷰 이미지" class="review-image">
+                </div>
+
+                <!-- 리뷰 텍스트 -->
+                <div class="review-text-container">
+                  <p class="review-text">
+                    아파트 101동 앞에 주차장쪽에 위치하고 있어요.<br>
+                    0000아파트 101동으로 가시는게 조금 더 찾기 쉬울거다.<br>
+                    의류수거함 시설 함께 철벽합니다.<br>
+                    사진 참고해주세요.
+                  </p>
+                </div>
+              </div>
             </div>
 
             <!-- 리뷰 쓰기 내용 -->
@@ -80,6 +100,8 @@
                 <img src="@/assets/images/clothing-bin-group.png" alt="사용자 프로필" class="profile-image">
                 <span class="username">user nickname 1</span>
               </div>
+
+
 
               <!-- 댓글 입력창 -->
               <div class="comment-input-wrapper">
@@ -261,6 +283,70 @@ const props = defineProps({
   overflow: hidden;
   max-height: 800px;
   min-height: 400px;
+}
+
+.review-view {
+  max-height: 400px;
+}
+
+.review-item {
+  text-align: left;
+  height: 272px; /* max-height 대신 고정 height 사용 */
+  overflow-y: auto;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 12px; /* 프로필과 이미지 사이 간격 */
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  margin-right: 12px;
+  object-fit: cover;
+}
+
+.username {
+  font-size: 18px;
+  font-weight: 500;
+  color: #1A1A1A;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+}
+
+/* 리뷰 이미지 컨테이너 */
+.review-image-container {
+  margin-top: 10px;
+
+}
+
+/* 리뷰 이미지 */
+.review-image {
+  width: 140px; /* 피그마 디자인에 맞게 조정 */
+  height: 170px;
+  object-fit: cover;
+
+}
+
+/* 리뷰 텍스트 컨테이너 */
+.review-text-container {
+  margin-top: 12px;
+}
+
+/* 리뷰 텍스트 */
+.review-text {
+  font-size: 14px;
+  font-weight: 400;
+  color: #1A1A1A;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+  line-height: 1.5;
+  margin: 0;
+  word-break: keep-all;
+  white-space: pre-line; /* 줄바꿈 유지 */
 }
 
 /* 슬라이드 인 애니메이션 */

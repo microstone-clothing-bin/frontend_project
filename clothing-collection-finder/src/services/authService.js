@@ -2,7 +2,7 @@
 import { api } from './apiService.js'
 
 class AuthService {
-    // 로그인 - Spring Security 폼 로그인 방식
+    // SPA용 REST API 로그인
     async login(credentials) {
         try {
             const formData = new URLSearchParams()
@@ -11,44 +11,50 @@ class AuthService {
 
             const response = await api.post('/login', formData)
 
-            // HTML 응답이 와도 상태코드가 200이면 성공으로 간주
-            if (response.status === 200) {
-                console.log('로그인 성공 (Spring Security 리다이렉트)')
-                return { success: true, message: '로그인 성공' }
+            // JSON 응답 처리로 수정
+            if (response.status === 200 && response.data.status === 'success') {
+                return {
+                    success: true,
+                    message: response.data.message,
+                    user: {
+                        userId: response.data.userId,
+                        nickname: response.data.nickname
+                    }
+                }
+            } else {
+                return {
+                    success: false,
+                    message: response.data.message || '로그인에 실패했습니다.'
+                }
             }
-
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
+
     // 회원가입
     async signup(userData) {
         try {
-            // JSON 형식으로 전송
-            const requestData = {
-                id: userData.userId,
-                password: userData.password,
-                passwordCheck: userData.passwordConfirm,
-                nickname: userData.nickname,
-                email: userData.email
-            }
+            const formData = new URLSearchParams()
+            formData.append('id', userData.userId)
+            formData.append('password', userData.password)
+            formData.append('passwordCheck', userData.passwordConfirm)
+            formData.append('nickname', userData.nickname)
+            formData.append('email', userData.email)
 
-            const response = await api.post('/api/user/register', requestData, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
+            const response = await api.post('/api/user/register', formData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 로그아웃 - Spring Security 로그아웃
+    // 로그아웃 수정
     async logout() {
         try {
             const response = await api.post('/logout')
+            // response.data는 이제 {status: "success", message: "로그아웃 완료"}
             return response.data
         } catch (error) {
             throw this.handleError(error)

@@ -27,7 +27,7 @@
           />
           <img :src="showPassword ? eyeOpenImage : eyeImage" alt="비밀번호 보기" class="eye-icon" @click="togglePassword" />
         </div>
-        <!-- 로그인 버튼 - 여기에 추가! -->
+        <!-- 로그인 버튼 -->
         <div class="button-container">
           <button type="button" @click="handleLogin" class="login-button">
             <span class="button-text">로그인</span>
@@ -42,14 +42,15 @@
     </div>
   </MainLayout>
 </template>
-<script>
 
+<script>
 import MainLayout from '../layouts/MainLayout.vue'
 import rectangleImage from '../assets/images/login-rectangle.png'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
-import authService from '../services/authService'
 import loginLogoImage from '@/assets/images/login-logo.png'
+import { useAuthStore } from '@/stores/authStore'
+
 export default {
   name: 'LoginView',
   components: {
@@ -79,17 +80,22 @@ export default {
         this.isLoading = true
         this.errorMessage = ''
 
-        const result = await authService.login({
+        // authStore 사용으로 변경
+        const authStore = useAuthStore()
+        const result = await authStore.login({
           userId: this.username,
           password: this.password
         })
 
-        // 수정: 객체의 success 속성 확인
-        if (result.success) {
+        if (result && result.success) {
           console.log('로그인 성공!')
-          this.$router.push('/')
+          console.log('authStore 상태:', authStore.isLoggedIn) // 디버깅용
+
+          setTimeout(() => {
+            this.$router.push('/')
+          }, 100)
         } else {
-          this.errorMessage = '로그인에 실패했습니다.'
+          this.errorMessage = result?.message || '로그인에 실패했습니다.'
         }
       } catch (error) {
         console.error('로그인 에러:', error)
@@ -142,6 +148,4 @@ export default {
     padding: 16px;
   }
 }
-
-
 </style>
