@@ -61,65 +61,70 @@ class AuthService {
         }
     }
 
-    // 마이페이지 정보 조회 - Spring Security Authentication 사용
+    // 마이페이지 정보 조회 수정
     async getMyPageInfo() {
         try {
-            const response = await api.get('/api/user/mypage')
+            const response = await api.get('/mypage') // 경로 수정
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 프로필 이미지 업로드 - FormData 자동 처리
+    // 프로필 이미지 업로드 경로 수정
     async uploadProfile(profileImage) {
         try {
             const formData = new FormData()
             formData.append('profileImage', profileImage)
 
-            // apiService.js가 자동으로 multipart/form-data로 설정
-            const response = await api.post('/api/mypage/uploadProfile', formData)
+            const response = await api.post('/profile', formData) // 경로 수정
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 비밀번호 재설정
+    // 비밀번호 재설정 경로 수정
     async resetPassword(newPassword) {
         try {
             const formData = new URLSearchParams()
             formData.append('newPassword', newPassword)
             formData.append('newPasswordCheck', newPassword)
 
-            const response = await api.post('/api/mypage/resetPassword', formData)
+            const response = await api.post('/password', formData) // 경로 수정
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 회원 탈퇴
+    // 회원 탈퇴 경로 수정
     async deleteAccount() {
         try {
-            const response = await api.post('/api/mypage/deleteAccount')
+            const response = await api.delete('/api/user') // 경로 수정 (DELETE 메서드)
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 인증 상태 확인 (로그인 여부 체크용)
+    // 세션 체크도 경로 수정
     async checkAuthStatus() {
         try {
-            const response = await this.getMyPageInfo()
-            return { isAuthenticated: true, user: response }
+            console.log('checkAuthStatus 호출됨');
+            const response = await api.get('/api/user/session'); // 경로 수정
+            console.log('세션 체크 응답:', response.data);
+
+            return {
+                isAuthenticated: response.data.isLoggedIn,
+                user: response.data.isLoggedIn ? {
+                    userId: response.data.userId,
+                    nickname: response.data.nickname
+                } : null
+            };
         } catch (error) {
-            if (error.message?.includes('로그인이 필요합니다') ||
-                error.response?.status === 401) {
-                return { isAuthenticated: false, user: null }
-            }
-            throw error
+            console.log('세션 체크 에러:', error);
+            return { isAuthenticated: false, user: null };
         }
     }
 

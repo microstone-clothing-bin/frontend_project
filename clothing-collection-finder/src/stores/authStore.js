@@ -72,6 +72,70 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
+    // 마이페이지 정보 가져오기
+    const getMyPageInfo = async () => {
+        try {
+            isLoading.value = true
+            const response = await authService.getMyPageInfo()
+
+            if (response.status === 'success') {
+                user.value = {
+                    userId: response.userId,
+                    nickname: response.nickname,
+                    email: response.email,
+                    profileImageBase64: response.profileImageBase64
+                }
+                return response
+            }
+            throw new Error(response.message)
+        } catch (err) {
+            error.value = err.message
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    // 비밀번호 변경
+    const resetPassword = async (newPassword) => {
+        try {
+            isLoading.value = true
+            const response = await authService.resetPassword(newPassword)
+
+            if (response.status === 'success') {
+                // 비밀번호 변경 시 세션이 무효화되므로 로그아웃 상태로 설정
+                user.value = null
+                isLoggedIn.value = false
+            }
+            return response
+        } catch (err) {
+            error.value = err.message
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    // 회원 탈퇴
+    const deleteAccount = async () => {
+        try {
+            isLoading.value = true
+            const response = await authService.deleteAccount()
+
+            if (response.status === 'success') {
+                // 회원 탈퇴 시 상태 초기화
+                user.value = null
+                isLoggedIn.value = false
+            }
+            return response
+        } catch (err) {
+            error.value = err.message
+            throw err
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     // 인증 상태 확인 (간단하게 수정)
     const checkAuth = async () => {
         try {
@@ -117,6 +181,9 @@ export const useAuthStore = defineStore('auth', () => {
         signup,
         logout,
         checkAuth,
-        resetState
+        resetState,
+        getMyPageInfo,    // 추가
+        resetPassword,    // 추가
+        deleteAccount     // 추가
     }
 })

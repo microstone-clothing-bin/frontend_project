@@ -125,7 +125,6 @@ export const authApi = {
         const formData = new URLSearchParams()
         formData.append('id', credentials.userId || credentials.id)
         formData.append('password', credentials.password)
-
         return api.post('/login', formData) // REST API 엔드포인트
     },
 
@@ -134,9 +133,9 @@ export const authApi = {
         return api.post('/logout') // REST API 엔드포인트
     },
 
-    // 인증 상태 확인 (기존 작동하는 엔드포인트 사용)
+    // 세션 체크 경로 수정
     checkAuth: () => {
-        return api.get('/api/clothing-bins') // 실제 존재하는 엔드포인트
+        return api.get('/api/user/session') // 수정된 경로
     }
 }
 
