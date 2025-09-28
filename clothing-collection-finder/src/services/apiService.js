@@ -118,24 +118,24 @@ export const api = {
     }
 }
 
-// 수정된 authApi
+// 수정된 authApi (REST API 방식)
 export const authApi = {
-    // SPA용 REST API 로그인
+    // REST API 로그인 - ApiController 사용
     login: (credentials) => {
         const formData = new URLSearchParams()
         formData.append('id', credentials.userId || credentials.id)
         formData.append('password', credentials.password)
-        return api.post('/login', formData) // REST API 엔드포인트
+        return api.post('/api/user/login', formData) // 경로 변경
     },
 
-    // SPA용 로그아웃
+    // REST API 로그아웃 - ApiController 사용
     logout: () => {
-        return api.post('/logout') // REST API 엔드포인트
+        return api.post('/api/user/logout') // 경로 변경
     },
 
-    // 세션 체크 경로 수정
+    // 세션 체크 - 이미 올바른 경로
     checkAuth: () => {
-        return api.get('/api/user/session') // 수정된 경로
+        return api.get('/api/user/session') // 그대로 유지
     }
 }
 

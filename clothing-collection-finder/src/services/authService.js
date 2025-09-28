@@ -2,16 +2,16 @@
 import { api } from './apiService.js'
 
 class AuthService {
-    // SPA용 REST API 로그인
+    // 1. 로그인 - ApiController 경로로 변경
     async login(credentials) {
         try {
             const formData = new URLSearchParams()
             formData.append('id', credentials.userId)
             formData.append('password', credentials.password)
 
-            const response = await api.post('/login', formData)
+            const response = await api.post('/api/user/login', formData) // 경로 변경
 
-            // JSON 응답 처리로 수정
+            // JSON 응답 처리
             if (response.status === 200 && response.data.status === 'success') {
                 return {
                     success: true,
@@ -50,21 +50,30 @@ class AuthService {
         }
     }
 
-    // 로그아웃 수정
+// 2. 로그아웃 - ApiController 경로로 변경
     async logout() {
         try {
-            const response = await api.post('/logout')
-            // response.data는 이제 {status: "success", message: "로그아웃 완료"}
+            const response = await api.post('/api/user/logout') // 경로 변경
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 마이페이지 정보 조회 수정
+    // 3. 마이페이지 정보 조회 - ApiController에 없는 엔드포인트
     async getMyPageInfo() {
         try {
-            const response = await api.get('/mypage') // 경로 수정
+            // 이 엔드포인트는 ApiController에 없으므로 추가 구현 필요
+            // 또는 세션 체크로 대체
+            const response = await api.get('/api/user/session')
+            if (response.data.status === 'success') {
+                return {
+                    status: 'success',
+                    userId: response.data.userId,
+                    nickname: response.data.nickname,
+                    // email과 profileImageBase64는 별도 API가 필요
+                }
+            }
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -77,7 +86,7 @@ class AuthService {
             const formData = new FormData()
             formData.append('profileImage', profileImage)
 
-            const response = await api.post('/profile', formData) // 경로 수정
+            const response = await api.post('/api/mypage/uploadProfile', formData) // 경로 수정
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -91,17 +100,17 @@ class AuthService {
             formData.append('newPassword', newPassword)
             formData.append('newPasswordCheck', newPassword)
 
-            const response = await api.post('/password', formData) // 경로 수정
+            const response = await api.post('/api/mypage/resetPassword', formData) // 경로 수정
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 회원 탈퇴 경로 수정
+    // 4. 회원 탈퇴 - 경로 수정
     async deleteAccount() {
         try {
-            const response = await api.delete('/api/user') // 경로 수정 (DELETE 메서드)
+            const response = await api.post('/api/mypage/deleteAccount') // POST로 변경
             return response.data
         } catch (error) {
             throw this.handleError(error)

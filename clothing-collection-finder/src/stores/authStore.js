@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    // 회원가입
+    // 회원가입 - ApiController JSON 응답에 맞게 수정
     const signup = async (userData) => {
         try {
             isLoading.value = true
@@ -43,10 +43,11 @@ export const useAuthStore = defineStore('auth', () => {
 
             const response = await authService.signup(userData)
 
-            if (response === 'success') {
-                return { success: true, message: '회원가입이 완료되었습니다.' }
+            // ApiController는 Map<String, Object> 형태로 응답
+            if (response.status === 'success') {
+                return { success: true, message: response.message || '회원가입이 완료되었습니다.' }
             } else {
-                throw new Error(response || '회원가입에 실패했습니다.')
+                throw new Error(response.message || '회원가입에 실패했습니다.')
             }
         } catch (err) {
             error.value = err.message
