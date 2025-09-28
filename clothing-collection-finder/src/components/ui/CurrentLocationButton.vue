@@ -54,19 +54,19 @@ const handleLocationClick = async () => {
 
     // 먼저 권한 상태 확인
     const permissionStatus = await checkLocationPermissionStatus()
-    console.log(' 권한 상태:', permissionStatus)
+
 
     if (permissionStatus === 'denied') {
       // 이미 거부된 상태면 바로 모달 표시
-      console.log(' 권한이 이미 거부됨, 모달 표시')
+
       showPermissionModal.value = true
       return
     }
 
     // 현재 위치 가져오기 시도
-    console.log(' 위치 정보 요청 시작')
+
     const position = await getCurrentPosition()
-    console.log(' 위치 정보 가져오기 성공:', position)
+
 
     // 권한 거부 횟수 초기화 (성공 시)
     deniedCount.value = 0
@@ -86,11 +86,11 @@ const handleLocationClick = async () => {
 
     // 권한 거부인 경우 특별 처리
     if (err.message.includes('위치 권한이 거부되었습니다')) {
-      console.log(' 위치 권한 거부됨')
+
       deniedCount.value++
 
       // 첫 번째 거부 후에는 바로 모달 표시
-      console.log(' 첫 번째 거부 후 모달 표시')
+
       showPermissionModal.value = true
       return
     }
@@ -140,7 +140,7 @@ const showPermissionDeniedGuide = () => {
 
 // 모달에서 재시도 선택 시
 const handleRetryPermission = () => {
-  console.log(' 모달에서 재시도 선택')
+
   showPermissionModal.value = false
   hasError.value = false
 
@@ -153,7 +153,7 @@ const handleRetryPermission = () => {
 
 // 모달에서 위치 권한 설정 방법 보기 선택 시
 const handleShowInstructions = () => {
-  console.log('ℹ 위치 권한 설정 방법 안내')
+
   showPermissionModal.value = false
 }
 

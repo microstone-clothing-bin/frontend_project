@@ -60,7 +60,7 @@ const handleZoomOut = () => {
       newZoom: newZoom
     })
   } catch (error) {
-    console.error('지도 축소 중 오류:', error)
+    
   }
 }
 </script>

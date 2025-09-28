@@ -98,7 +98,7 @@ export function useMapMarkers() {
         // markers.value에 저장 (정리용)
         markers.value = allMarkers
 
-        console.log(` 클러스터링 적용 완료: ${allMarkers.length}개 마커`)
+
     }
 
     // 패널 닫기 함수 추가 ✨
@@ -129,7 +129,7 @@ export function useMapMarkers() {
             window.selectedInfoWindow = null
         }
 
-        console.log(' 마커 정리 완료')
+
     }
 
     // 줌 레벨에 따른 클러스터링 제어 (추가 기능)

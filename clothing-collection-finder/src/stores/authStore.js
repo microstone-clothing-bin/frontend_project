@@ -10,6 +10,39 @@ export const useAuthStore = defineStore('auth', () => {
     const isLoading = ref(false)
     const error = ref(null)
 
+    // localStorage에서 초기 상태 복원
+    const initializeState = () => {
+        try {
+            const savedUser = localStorage.getItem('auth_user')
+            const savedIsLoggedIn = localStorage.getItem('auth_isLoggedIn')
+
+            if (savedUser && savedIsLoggedIn === 'true') {
+                user.value = JSON.parse(savedUser)
+                isLoggedIn.value = true
+                console.log('로그인 상태 복원:', user.value)
+            }
+        } catch (error) {
+            console.error('로그인 상태 복원 실패:', error)
+            clearLocalStorage()
+        }
+    }
+
+    // localStorage 저장
+    const saveToLocalStorage = (userData) => {
+        try {
+            localStorage.setItem('auth_user', JSON.stringify(userData))
+            localStorage.setItem('auth_isLoggedIn', 'true')
+        } catch (error) {
+            console.error('로그인 상태 저장 실패:', error)
+        }
+    }
+
+    // localStorage 삭제
+    const clearLocalStorage = () => {
+        localStorage.removeItem('auth_user')
+        localStorage.removeItem('auth_isLoggedIn')
+    }
+
     // 로그인
     const login = async (credentials) => {
         try {
@@ -20,8 +53,13 @@ export const useAuthStore = defineStore('auth', () => {
 
             // JSON 응답 처리
             if (response && response.success) {
-                isLoggedIn.value = true // 이 부분이 실행되어야 함
-                user.value = response.user // 사용자 정보 저장
+                isLoggedIn.value = true
+                user.value = response.user
+
+                // localStorage에 저장
+                saveToLocalStorage(response.user)
+
+                console.log('로그인 성공, 상태 저장:', response.user)
             }
 
             return response
@@ -29,6 +67,7 @@ export const useAuthStore = defineStore('auth', () => {
             error.value = err.message
             isLoggedIn.value = false
             user.value = null
+            clearLocalStorage()
             throw err
         } finally {
             isLoading.value = false
@@ -70,30 +109,10 @@ export const useAuthStore = defineStore('auth', () => {
             isLoggedIn.value = false
             error.value = null
             isLoading.value = false
-        }
-    }
 
-    // 마이페이지 정보 가져오기
-    const getMyPageInfo = async () => {
-        try {
-            isLoading.value = true
-            const response = await authService.getMyPageInfo()
-
-            if (response.status === 'success') {
-                user.value = {
-                    userId: response.userId,
-                    nickname: response.nickname,
-                    email: response.email,
-                    profileImageBase64: response.profileImageBase64
-                }
-                return response
-            }
-            throw new Error(response.message)
-        } catch (err) {
-            error.value = err.message
-            throw err
-        } finally {
-            isLoading.value = false
+            // localStorage도 삭제
+            clearLocalStorage()
+            console.log('로그아웃 완료, 상태 초기화')
         }
     }
 
@@ -107,6 +126,7 @@ export const useAuthStore = defineStore('auth', () => {
                 // 비밀번호 변경 시 세션이 무효화되므로 로그아웃 상태로 설정
                 user.value = null
                 isLoggedIn.value = false
+                clearLocalStorage()
             }
             return response
         } catch (err) {
@@ -127,36 +147,12 @@ export const useAuthStore = defineStore('auth', () => {
                 // 회원 탈퇴 시 상태 초기화
                 user.value = null
                 isLoggedIn.value = false
+                clearLocalStorage()
             }
             return response
         } catch (err) {
             error.value = err.message
             throw err
-        } finally {
-            isLoading.value = false
-        }
-    }
-
-    // 인증 상태 확인 (간단하게 수정)
-    const checkAuth = async () => {
-        try {
-            isLoading.value = true
-            const authStatus = await authService.checkAuthStatus()
-
-            if (authStatus.isAuthenticated) {
-                isLoggedIn.value = true
-                user.value = authStatus.user
-            } else {
-                isLoggedIn.value = false
-                user.value = null
-            }
-
-            return authStatus.isAuthenticated
-        } catch (err) {
-            console.log('인증 상태 확인 실패 (정상적일 수 있음):', err.message)
-            isLoggedIn.value = false
-            user.value = null
-            return false
         } finally {
             isLoading.value = false
         }
@@ -168,7 +164,11 @@ export const useAuthStore = defineStore('auth', () => {
         isLoggedIn.value = false
         isLoading.value = false
         error.value = null
+        clearLocalStorage()
     }
+
+    // 스토어 생성 시 초기 상태 복원
+    initializeState()
 
     return {
         // 상태
@@ -181,10 +181,9 @@ export const useAuthStore = defineStore('auth', () => {
         login,
         signup,
         logout,
-        checkAuth,
         resetState,
-        getMyPageInfo,    // 추가
-        resetPassword,    // 추가
-        deleteAccount     // 추가
+        resetPassword,
+        deleteAccount,
+        initializeState  // 필요시 수동으로 상태 복원할 수 있도록
     }
 })

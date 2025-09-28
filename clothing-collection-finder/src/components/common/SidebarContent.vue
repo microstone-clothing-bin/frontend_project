@@ -252,14 +252,11 @@ export default {
     // 위치 업데이트 감지
     watch(() => props.locationUpdate, async (newValue, oldValue) => {
       if (newValue > 0 && newValue !== oldValue) {
-        console.log('🔄 SidebarContent: 위치 업데이트 감지 (', oldValue, '→', newValue, ')')
+        console.log(' SidebarContent: 위치 업데이트 감지 (', oldValue, '→', newValue, ')')
 
         try {
-          console.log(' 새로운 위치 정보 요청 중...')
           await getGeoPosition()
-          console.log(' 새 좌표 업데이트 완료:', geoCoordinates.value)
-          console.log(' 실제 위치 여부:', isRealLocation())
-          console.log(' 거리 계산이 새로운 좌표 기준으로 업데이트됩니다')
+
         } catch (error) {
           console.error(' 위치 업데이트 중 오류:', error)
         }
@@ -268,15 +265,12 @@ export default {
 
     // 데이터 로드
     onMounted(async () => {
-      console.log(' SidebarContent 초기 로드 시작')
+
       await getGeoPosition()
       await clotheBinStore.fetchClothingBins()
 
 
-      console.log(' 로드된 데이터 개수:', allBins.value.length)
-      console.log(' 표시할 데이터:', first2Bins.value)
-      console.log(' 초기 위치 설정 완료:', geoCoordinates.value)
-      console.log(' 실제 위치 여부:', isRealLocation())
+
       if (geoError.value) {
         console.log('위치 에러:', geoError.value)
       }
@@ -284,7 +278,6 @@ export default {
 
     // 클릭 핸들러
     const handleBinClick = (bin) => {
-      console.log(' 클릭된 수거함:', bin)
 
       if (isSearchMode.value) {
       }

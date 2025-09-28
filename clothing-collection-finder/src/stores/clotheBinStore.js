@@ -18,7 +18,7 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
             const data = await clothesBinService.getAllClothingBins()
             clothingBins.value = data
 
-            console.log(`의류수거함 데이터 로드 완료: ${data.length}개`)
+
         } catch (err) {
             error.value = err.message
             console.error('의류수거함 데이터 로드 실패:', err)

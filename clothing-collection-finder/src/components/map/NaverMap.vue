@@ -103,7 +103,6 @@ const handleSearchAgain = async () => {
     // 새 마커 추가
     if (clothingBins.value && clothingBins.value.length > 0) {
       addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
-      console.log(`${clothingBins.value.length}개 마커 생성 완료`)
     } else {
       console.log('현재 영역에서 검색된 의류수거함이 없습니다.')
     }
@@ -160,7 +159,6 @@ const handleZoomChanged = (zoomInfo) => {
 
 //  마커 클릭 핸들러 추가
 const handleMarkerClick = (binData) => {
-  console.log('NaverMap에서 마커 클릭 받음:', binData)
   // HomeView로 이벤트 전달
   emit('markerClick', binData)
 }
@@ -171,7 +169,6 @@ const moveToLocation = (latitude, longitude) => {
     const newCenter = new naver.maps.LatLng(latitude, longitude)
     map.value.setCenter(newCenter)
     map.value.setZoom(16) // 적당한 확대 레벨
-    console.log(`지도 이동: ${latitude}, ${longitude}`)
   }
 }
 
@@ -193,14 +190,14 @@ onMounted(async () => {
       const neLat = bounds.getNE().lat()
       const neLng = bounds.getNE().lng()
 
-      console.log('초기 영역:', { swLat, swLng, neLat, neLng })
+
 
       await loadClothingBinsInBounds(swLat, swLng, neLat, neLng)
 
       // 마커 추가
       if (clothingBins.value && clothingBins.value.length > 0) {
         addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
-        console.log(`초기 로딩: ${clothingBins.value.length}개 마커 생성 완료`)
+
       }
     }
   } catch (error) {

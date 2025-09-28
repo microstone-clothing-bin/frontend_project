@@ -38,7 +38,7 @@ export function useNaverMap(containerId) {
             // 윈도우 리사이즈 이벤트 리스너 추가 (화면 크기 변경 대응)
             setupWindowResizeListener()
 
-            console.log('네이버 지도 로드 성공!')
+
 
         } catch (err) {
             error.value = err.message
@@ -51,7 +51,6 @@ export function useNaverMap(containerId) {
     // 현재 위치 표시 (통합 함수) - 위치 가져오기 + 마커 + 지도 이동
     const showCurrentLocation = async (options = {}) => {
         if (!map.value) {
-            console.error('지도가 아직 초기화되지 않았습니다')
             return { success: false, error: '지도가 아직 초기화되지 않았습니다' }
         }
 
@@ -61,7 +60,6 @@ export function useNaverMap(containerId) {
     // 현재 위치와 주변 데이터 함께 보기
     const showCurrentLocationWithNearbyData = async (nearbyData = [], options = {}) => {
         if (!map.value) {
-            console.error('지도가 아직 초기화되지 않았습니다')
             return { success: false, error: '지도가 아직 초기화되지 않았습니다' }
         }
 
@@ -76,7 +74,7 @@ export function useNaverMap(containerId) {
     // 현재 위치 새로고침
     const refreshCurrentLocation = async (options = {}) => {
         if (!map.value) {
-            console.error('지도가 아직 초기화되지 않았습니다')
+
             return { success: false, error: '지도가 아직 초기화되지 않았습니다' }
         }
 
@@ -86,7 +84,7 @@ export function useNaverMap(containerId) {
     // 기본 위치(서울 시청)로 이동
     const showDefaultLocation = (options = {}) => {
         if (!map.value) {
-            console.error('지도가 아직 초기화되지 않았습니다')
+
             return { success: false, error: '지도가 아직 초기화되지 않았습니다' }
         }
 
@@ -99,7 +97,7 @@ export function useNaverMap(containerId) {
             try {
                 // 네이버 지도 리사이즈 트리거
                 window.naver.maps.Event.trigger(map.value, 'resize')
-                console.log('지도 리사이즈 완료')
+
             } catch (err) {
                 console.error('지도 리사이즈 실패:', err)
             }

@@ -43,7 +43,6 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => {
         console.log('API 응답 성공:', response.status, response.config.url)
-        console.log('응답 데이터:', response.data)
         return response
     },
     (error) => {
@@ -118,7 +117,7 @@ export const api = {
     }
 }
 
-// 수정된 authApi (REST API 방식)
+// 수정된 authApi (세션 체크 제거)
 export const authApi = {
     // REST API 로그인 - ApiController 사용
     login: (credentials) => {
@@ -131,12 +130,9 @@ export const authApi = {
     // REST API 로그아웃 - ApiController 사용
     logout: () => {
         return api.post('/api/user/logout') // 경로 변경
-    },
-
-    // 세션 체크 - 이미 올바른 경로
-    checkAuth: () => {
-        return api.get('/api/user/session') // 그대로 유지
     }
+
+    // 세션 체크 기능 제거 - JSON 데이터로 상태 관리할 예정
 }
 
 // 개별 함수로도 export

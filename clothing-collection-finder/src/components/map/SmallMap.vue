@@ -79,7 +79,7 @@ const currentLocationHandlers = useNaverMapCurrentLocation(
 
 // 마커 클릭 핸들러 추가
 const handleMarkerClick = (binData) => {
-  console.log('NaverMap에서 마커 클릭 받음:', binData)
+
   // HomeView로 이벤트 전달
   emit('markerClick', binData)
 }
@@ -90,7 +90,7 @@ const moveToLocation = (latitude, longitude) => {
     const newCenter = new naver.maps.LatLng(latitude, longitude)
     map.value.setCenter(newCenter)
     map.value.setZoom(16) // 적당한 확대 레벨
-    console.log(`지도 이동: ${latitude}, ${longitude}`)
+
   }
 }
 
@@ -128,7 +128,7 @@ onMounted(async () => {
       currentZoom.value = map.value.getZoom()
       naver.maps.Event.addListener(map.value, "zoom_changed", () => {
         currentZoom.value = map.value.getZoom()
-        console.log("지도 줌 변경됨:", currentZoom.value)
+
       })
     }
 
@@ -137,7 +137,7 @@ onMounted(async () => {
 
     if (map.value && clothingBins.value && clothingBins.value.length > 0) {
       addMarkersToMap(map.value, clothingBins.value, handleMarkerClick)
-      console.log("🎯 마커 생성 완료")
+
     }
   } catch (error) {
     console.error("NaverMap 초기화 에러:", error)

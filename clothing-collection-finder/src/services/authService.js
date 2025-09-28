@@ -32,7 +32,6 @@ class AuthService {
         }
     }
 
-
     // 회원가입
     async signup(userData) {
         try {
@@ -50,30 +49,10 @@ class AuthService {
         }
     }
 
-// 2. 로그아웃 - ApiController 경로로 변경
+    // 2. 로그아웃 - ApiController 경로로 변경
     async logout() {
         try {
             const response = await api.post('/api/user/logout') // 경로 변경
-            return response.data
-        } catch (error) {
-            throw this.handleError(error)
-        }
-    }
-
-    // 3. 마이페이지 정보 조회 - ApiController에 없는 엔드포인트
-    async getMyPageInfo() {
-        try {
-            // 이 엔드포인트는 ApiController에 없으므로 추가 구현 필요
-            // 또는 세션 체크로 대체
-            const response = await api.get('/api/user/session')
-            if (response.data.status === 'success') {
-                return {
-                    status: 'success',
-                    userId: response.data.userId,
-                    nickname: response.data.nickname,
-                    // email과 profileImageBase64는 별도 API가 필요
-                }
-            }
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -117,26 +96,6 @@ class AuthService {
         }
     }
 
-    // 세션 체크도 경로 수정
-    async checkAuthStatus() {
-        try {
-            console.log('checkAuthStatus 호출됨');
-            const response = await api.get('/api/user/session'); // 경로 수정
-            console.log('세션 체크 응답:', response.data);
-
-            return {
-                isAuthenticated: response.data.isLoggedIn,
-                user: response.data.isLoggedIn ? {
-                    userId: response.data.userId,
-                    nickname: response.data.nickname
-                } : null
-            };
-        } catch (error) {
-            console.log('세션 체크 에러:', error);
-            return { isAuthenticated: false, user: null };
-        }
-    }
-
     // 아이디 중복 확인
     async checkUserIdDuplicate(userId) {
         try {
@@ -154,17 +113,6 @@ class AuthService {
             return response.data
         } catch (error) {
             throw this.handleError(error)
-        }
-    }
-
-    // Spring Security 로그인 결과 체크 (로그인 성공/실패 판단)
-    async verifyLoginSuccess() {
-        try {
-            // 로그인 후 마이페이지 정보를 가져올 수 있으면 성공
-            await this.getMyPageInfo()
-            return true
-        } catch (error) {
-            return false
         }
     }
 
