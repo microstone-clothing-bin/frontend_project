@@ -1,55 +1,87 @@
-// src/stores/favoritesStore.js - 즐겨찾기 상태 관리 스토어
+// src/stores/favoritesStore.js
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import wishService from '@/services/wishService'
 
 export const useFavoritesStore = defineStore('favorites', () => {
-    // 상태 정의
     const favoriteIds = ref(new Set())
     const isLoading = ref(false)
     const error = ref(null)
 
-    // 임시 사용자 ID (나중에 authStore에서 가져와야 함)
-    const currentUserId = ref(1)
+    // 로그인 상태 확인 (localStorage 기반)
+    const checkLoginStatus = () => {
+        const savedUser = localStorage.getItem('auth_user')
+        const isLoggedIn = localStorage.getItem('auth_isLoggedIn')
+        return savedUser && isLoggedIn === 'true'
+    }
 
-    // 즐겨찾기 목록 로드 (백엔드에서)
+    // 현재 로그인된 사용자 ID 가져오기
+    const getCurrentUserId = () => {
+        try {
+            if (!checkLoginStatus()) {
+                return null
+            }
+            const savedUser = localStorage.getItem('auth_user')
+            const user = JSON.parse(savedUser)
+            return user.userId
+        } catch (error) {
+            console.error('사용자 ID 가져오기 실패:', error)
+            return null
+        }
+    }
+
+    // 즐겨찾기 목록 로드
     const loadFavorites = async () => {
+        if (!checkLoginStatus()) {
+            console.log('로그인이 필요합니다.')
+            favoriteIds.value = new Set()
+            return
+        }
+
+        const userId = getCurrentUserId()
+        if (!userId) {
+            favoriteIds.value = new Set()
+            return
+        }
+
         try {
             isLoading.value = true
             error.value = null
 
-            const wishes = await wishService.getUserWishes(currentUserId.value)
+            const wishes = await wishService.getUserWishes(userId)
             favoriteIds.value = new Set(wishes)
 
             console.log(`즐겨찾기 데이터 로드: ${wishes.length}개`)
         } catch (err) {
             error.value = err.message
             console.error('즐겨찾기 로드 실패:', err)
-            // 에러 시 빈 Set으로 초기화
             favoriteIds.value = new Set()
         } finally {
             isLoading.value = false
         }
     }
 
-    // 즐겨찾기 추가 (백엔드 API 호출)
+    // 즐겨찾기 추가
     const addFavorite = async (binId) => {
-        console.log('addFavorite 함수 시작, binId:', binId)
+        // 로그인 체크
+        if (!checkLoginStatus()) {
+            throw new Error('LOGIN_REQUIRED')
+        }
+
+        const userId = getCurrentUserId()
+        if (!userId) {
+            throw new Error('LOGIN_REQUIRED')
+        }
+
         try {
             isLoading.value = true
             error.value = null
 
-            const result = await wishService.addWish(currentUserId.value, binId)
-
-            console.log('백엔드 응답 결과:', result)  // 이 로그 추가
-            console.log('응답 타입:', typeof result)  // 이 로그 추가
+            const result = await wishService.addWish(userId, binId)
 
             if (result === 'success') {
                 favoriteIds.value.add(binId)
                 console.log(`즐겨찾기 추가: ${binId}`)
-                console.log('현재 즐겨찾기 목록:', Array.from(favoriteIds.value))  // 이 로그 추가
-            } else {
-                console.log('예상과 다른 응답:', result)  // 이 로그 추가
             }
         } catch (err) {
             error.value = err.message
@@ -60,13 +92,23 @@ export const useFavoritesStore = defineStore('favorites', () => {
         }
     }
 
-    // 즐겨찾기 제거 (백엔드 API 호출)
+    // 즐겨찾기 제거
     const removeFavorite = async (binId) => {
+        // 로그인 체크
+        if (!checkLoginStatus()) {
+            throw new Error('LOGIN_REQUIRED')
+        }
+
+        const userId = getCurrentUserId()
+        if (!userId) {
+            throw new Error('LOGIN_REQUIRED')
+        }
+
         try {
             isLoading.value = true
             error.value = null
 
-            const result = await wishService.removeWish(currentUserId.value, binId)
+            const result = await wishService.removeWish(userId, binId)
 
             if (result === 'success') {
                 favoriteIds.value.delete(binId)
@@ -81,16 +123,16 @@ export const useFavoritesStore = defineStore('favorites', () => {
         }
     }
 
-    // 즐겨찾기 토글 (비동기)
+    // 즐겨찾기 토글
     const toggleFavorite = async (binId) => {
-        console.log('toggleFavorite 함수 실행됨, binId:', binId)  // 추가
-        console.log('현재 즐겨찾기 상태:', favoriteIds.value.has(binId))  // 추가
+        // 로그인 체크
+        if (!checkLoginStatus()) {
+            throw new Error('LOGIN_REQUIRED')
+        }
 
         if (favoriteIds.value.has(binId)) {
-            console.log('제거 실행')  // 추가
             await removeFavorite(binId)
         } else {
-            console.log('추가 실행')  // 추가
             await addFavorite(binId)
         }
     }
@@ -100,50 +142,25 @@ export const useFavoritesStore = defineStore('favorites', () => {
         return favoriteIds.value.has(binId)
     }
 
-    // 모든 즐겨찾기 제거 (실제로는 백엔드에서 모든 항목 제거)
-    const clearAllFavorites = async () => {
-        try {
-            isLoading.value = true
+    // 로그인 여부 getter
+    const isLoggedIn = computed(() => checkLoginStatus())
 
-            // 현재 즐겨찾기들을 하나씩 제거 (백엔드에 일괄 삭제 API가 없다면)
-            const promises = Array.from(favoriteIds.value).map(binId =>
-                wishService.removeWish(currentUserId.value, binId)
-            )
-
-            await Promise.all(promises)
-            favoriteIds.value.clear()
-            console.log('모든 즐겨찾기 제거 완료')
-        } catch (err) {
-            error.value = err.message
-            console.error('즐겨찾기 전체 제거 실패:', err)
-        } finally {
-            isLoading.value = false
-        }
-    }
-
-    // getter - 즐겨찾기 개수
+    // getter
     const favoriteCount = computed(() => favoriteIds.value.size)
-
-    // getter - 즐겨찾기 ID 배열
     const favoriteList = computed(() => Array.from(favoriteIds.value))
 
     return {
-        // 상태
         favoriteIds,
         isLoading,
         error,
-        currentUserId,
-
-        // getter
+        isLoggedIn,
         favoriteCount,
         favoriteList,
-
-        // 액션
         loadFavorites,
         addFavorite,
         removeFavorite,
         toggleFavorite,
         isFavorite,
-        clearAllFavorites
+        checkLoginStatus
     }
 })

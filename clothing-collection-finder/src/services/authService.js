@@ -99,8 +99,8 @@ class AuthService {
     // 아이디 중복 확인
     async checkUserIdDuplicate(userId) {
         try {
-            const response = await api.get(`/api/checkDuplicate?type=id&value=${userId}`)
-            return response.data
+            const response = await api.get(`/api/user/check-id?id=${userId}`)
+            return response.data  // { isDuplicate: true/false }
         } catch (error) {
             throw this.handleError(error)
         }
@@ -109,8 +109,8 @@ class AuthService {
     // 닉네임 중복 확인
     async checkNicknameDuplicate(nickname) {
         try {
-            const response = await api.get(`/api/checkDuplicate?type=nickname&value=${nickname}`)
-            return response.data
+            const response = await api.get(`/api/user/check-nickname?nickname=${nickname}`)
+            return response.data  // { isDuplicate: true/false }
         } catch (error) {
             throw this.handleError(error)
         }

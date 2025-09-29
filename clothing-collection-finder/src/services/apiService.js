@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 // 백엔드 API 기본 URL 설정
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-server-z67l.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-project-smcp.onrender.com'
 
 // axios 인스턴스 생성
 const apiClient = axios.create({

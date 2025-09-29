@@ -367,9 +367,8 @@ export default {
     }
   }, // <- computed 끝
   methods: { // === 중복 확인 관련 ===
-    // 아이디 중복 확인 API 호출
+    // 아이디 중복 확인
     async checkDuplicate() {
-      // 아이디 유효성 검사 먼저 실행
       const validation = validationUtils.validateUserId(this.formData.userId)
       if (!validation.isValid) {
         alert(validation.message)
@@ -380,11 +379,11 @@ export default {
         this.isLoading = true
         const response = await authService.checkUserIdDuplicate(this.formData.userId)
 
-        // 백엔드 응답에 맞게 수정
-        if (response === 'ok') {  // response.isAvailable → response === 'ok'
+        // response = { isDuplicate: true/false }
+        if (response.isDuplicate === false) {  // 중복 아님 = 사용 가능
           this.userIdCheckResult = 'available'
           this.duplicateChecks.userId = true
-        } else if (response === 'duplicate') {  // 명시적으로 처리
+        } else {  // 중복됨 = 사용 불가
           this.userIdCheckResult = 'unavailable'
           this.duplicateChecks.userId = false
         }
@@ -424,9 +423,8 @@ export default {
       }
     },
 
-    // 닉네임 중복 확인 API 호출
+    // 닉네임 중복 확인
     async checkNicknameDuplicate() {
-      // 유효성 검사 먼저 실행
       const validation = validationUtils.validateNickname(this.formData.nickname)
       if (!validation.isValid) {
         alert(validation.message)
@@ -437,12 +435,12 @@ export default {
         this.isLoading = true
         const response = await authService.checkNicknameDuplicate(this.formData.nickname)
 
-        // 백엔드 응답에 맞게 수정
-        if (response === 'ok') {  // response.isAvailable → response === 'ok'
+        // response = { isDuplicate: true/false }
+        if (response.isDuplicate === false) {  // 중복 아님 = 사용 가능
           this.nicknameCheckResult = 'available'
           this.duplicateChecks.nickname = true
           this.errors.nickname = ''
-        } else if (response === 'duplicate') {  // 명시적으로 처리
+        } else {  // 중복됨 = 사용 불가
           this.nicknameCheckResult = 'unavailable'
           this.duplicateChecks.nickname = false
         }
@@ -454,6 +452,7 @@ export default {
         this.isLoading = false
       }
     },
+
     // === UI 토글 관련 ===
     togglePassword() { // 비밀번호 보기/숨기기 토글
       this.showPassword = !this.showPassword
