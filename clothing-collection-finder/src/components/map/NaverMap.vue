@@ -57,7 +57,7 @@ import MapZoomOutButton from '../ui/mapzoom/MapZoomOutButton.vue'
 import { useNaverMapCurrentLocation } from '../../composables/currentlocation/useNaverMapCurrentLocation'
 
 //  이벤트 정의 (HomeView로 전달할 이벤트)
-const emit = defineEmits(['markerClick', 'location-found', 'location-error','address-updated', 'address-error'])
+const emit = defineEmits(['markerClick', 'location-found', 'location-error','address-updated', 'address-error','location-updated'])
 
 // Props 정의
 const props = defineProps({
@@ -110,6 +110,12 @@ const handleSearchAgain = async () => {
   } catch (error) {
     console.error('영역 검색 실패:', error)
   }
+}
+
+// ✅ 현재 위치 버튼 클릭 핸들러 추가
+const handleCurrentLocationClick = () => {
+  console.log('🎯 현재 위치 버튼 클릭!')
+  emit('location-updated')
 }
 
 //  현재 줌 레벨 상태 추가

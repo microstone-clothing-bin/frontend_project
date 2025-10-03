@@ -2,16 +2,17 @@
 import axios from 'axios'
 
 // 백엔드 API 기본 URL 설정
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-project-smcp.onrender.com'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://backend-json-74js.onrender.com'
 
 // axios 인스턴스 생성
 const apiClient = axios.create({
     baseURL: BASE_URL,
+    withCredentials: true, // Spring Security 세션 쿠키(JSESSIONID) 자동 포함
     timeout: 60000, // 60초 타임아웃
     headers: {
         'Accept': 'application/json'
     },
-    withCredentials: true // Spring Security 세션 쿠키(JSESSIONID) 자동 포함
+
 })
 
 // 요청 인터셉터 (요청을 보내기 전에 실행)

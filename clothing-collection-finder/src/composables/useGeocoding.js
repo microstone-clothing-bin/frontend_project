@@ -4,12 +4,27 @@
 import { ref, reactive, computed } from 'vue'
 import { reverseGeocode, geocode, isGeocodingAvailable } from '@/services/geocodingService'
 
+// ✅ localStorage에서 주소 로드 함수 추가
+const loadAddressFromStorage = () => {
+    try {
+        const saved = localStorage.getItem('lastAddress')
+        if (saved) {
+            const parsed = JSON.parse(saved)
+            console.log('💾 저장된 주소 복원:', parsed.shortAddress)
+            return parsed
+        }
+    } catch (error) {
+        console.error('주소 복원 실패:', error)
+    }
+    return null
+}
+
 // 전역 상태 (여러 컴포넌트에서 공유)
 const globalState = reactive({
-    currentAddress: null,      // 현재 주소 정보
-    addressHistory: [],        // 주소 변환 히스토리
-    cache: new Map(),         // 좌표→주소 캐시
-    lastUpdateTime: null      // 마지막 업데이트 시간
+    currentAddress: loadAddressFromStorage(),  // ✅ 수정: localStorage에서 초기값 로드
+    addressHistory: [],
+    cache: new Map(),
+    lastUpdateTime: null
 })
 
 export function useGeocoding() {
@@ -186,6 +201,14 @@ export function useGeocoding() {
         globalState.currentAddress = addressInfo
         globalState.lastUpdateTime = new Date()
 
+        // ✅ 추가: localStorage에 저장
+        try {
+            localStorage.setItem('lastAddress', JSON.stringify(addressInfo))
+            console.log('💾 주소 저장 완료:', addressInfo.shortAddress)
+        } catch (error) {
+            console.error('주소 저장 실패:', error)
+        }
+
         // 히스토리 추가
         if (addToHistory) {
             const historyItem = {
@@ -196,7 +219,6 @@ export function useGeocoding() {
 
             globalState.addressHistory.unshift(historyItem)
 
-            // 히스토리 크기 제한 (최대 20개)
             if (globalState.addressHistory.length > 20) {
                 globalState.addressHistory = globalState.addressHistory.slice(0, 20)
             }
@@ -212,6 +234,15 @@ export function useGeocoding() {
         globalState.currentAddress = null
         globalState.lastUpdateTime = null
         error.value = null
+
+        // ✅ 추가: localStorage도 삭제
+        try {
+            localStorage.removeItem('lastAddress')
+            console.log('💾 저장된 주소 삭제')
+        } catch (error) {
+            console.error('주소 삭제 실패:', error)
+        }
+
         console.log('[useGeocoding] 현재 주소 초기화')
     }
 

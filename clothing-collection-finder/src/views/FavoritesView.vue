@@ -56,7 +56,8 @@
               <!-- 주소 정보 -->
               <div class="item-content">
                 <div class="road-address">{{ bin.roadAddress }}</div>
-                <div v-if="bin.landLotAddress" class="land-address">
+                <div v-if="bin.landLotAddress && bin.landLotAddress !== bin.roadAddress"
+                     class="land-address">
                   {{ bin.landLotAddress }}
                 </div>
               </div>
@@ -119,9 +120,7 @@ export default {
     } = useGeolocation()
 
     // 로딩 상태 (두 스토어 모두 고려)
-    const isLoading = computed(() =>
-        clotheBinStore.isLoading || favoritesStore.isLoading
-    )
+    const isLoading = computed(() => clotheBinStore.isLoading)
 
     // 즐겨찾기한 의류수거함 데이터
     const favoriteClothingBins = computed(() => {
@@ -193,7 +192,11 @@ export default {
         console.log(`즐겨찾기에서 제거: ${binId}`)
       } catch (error) {
         console.error('즐겨찾기 제거 실패:', error)
-        alert('즐겨찾기 제거에 실패했습니다.')
+        if (error.message === 'LOGIN_REQUIRED') {
+          alert('로그인이 필요합니다.')
+        } else {
+          alert('즐겨찾기 제거에 실패했습니다.')
+        }
       }
     }
 
@@ -202,19 +205,16 @@ export default {
       console.log('FavoritesView 로드 시작')
 
       try {
-        // 위치 정보 가져오기
         await getGeoPosition()
 
-        // 의류수거함 데이터 로드
         if (clotheBinStore.clothingBins.length === 0) {
           await clotheBinStore.fetchClothingBins()
         }
 
-        // 즐겨찾기 데이터 로드 (API에서)
+        // ✅ await 추가
         await favoritesStore.loadFavorites()
 
         console.log('즐겨찾기 개수:', favoritesStore.favoriteCount)
-        console.log('현재 위치:', geoCoordinates.value)
       } catch (error) {
         console.error('데이터 로드 실패:', error)
       }

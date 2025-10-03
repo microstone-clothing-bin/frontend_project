@@ -1,15 +1,31 @@
 // src/services/authService.js
 import { api } from './apiService.js'
 
+// ✅ class 밖으로 이동
+const getCurrentUserId = () => {
+    try {
+        const savedUser = localStorage.getItem('auth_user')
+        if (savedUser) {
+            const user = JSON.parse(savedUser)
+            return user.userId
+        }
+    } catch (error) {
+        console.error('사용자 ID 가져오기 실패:', error)
+    }
+    return null
+}
+
 class AuthService {
     // 1. 로그인 - ApiController 경로로 변경
     async login(credentials) {
         try {
-            const formData = new URLSearchParams()
-            formData.append('id', credentials.userId)
-            formData.append('password', credentials.password)
+            // ✅ 수정: JSON 형식으로 전송
+            const requestData = {
+                id: credentials.userId,
+                password: credentials.password
+            }
 
-            const response = await api.post('/api/user/login', formData) // 경로 변경
+            const response = await api.post('/api/user/login', requestData)
 
             // JSON 응답 처리
             if (response.status === 200 && response.data.status === 'success') {
@@ -35,14 +51,16 @@ class AuthService {
     // 회원가입
     async signup(userData) {
         try {
-            const formData = new URLSearchParams()
-            formData.append('id', userData.userId)
-            formData.append('password', userData.password)
-            formData.append('passwordCheck', userData.passwordConfirm)
-            formData.append('nickname', userData.nickname)
-            formData.append('email', userData.email)
+            // ✅ 수정: JSON 형식으로 전송
+            const requestData = {
+                id: userData.userId,
+                password: userData.password,
+                passwordCheck: userData.passwordConfirm,
+                nickname: userData.nickname,
+                email: userData.email
+            }
 
-            const response = await api.post('/api/user/register', formData)
+            const response = await api.post('/api/user/register', requestData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
@@ -59,37 +77,55 @@ class AuthService {
         }
     }
 
-    // 프로필 이미지 업로드 경로 수정
+    // 프로필 이미지 업로드
     async uploadProfile(profileImage) {
         try {
+            const userId = getCurrentUserId()
+            if (!userId) {
+                throw new Error('로그인이 필요합니다.')
+            }
+
             const formData = new FormData()
             formData.append('profileImage', profileImage)
+            formData.append('userId', userId)  // ✅ userId 추가
 
-            const response = await api.post('/api/mypage/uploadProfile', formData) // 경로 수정
+            const response = await api.post('/api/mypage/uploadProfile', formData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 비밀번호 재설정 경로 수정
+    // 비밀번호 재설정
     async resetPassword(newPassword) {
         try {
-            const formData = new URLSearchParams()
-            formData.append('newPassword', newPassword)
-            formData.append('newPasswordCheck', newPassword)
+            const userId = getCurrentUserId()
+            if (!userId) {
+                throw new Error('로그인이 필요합니다.')
+            }
 
-            const response = await api.post('/api/mypage/resetPassword', formData) // 경로 수정
+            // ✅ JSON 형식으로 전송 + userId 쿼리 파라미터
+            const requestData = {
+                newPassword: newPassword,
+                newPasswordCheck: newPassword
+            }
+
+            const response = await api.post(`/api/mypage/resetPassword?userId=${userId}`, requestData)
             return response.data
         } catch (error) {
             throw this.handleError(error)
         }
     }
 
-    // 4. 회원 탈퇴 - 경로 수정
+    // 회원 탈퇴
     async deleteAccount() {
         try {
-            const response = await api.post('/api/mypage/deleteAccount') // POST로 변경
+            const userId = getCurrentUserId()
+            if (!userId) {
+                throw new Error('로그인이 필요합니다.')
+            }
+
+            const response = await api.post(`/api/mypage/deleteAccount?userId=${userId}`)
             return response.data
         } catch (error) {
             throw this.handleError(error)

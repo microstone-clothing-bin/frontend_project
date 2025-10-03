@@ -53,6 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
 
             // JSON 응답 처리
             if (response && response.success) {
+                console.log('로그인 응답:', response.user)  // 이 로그 추가
                 isLoggedIn.value = true
                 user.value = response.user
 

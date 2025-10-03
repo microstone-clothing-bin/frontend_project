@@ -20,8 +20,9 @@
           <!-- 도로명 주소 -->
           <h3 class="road-address">{{ binData.roadAddress }}</h3>
 
-          <!-- 지번 주소 (있을 때만 표시) -->
-          <p v-if="binData.landLotAddress" class="land-lot-address">
+          <!-- ✅ 지번 주소 (도로명 주소와 다를 때만 표시) -->
+          <p v-if="binData.landLotAddress && binData.landLotAddress !== binData.roadAddress"
+             class="land-lot-address">
             {{ binData.landLotAddress }}
           </p>
 
@@ -86,12 +87,12 @@
                   <div class="user-profile">
                     <img src="@/assets/images/Ellipse.png" alt="사용자 프로필" class="profile-image">
                     <span class="username">{{ review.nickname }}</span>
-                    <span class="review-date">{{ formatDate(review.createDate) }}</span>
                   </div>
 
                   <!-- 리뷰 이미지 (있는 경우만) -->
-                  <div v-if="review.imageBase64" class="review-image-container">
-                    <img :src="'data:image/jpeg;base64,' + review.imageBase64" alt="리뷰 이미지" class="review-image">
+                  <div v-if="review.imageUrl" class="review-image-container">
+                    <!--  imageUrl 직접 사용 -->
+                    <img :src="review.imageUrl" alt="리뷰 이미지" class="review-image">
                   </div>
 
                   <!-- 리뷰 텍스트 -->
@@ -141,6 +142,7 @@
                         ref="imageInput"
                         @change="handleImageSelect"
                         accept="image/*"
+                        capture="environment"
                         style="display: none"
                     />
                     <button class="camera-btn" @click="openCamera">
@@ -199,7 +201,7 @@ const commentText = ref('')
 const activeTab = ref('view')
 const selectedImagePreview = ref(null)
 const selectedImageFile = ref(null)
-
+const imageInput = ref(null)
 const favoritesStore = useFavoritesStore()
 
 // Props
@@ -224,6 +226,8 @@ const loadReviews = async () => {
   try {
     reviewsLoading.value = true
     reviews.value = await reviewService.getReviewsByBinId(props.binData.id)
+    console.log('받아온 리뷰 데이터:', reviews.value)
+    console.log('첫 번째 리뷰 이미지:', reviews.value[0]?.imageBase64)
   } catch (error) {
     console.error('리뷰 로드 실패:', error)
     reviews.value = []
@@ -233,15 +237,13 @@ const loadReviews = async () => {
 }
 
 // 리뷰 작성 권한 확인
-const checkWritePermission = async () => {
-  try {
-    const result = await reviewService.canWriteReview()
-    canWriteReview.value = result.canWrite
-    currentUser.value = result.user
-  } catch (error) {
-    console.error('권한 확인 실패:', error)
-    canWriteReview.value = false
-  }
+const checkWritePermission = () => {
+  const result = reviewService.canWriteReview()  // async 제거
+  canWriteReview.value = result.canWrite
+  currentUser.value = result.user
+
+  console.log('리뷰 작성 권한:', canWriteReview.value)
+  console.log('현재 사용자:', currentUser.value)
 }
 
 // 이미지 선택 처리
@@ -263,14 +265,14 @@ const handleImageSelect = (event) => {
 const removeImage = () => {
   selectedImageFile.value = null
   selectedImagePreview.value = null
-  if (this.$refs.imageInput) {
-    this.$refs.imageInput.value = ''
+  if (imageInput.value) {
+    imageInput.value.value = ''
   }
 }
 
 // 카메라 버튼 클릭
 const openCamera = () => {
-  this.$refs.imageInput?.click()
+  imageInput.value?.click()
 }
 
 // 리뷰 제출
@@ -321,16 +323,6 @@ const goToLogin = () => {
   window.location.href = '/login'
 }
 
-// 날짜 포맷팅
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return date.toLocaleDateString('ko-KR', {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  })
-}
 
 // 탭 전환 함수
 const setActiveTab = (tab) => {
@@ -348,7 +340,7 @@ watch(() => props.binData?.id, async (newBinId) => {
 
 // 컴포넌트 마운트시 권한 확인
 onMounted(async () => {
-  await checkWritePermission()
+  checkWritePermission()
   if (props.binData?.id) {
     await loadReviews()
   }
@@ -360,17 +352,22 @@ const isFavorite = (binId) => {
   return favoritesStore.isFavorite(binId)
 }
 
-const toggleFavorite = async (binId) => {
+const toggleFavorite = (binId) => {  // async 제거
   if (!binId) {
     console.error('binId가 없습니다.')
     return
   }
   try {
-    await favoritesStore.toggleFavorite(binId)
+    favoritesStore.toggleFavorite(binId)  // await 제거
     console.log(`즐겨찾기 토글: ${binId}`)
   } catch (error) {
     console.error('즐겨찾기 토글 실패:', error)
-    alert('즐겨찾기 변경에 실패했습니다.')
+    if (error.message === 'LOGIN_REQUIRED') {
+      alert('로그인이 필요합니다.')
+      // router 추가 필요시
+    } else {
+      alert('즐겨찾기 변경에 실패했습니다.')
+    }
   }
 }
 
@@ -432,36 +429,93 @@ const clothingBinImage = clothingBinImageSrc
   z-index: 9999;
   border-radius: 10px;
   overflow: hidden;
-  max-height: 800px;
-  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* 상단 정보 영역 - 고정 */
+.info-section {
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+/* 리뷰 섹션 - 남은 공간 사용 */
+.review-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;  /* ✅ 중요! flexbox 스크롤 버그 방지 */
+  overflow: hidden;
+}
+
+/* 탭 버튼 - 고정 */
+.review-tabs {
+  flex-shrink: 0;
+}
+
+/* 탭 내용 - 스크롤 영역 */
+.review-content {
+  flex: 1;
+  overflow-y: auto;  /* ✅ 여기서 스크롤 */
+  min-height: 0;  /* ✅ 중요! */
+}
+
+/* 스크롤바 커스터마이징 - Webkit 브라우저 (Chrome, Safari, Edge) */
+.review-content::-webkit-scrollbar {
+  width: 6px;  /* 스크롤바 너비 */
+}
+
+/* Firefox용 스크롤바 */
+.review-content {
+  scrollbar-width: thin;  /* auto | thin | none */
+  scrollbar-color: #888 #f1f1f1;  /* thumb track */
 }
 
 .review-view {
-  max-height: 400px;
-  overflow-y: auto;
 }
 
 .reviews-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .review-item {
   text-align: left;
   padding-bottom: 16px;
   border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ✅ 텍스트가 이미지 아래로 */
+.review-item .review-text-container {
+  margin-top: 0;
+  order: 2;
 }
 
 .review-item:last-child {
   border-bottom: none;
 }
 
+.comment-actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 .user-profile {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 12px;
 }
 
 .profile-image {
@@ -474,43 +528,32 @@ const clothingBinImage = clothingBinImageSrc
 }
 
 .username {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: #1A1A1A;
   font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
   flex: 1;
 }
 
-.review-date {
-  font-size: 12px;
-  color: #666;
-  margin-left: auto;
-}
-
 .review-image-container {
-  margin: 10px 0;
+  margin: 3px 0;
 }
 
 .review-image {
-  width: 120px;
-  height: 150px;
+  width: 110px;
+  height: 110px;
   object-fit: cover;
-  border-radius: 8px;
-}
-
-.review-text-container {
-  margin-top: 8px;
 }
 
 .review-text {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   color: #1A1A1A;
   font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
   line-height: 1.5;
-  margin: 0;
   word-break: keep-all;
   white-space: pre-line;
+
 }
 
 .loading-message, .no-reviews {
@@ -538,29 +581,38 @@ const clothingBinImage = clothingBinImageSrc
 }
 
 .image-preview {
-  margin: 10px 0;
-  position: relative;
+  position: absolute;
+  margin: -70px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .preview-image {
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   object-fit: cover;
   border-radius: 8px;
+  flex-shrink: 0;
+  margin-top: 80px;
+
 }
 
 .remove-image-btn {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: rgba(0,0,0,0.7);
+  background: #6029B7;
   color: white;
   border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  border-radius: 4px;
+  padding: 6px 12px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 10px;
+  font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
+  white-space: nowrap;
+  margin-top: 80px;
+}
+
+.remove-image-btn:hover {
+  background: #6029B7;
 }
 
 .submit-btn:disabled {

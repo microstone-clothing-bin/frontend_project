@@ -158,11 +158,16 @@
 <script>
 import MainLayout from '../layouts/MainLayout.vue'
 import authService from '../services/authService.js'
+import { useAuthStore } from '@/stores/authStore'
 
 export default {
   name: 'MyPageView',
   components: {
     MainLayout
+  },
+  setup() {  // 추가
+    const authStore = useAuthStore()
+    return { authStore }
   },
   data() {
     return {
@@ -175,6 +180,18 @@ export default {
         passwordcheck: ''
       },
       isLoading: false
+    }
+  },
+  mounted() {
+    const savedUser = localStorage.getItem('auth_user')
+    if (savedUser) {
+      const user = JSON.parse(savedUser)
+      this.userInfo.userId = user.userId
+      this.userInfo.nickname = user.nickname
+      // email은 백엔드에서 가져와야 함
+    } else {
+      alert('로그인이 필요합니다.')
+      this.$router.push('/login')
     }
   },
   methods: {
@@ -242,12 +259,12 @@ export default {
     // 로그아웃
     async handleLogout() {
       try {
-        await authService.logout()
+        await this.authStore.logout()  // authStore 사용
         alert('로그아웃되었습니다.')
-        this.$router.push('/')
+        this.$router.push('/login')    // 로그인 페이지로
       } catch (error) {
         console.error('로그아웃 에러:', error)
-        this.$router.push('/')
+        alert('로그아웃에 실패했습니다.')
       }
     },
 

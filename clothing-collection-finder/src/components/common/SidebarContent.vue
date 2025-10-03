@@ -72,7 +72,7 @@
                 {{ formatAddress(bin.roadAddress) }}
               </div>
               <div
-                  v-if="bin.landLotAddress"
+                  v-if="bin.landLotAddress && bin.landLotAddress !== bin.roadAddress"
                   class="bin-address road-address"
               >
                 {{ formatAddress(bin.landLotAddress) }}
@@ -135,7 +135,8 @@ export default {
       currentAddress: currentLocationAddress,
       isLoading: isGeocodingLoading,
       error: geocodingError,
-      getSimpleAddress
+      getSimpleAddress,
+      getAddressFromCoords
     } = useGeocoding()
 
     // 좌표 관리
@@ -231,48 +232,75 @@ export default {
     }
 
     //  즐겨찾기 클릭 핸들러 추가
-    const handleBookmarkClick = async (binId, event) => {
-      event?.stopPropagation() // 이벤트 버블링 방지
+    const handleBookmarkClick = (binId, event) => {  // async 제거
+      event?.stopPropagation()
 
       if (!binId) {
         console.error('binId가 없습니다.')
         return
       }
-      console.log('버튼 클릭 전 isActive:', isFavorite(binId))  // 추가
+      console.log('버튼 클릭 전 isActive:', isFavorite(binId))
       try {
-        await favoritesStore.toggleFavorite(binId)
+        favoritesStore.toggleFavorite(binId)  // await 제거
         console.log(`사이드바에서 즐겨찾기 토글: ${binId}`)
-        console.log('버튼 클릭 후 isActive:', isFavorite(binId))  // 추가
+        console.log('버튼 클릭 후 isActive:', isFavorite(binId))
       } catch (error) {
         console.error('즐겨찾기 토글 실패:', error)
-        alert('즐겨찾기 변경에 실패했습니다.')
+        if (error.message === 'LOGIN_REQUIRED') {
+          alert('로그인이 필요합니다.')
+        } else {
+          alert('즐겨찾기 변경에 실패했습니다.')
+        }
       }
     }
 
-    // 위치 업데이트 감지
+// 위치 업데이트 감지 (현재 위치 버튼 클릭 시에만)
     watch(() => props.locationUpdate, async (newValue, oldValue) => {
       if (newValue > 0 && newValue !== oldValue) {
-        console.log(' SidebarContent: 위치 업데이트 감지 (', oldValue, '→', newValue, ')')
+        console.log('🗺️ SidebarContent: 현재 위치 버튼 클릭 감지')
 
         try {
+          // 1. 위치 정보 가져오기
           await getGeoPosition()
 
+          // 2. 네이버 지도 API 확인
+          if (!window.naver?.maps?.Service) {
+            console.warn('⚠️ 네이버 지도 API 미로드')
+            return
+          }
+
+          // 3. 좌표가 있으면 주소 변환
+          if (geoCoordinates.value) {
+            console.log('📍 주소 변환 시작:', geoCoordinates.value)
+            await getAddressFromCoords(
+                geoCoordinates.value.lat,
+                geoCoordinates.value.lng,
+                {
+                  useCache: false,  // 현재 위치는 항상 새로 조회
+                  updateGlobalState: true,
+                  addToHistory: true,
+                  retryCount: 2
+                }
+            )
+          }
         } catch (error) {
-          console.error(' 위치 업데이트 중 오류:', error)
+          console.error('❌ 위치 업데이트 중 오류:', error)
         }
       }
     }, { immediate: false })
 
-    // 데이터 로드
+// 데이터 로드
     onMounted(async () => {
+      console.log('🚀 SidebarContent 마운트 시작')
 
       await getGeoPosition()
       await clotheBinStore.fetchClothingBins()
 
-
+      // 초기 로드에서는 주소 변환 안 함
+      // "위치를 찾아주세요" 상태로 유지
 
       if (geoError.value) {
-        console.log('위치 에러:', geoError.value)
+        console.log('❌ 위치 에러:', geoError.value)
       }
     })
 
@@ -329,8 +357,8 @@ export default {
       }
     }
 
-    // 주소 포맷팅
     const formatAddress = (address) => {
+      if (!address) return '주소 정보 없음'  // ✅ undefined/null 체크 추가
       return address.replace('서울특별시 ', '')
     }
 

@@ -31,7 +31,7 @@ import { useCurrentLocation } from '@/composables/currentlocation/useCurrentLoca
 import LocationPermissionModal from './LocationPermissionModal.vue'
 
 // 이벤트 정의
-const emit = defineEmits(['location-success', 'location-error'])
+const emit = defineEmits(['location-success', 'location-error', 'click'])
 
 // 현재 위치 composable 사용
 const {
@@ -48,27 +48,20 @@ const deniedCount = ref(0) // 권한 거부 횟수 추적
 
 // 버튼 클릭 핸들러
 const handleLocationClick = async () => {
+  //  클릭 이벤트를 부모로 즉시 전달
+  emit('click')
 
   try {
     hasError.value = false
 
-    // 먼저 권한 상태 확인
     const permissionStatus = await checkLocationPermissionStatus()
 
-
     if (permissionStatus === 'denied') {
-      // 이미 거부된 상태면 바로 모달 표시
-
       showPermissionModal.value = true
       return
     }
 
-    // 현재 위치 가져오기 시도
-
     const position = await getCurrentPosition()
-
-
-    // 권한 거부 횟수 초기화 (성공 시)
     deniedCount.value = 0
 
     // 성공 시 부모 컴포넌트에 전달
