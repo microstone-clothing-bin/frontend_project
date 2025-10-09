@@ -188,6 +188,12 @@ export default {
       const user = JSON.parse(savedUser)
       this.userInfo.userId = user.userId
       this.userInfo.nickname = user.nickname
+
+      // ✅ 프로필 이미지 복원 추가!
+      if (user.profileImageUrl) {
+        this.uploadedImage = user.profileImageUrl
+      }
+
       // email은 백엔드에서 가져와야 함
     } else {
       alert('로그인이 필요합니다.')
@@ -215,7 +221,17 @@ export default {
 
             // 백엔드에 업로드
             const result = await authService.uploadProfile(file)
-            if (result === 'success') {
+
+            // ✅ 수정: result.status 체크 및 localStorage 업데이트
+            if (result.status === 'success') {
+              // ✅ localStorage 업데이트 추가!
+              const savedUser = JSON.parse(localStorage.getItem('auth_user'))
+              savedUser.profileImageUrl = result.profileImageUrl  // ← 이 줄 추가!
+              localStorage.setItem('auth_user', JSON.stringify(savedUser))
+
+              // ✅ 현재 표시 이미지도 업데이트
+              this.uploadedImage = result.profileImageUrl
+
               alert('프로필 이미지가 업로드되었습니다.')
             }
           } catch (error) {

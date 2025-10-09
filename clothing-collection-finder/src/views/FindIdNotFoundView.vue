@@ -25,17 +25,15 @@
 
 <script>
 import MainLayout from '../layouts/MainLayout.vue'
-import FindPasswordNotFoundView from "@/views/FindPasswordNotFoundView.vue";
 
 export default {
   name: 'FindIdNotFoundView',
   components: {
-    FindPasswordNotFoundView,
     MainLayout
-  }, methods: {
+  },
+  methods: {
     goToLogin() {
-      // 로그인 페이지로 이동
-      window.location.href = '/login';
+      window.location.href = '/login'  // ✅ 수정
     }
   }
 }
@@ -45,5 +43,4 @@ export default {
 @import '@/styles/findidnotfound/findidnotfound-layout.css';
 @import '@/styles/findidnotfound/findidnotfound-message.css';
 @import '@/styles/findidnotfound/findidnotfound-button.css';
-
 </style>

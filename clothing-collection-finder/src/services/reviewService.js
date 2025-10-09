@@ -26,14 +26,13 @@ class ReviewService {
 
             // ✅ 백엔드 응답 구조에 맞게 매핑 수정
             return response.data.map(review => ({
-                id: review.postId,  // postId → id
+                id: review.postId,
                 content: review.content,
-                nickname: review.nickname || review.userNickname || '익명',  // nickname 필드 추가 필요
+                nickname: review.authorNickname,  // ✅ authorNickname으로 수정!
                 userId: review.userId,
-                createDate: review.createdAt,  // createdAt → createDate
-                imageUrl: review.imageUrl,  // imageUrl 그대로 사용
-                imageBase64: review.imageBase64,  // 혹시 Base64도 있다면
-                binId: review.binId
+                createDate: review.createdAt,
+                imageUrl: review.imageUrl,
+                binId: binId  // binId는 파라미터에서 가져옴
             }))
         } catch (error) {
             console.error('리뷰 목록 조회 실패:', error)

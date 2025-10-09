@@ -77,6 +77,52 @@ class AuthService {
         }
     }
 
+    // ✅ 신규 추가: 아이디 찾기
+    async findUserId(nickname, email) {
+        try {
+            const requestData = {
+                nickname: nickname,
+                email: email
+            }
+
+            const response = await api.post('/api/user/find-id', requestData)
+            return response.data  // { status: 'success', userId: '찾은아이디' }
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // ✅ 신규 추가: 비밀번호 찾기 (사용자 확인)
+    async findPassword(userId, email) {
+        try {
+            const requestData = {
+                userId: userId,
+                email: email
+            }
+
+            const response = await api.post('/api/user/find-password', requestData)
+            return response.data  // { status: 'success', message: '사용자 확인 완료' }
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
+    // ✅ 신규 추가: 비밀번호 재설정 (비밀번호 찾기용)
+    async resetPasswordWithoutLogin(userId, email, newPassword) {
+        try {
+            const requestData = {
+                userId: userId,
+                email: email,
+                newPassword: newPassword
+            }
+
+            const response = await api.post('/api/user/reset-password', requestData)
+            return response.data  // { status: 'success', message: '비밀번호가 변경되었습니다.' }
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
     // 프로필 이미지 업로드
     async uploadProfile(profileImage) {
         try {

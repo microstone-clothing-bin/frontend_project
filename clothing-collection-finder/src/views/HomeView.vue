@@ -4,11 +4,13 @@
     <SidebarLayout
         :sidebar-collapsed="sidebarCollapsed"
         :showDetailPanel="showDetailPanel"
+        :hide-toggle-for-modal="showLoginModal"
         @sidebar-toggle="handleSidebarToggle"
         @moveToLocation="handleMoveToLocation"
         @showDetailPanel="handleShowPanel"
         @closeDetailPanel="handleCloseDetailPanel"
         @restoreDetailPanel="handleRestoreDetailPanel"
+        @loginModalStateChanged="handleLoginModalStateChanged"
     >
       <!-- 메인 콘텐츠 (지도) -->
       <NaverMap
@@ -53,6 +55,7 @@ export default {
     const mapCenter = ref({ lat: 37.5665, lng: 126.9780 })
     const naverMapRef = ref(null)
     const sidebarCollapsed = ref(false) //  사이드바 상태 추가
+    const showLoginModal = ref(false)
 
     // 정보패널 로직을 Composable로 분리
     const {
@@ -108,6 +111,10 @@ export default {
         )
       }
     }
+    // ✅ 로그인 모달 상태 변경 핸들러 추가
+    const handleLoginModalStateChanged = (isVisible) => {
+      showLoginModal.value = isVisible
+    }
 
     return {
       mapCenter,
@@ -121,7 +128,9 @@ export default {
       handleCloseDetailPanel,     //  토글용 닫기
       handleRestoreDetailPanel,    //  토글용 복원
       sidebarCollapsed,
-      handleSidebarToggle
+      handleSidebarToggle,
+      showLoginModal,  // ✅ 추가
+      handleLoginModalStateChanged  // ✅ 추가
     }
   }
 }

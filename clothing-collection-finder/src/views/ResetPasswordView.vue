@@ -34,31 +34,32 @@
           <div class="requirement-item">
             <img :src="getCheckImage('hasCase')" alt="체크" class="check-icon" />
             <span class="requirement-text" :class="getTextClass('hasCase')">
-      영문 대/소문자
-    </span>
+              영문 대/소문자
+            </span>
           </div>
 
           <div class="requirement-item">
             <img :src="getCheckImage('hasNumber')" alt="체크" class="check-icon" />
             <span class="requirement-text" :class="getTextClass('hasNumber')">
-      숫자
-    </span>
+              숫자
+            </span>
           </div>
 
           <div class="requirement-item">
             <img :src="getCheckImage('hasSpecial')" alt="체크" class="check-icon" />
             <span class="requirement-text" :class="getTextClass('hasSpecial')">
-      특수문자
-    </span>
+              특수문자
+            </span>
           </div>
 
           <div class="requirement-item">
             <img :src="getCheckImage('hasLength')" alt="체크" class="check-icon" />
             <span class="requirement-text" :class="getTextClass('hasLength')">
-      8~20자
-    </span>
+              8~20자
+            </span>
           </div>
         </div>
+
         <!-- 비밀번호 확인 라벨 -->
         <div class="input-label password-confirm-label">
           <span class="label-text">비밀번호 확인</span>
@@ -90,9 +91,9 @@
         </div>
 
         <!-- 다음 버튼 -->
-        <div class="next-button" @click="handleNext">
+        <div class="next-button" @click="handleNext" :class="{ disabled: isLoading }">
           <img src="/src/assets/images/next-button.png" alt="버튼 배경" class="next-btn-background" />
-          <span class="next-btn-text">다음</span>
+          <span class="next-btn-text">{{ isLoading ? '처리 중...' : '다음' }}</span>
         </div>
       </div>
     </div>
@@ -101,11 +102,12 @@
 
 <script>
 import MainLayout from '../layouts/MainLayout.vue'
+import authService from '@/services/authService'
 import eyeImage from '../assets/images/login-eye.png'
 import eyeOpenImage from '../assets/images/login-eye1.png'
-import checkImage from '../assets/images/check.png'         // 기본 회색 체크
-import checkGreenImage from '../assets/images/check-green.png'  // 초록색 체크
-import checkRedImage from '../assets/images/check-red.png'      // 빨간색 체크
+import checkImage from '../assets/images/check.png'
+import checkGreenImage from '../assets/images/check-green.png'
+import checkRedImage from '../assets/images/check-red.png'
 
 export default {
   name: 'ResetPasswordView',
@@ -124,7 +126,22 @@ export default {
         passwordConfirm: ''
       },
       showNewPassword: false,
-      showPasswordConfirm: false
+      showPasswordConfirm: false,
+      isLoading: false,
+      userId: '',
+      email: ''
+    }
+  },
+
+  mounted() {
+    // 쿼리에서 아이디와 이메일 가져오기
+    this.userId = this.$route.query.userId || ''
+    this.email = this.$route.query.email || ''
+
+    // 쿼리 정보가 없으면 비밀번호 찾기 페이지로 리다이렉트
+    if (!this.userId || !this.email) {
+      alert('잘못된 접근입니다.')
+      this.$router.push({ name: 'findPassword' })
     }
   },
 
@@ -133,15 +150,20 @@ export default {
     passwordChecks() {
       const password = this.formData.newPassword
       return {
-        hasCase: /[A-Z]/.test(password) && /[a-z]/.test(password),    // 대소문자 포함
-        hasNumber: /\d/.test(password),                               // 숫자 포함
-        hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),        // 특수문자 포함
-        hasLength: password.length >= 8 && password.length <= 20     // 길이 조건
+        hasCase: /[A-Z]/.test(password) && /[a-z]/.test(password),
+        hasNumber: /\d/.test(password),
+        hasSpecial: /[!@#$%^&*(),.?":{}|<>]/.test(password),
+        hasLength: password.length >= 8 && password.length <= 20
       }
     },
-    // 비밀번호 확인 불일치 메시지 표시 조건 추가
+
+    // 모든 비밀번호 조건 만족 여부
+    isPasswordValid() {
+      return Object.values(this.passwordChecks).every(check => check === true)
+    },
+
+    // 비밀번호 확인 불일치 메시지 표시 조건
     shouldShowPasswordMismatch() {
-      // 비밀번호 확인란에 입력이 있고, 새 비밀번호와 다를 때만 표시
       return this.formData.passwordConfirm &&
           this.formData.newPassword &&
           this.formData.newPassword !== this.formData.passwordConfirm
@@ -150,41 +172,82 @@ export default {
 
   methods: {
     toggleNewPassword() {
-      this.showNewPassword = !this.showNewPassword;
-    },
-    togglePasswordConfirm() {
-      this.showPasswordConfirm = !this.showPasswordConfirm;
-    },
-    handleNext() {  // 추가
-      console.log('다음 버튼 클릭:', this.formData);
-      // 나중에 실제 다음 단계 로직 추가
-      // 예: this.$router.push({ name: 'nextStep' });
+      this.showNewPassword = !this.showNewPassword
     },
 
-    // === 비밀번호 요구사항 UI 관련 추가 ===
+    togglePasswordConfirm() {
+      this.showPasswordConfirm = !this.showPasswordConfirm
+    },
+
+    async handleNext() {
+      // 로딩 중이면 중복 실행 방지
+      if (this.isLoading) return
+
+      // 입력값 검증
+      if (!this.formData.newPassword) {
+        alert('새 비밀번호를 입력해주세요.')
+        return
+      }
+
+      if (!this.isPasswordValid) {
+        alert('비밀번호가 요구사항을 만족하지 않습니다.')
+        return
+      }
+
+      if (!this.formData.passwordConfirm) {
+        alert('비밀번호 확인을 입력해주세요.')
+        return
+      }
+
+      if (this.formData.newPassword !== this.formData.passwordConfirm) {
+        alert('비밀번호가 일치하지 않습니다.')
+        return
+      }
+
+      try {
+        this.isLoading = true
+
+        const response = await authService.resetPasswordWithoutLogin(
+            this.userId,
+            this.email,
+            this.formData.newPassword
+        )
+
+        if (response.status === 'success') {
+          alert('비밀번호가 변경되었습니다.')
+          window.location.href = '/login'
+        }
+      } catch (error) {
+        console.error('비밀번호 재설정 실패:', error)
+        alert(error.message || '비밀번호 재설정에 실패했습니다.')
+      } finally {
+        this.isLoading = false
+      }
+    },
+
     // 체크 이미지 결정
     getCheckImage(checkType) {
       if (!this.formData.newPassword) {
-        return this.checkImage                     // 입력 전: 기본 회색
+        return this.checkImage
       }
 
       if (this.passwordChecks[checkType]) {
-        return this.checkGreenImage                // 조건 만족: 초록색
+        return this.checkGreenImage
       } else {
-        return this.checkRedImage                  // 조건 불만족: 빨간색
+        return this.checkRedImage
       }
     },
 
     // 텍스트 색상 클래스 결정
     getTextClass(checkType) {
       if (!this.formData.newPassword) {
-        return 'default-text'                      // 입력 전: 기본 색상
+        return 'default-text'
       }
 
       if (this.passwordChecks[checkType]) {
-        return 'valid-text'                        // 조건 만족: 초록색
+        return 'valid-text'
       } else {
-        return 'invalid-text'                      // 조건 불만족: 빨간색
+        return 'invalid-text'
       }
     }
   }
@@ -200,5 +263,8 @@ export default {
 @import '../styles/resetpassword/resetpassword-confirm.css';
 @import '../styles/resetpassword/resetpassword-button.css';
 
-
+.next-button.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 </style>

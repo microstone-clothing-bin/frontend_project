@@ -352,19 +352,18 @@ const isFavorite = (binId) => {
   return favoritesStore.isFavorite(binId)
 }
 
-const toggleFavorite = (binId) => {  // async 제거
+const toggleFavorite = async (binId) => {  // ✅ async 추가
   if (!binId) {
     console.error('binId가 없습니다.')
     return
   }
   try {
-    favoritesStore.toggleFavorite(binId)  // await 제거
+    await favoritesStore.toggleFavorite(binId)  // ✅ await 추가
     console.log(`즐겨찾기 토글: ${binId}`)
   } catch (error) {
     console.error('즐겨찾기 토글 실패:', error)
     if (error.message === 'LOGIN_REQUIRED') {
-      alert('로그인이 필요합니다.')
-      // router 추가 필요시
+      alert('로그인이 필요합니다.')  // ✅ 이제 작동함!
     } else {
       alert('즐겨찾기 변경에 실패했습니다.')
     }

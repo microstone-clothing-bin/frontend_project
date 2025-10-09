@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ShareView from '../views/ShareView.vue'
 import FavoritesView from "@/views/FavoritesView.vue";
-import GuideView from "@/views/GuideView.vue";
 import LoginView from "@/views/LoginView.vue";
 import MyPage from "@/views/MyPage.vue";
 import SignupView from '../views/SignupView.vue'
@@ -45,11 +44,6 @@ const routes = [
       name: 'favorites',
       component: FavoritesView
     },
-    // {
-    //   path: '/guide',
-    //   name: 'guide',
-    //   component: GuideView
-    // },
     {
       path: '/login',
         name: 'login',

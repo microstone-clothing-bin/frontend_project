@@ -232,22 +232,21 @@ export default {
     }
 
     //  즐겨찾기 클릭 핸들러 추가
-    const handleBookmarkClick = (binId, event) => {  // async 제거
+    const handleBookmarkClick = async (binId, event) => {  // ✅ async 추가
       event?.stopPropagation()
-
       if (!binId) {
         console.error('binId가 없습니다.')
         return
       }
       console.log('버튼 클릭 전 isActive:', isFavorite(binId))
       try {
-        favoritesStore.toggleFavorite(binId)  // await 제거
+        await favoritesStore.toggleFavorite(binId)  // ✅ await 추가
         console.log(`사이드바에서 즐겨찾기 토글: ${binId}`)
         console.log('버튼 클릭 후 isActive:', isFavorite(binId))
       } catch (error) {
         console.error('즐겨찾기 토글 실패:', error)
         if (error.message === 'LOGIN_REQUIRED') {
-          alert('로그인이 필요합니다.')
+          alert('로그인이 필요합니다.')  // ✅ 이제 작동함!
         } else {
           alert('즐겨찾기 변경에 실패했습니다.')
         }
