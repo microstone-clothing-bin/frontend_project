@@ -53,14 +53,18 @@ export const useAuthStore = defineStore('auth', () => {
 
             // JSON 응답 처리
             if (response && response.success) {
-                console.log('로그인 응답:', response.user)  // 이 로그 추가
+                console.log('로그인 응답:', response.user)
                 isLoggedIn.value = true
-                user.value = response.user
+                user.value = {
+                    userId: response.user.userId,
+                    nickname: response.user.nickname,
+                    profileImageUrl: response.user.profileImageUrl  // ✅ 추가!
+                }
 
                 // localStorage에 저장
-                saveToLocalStorage(response.user)
+                saveToLocalStorage(user.value)  // ✅ 수정
 
-                console.log('로그인 성공, 상태 저장:', response.user)
+                console.log('로그인 성공, 상태 저장:', user.value)
             }
 
             return response

@@ -85,7 +85,11 @@
               <div v-else class="reviews-container">
                 <div v-for="review in reviews" :key="review.id" class="review-item">
                   <div class="user-profile">
-                    <img src="@/assets/images/Ellipse.png" alt="사용자 프로필" class="profile-image">
+                    <img
+                        :src="review.profileImageUrl || defaultProfileImage"
+                        alt="사용자 프로필"
+                        class="profile-image"
+                    >
                     <span class="username">{{ review.nickname }}</span>
                   </div>
 
@@ -114,7 +118,11 @@
               <!-- 리뷰 작성 폼 -->
               <div v-else>
                 <div class="user-profile">
-                  <img src="@/assets/images/clothing-bin-group.png" alt="사용자 프로필" class="profile-image">
+                  <img
+                      :src="currentUser?.profileImageUrl || defaultProfileImage"
+                      alt="사용자 프로필"
+                      class="profile-image"
+                  >
                   <span class="username">{{ currentUser?.nickname || 'user nickname 1' }}</span>
                 </div>
 
@@ -176,6 +184,7 @@ import { ref, watch, onMounted } from 'vue'
 // 기존 imports
 import DetailPanelCloseButton from '@/components/ui/detailpanel/DetailPanelCloseButton.vue'
 import clothingBinImageSrc from '@/assets/images/clothing-bin-panel.png'
+import defaultProfileImage from '@/assets/images/clothing-bin-group.png'
 import '@/styles/detailpanel/clothing-bin-image.css'
 import '@/styles/detailpanel/clothing-bin-data.css'
 import '@/styles/detailpanel/distance-info.css'
@@ -185,6 +194,7 @@ import FavoriteButton from '@/components/ui/favorites/FavoriteButton.vue'
 import { useFavoritesStore } from '@/stores/favoritesStore'
 import '@/styles/detailpanel/favorite-divider.css'
 import '@/styles/detailpanel/review-section.css'
+
 
 // 리뷰 서비스 import 추가
 import reviewService from '@/services/reviewService'
@@ -487,8 +497,8 @@ const clothingBinImage = clothingBinImageSrc
 
 .review-item {
   text-align: left;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 0 10px 0;
+  border-bottom: 2px solid #f0f0f0;
   display: flex;
   flex-direction: column;
 }
@@ -498,6 +508,7 @@ const clothingBinImage = clothingBinImageSrc
 .review-item .review-text-container {
   margin-top: 0;
   order: 2;
+
 }
 
 .review-item:last-child {
@@ -515,6 +526,7 @@ const clothingBinImage = clothingBinImageSrc
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  margin-bottom: 8px;
 }
 
 .profile-image {
@@ -535,12 +547,12 @@ const clothingBinImage = clothingBinImageSrc
 }
 
 .review-image-container {
-  margin: 3px 0;
+  margin: 8px 0 16px 0;
 }
 
 .review-image {
   width: 110px;
-  height: 110px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -549,7 +561,7 @@ const clothingBinImage = clothingBinImageSrc
   font-weight: 400;
   color: #1A1A1A;
   font-family: 'Pretendard', 'Noto Sans KR', Arial, sans-serif;
-  line-height: 1.5;
+  line-height: 1.7;
   word-break: keep-all;
   white-space: pre-line;
 

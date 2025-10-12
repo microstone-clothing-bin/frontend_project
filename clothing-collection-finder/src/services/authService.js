@@ -123,6 +123,21 @@ class AuthService {
         }
     }
 
+    // ✅ 신규 추가: 마이페이지 정보 조회
+    async getMyPageInfo() {
+        try {
+            const userId = getCurrentUserId()
+            if (!userId) {
+                throw new Error('로그인이 필요합니다.')
+            }
+
+            const response = await api.get(`/api/mypage/info?userId=${userId}`)
+            return response.data
+        } catch (error) {
+            throw this.handleError(error)
+        }
+    }
+
     // 프로필 이미지 업로드
     async uploadProfile(profileImage) {
         try {

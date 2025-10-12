@@ -182,22 +182,32 @@ export default {
       isLoading: false
     }
   },
-  mounted() {
-    const savedUser = localStorage.getItem('auth_user')
-    if (savedUser) {
-      const user = JSON.parse(savedUser)
-      this.userInfo.userId = user.userId
-      this.userInfo.nickname = user.nickname
-
-      // ✅ 프로필 이미지 복원 추가!
-      if (user.profileImageUrl) {
-        this.uploadedImage = user.profileImageUrl
+  async mounted() {
+    try {
+      // localStorage에서 userId 확인
+      const savedUser = localStorage.getItem('auth_user')
+      if (!savedUser) {
+        alert('로그인이 필요합니다.')
+        this.$router.push('/login')
+        return
       }
 
-      // email은 백엔드에서 가져와야 함
-    } else {
-      alert('로그인이 필요합니다.')
-      this.$router.push('/login')
+      // 백엔드에서 최신 정보 가져오기
+      const response = await authService.getMyPageInfo()
+
+      if (response.status === 'success') {
+        this.userInfo.userId = response.id           // ✅ String 아이디
+        this.userInfo.email = response.email         // ✅ 이메일
+        this.userInfo.nickname = response.nickname   // ✅ 닉네임
+
+        // 프로필 이미지 설정
+        if (response.profileImageUrl) {
+          this.uploadedImage = response.profileImageUrl
+        }
+      }
+    } catch (error) {
+      console.error('마이페이지 정보 로드 실패:', error)
+      alert('사용자 정보를 불러오는데 실패했습니다.')
     }
   },
   methods: {
@@ -247,11 +257,19 @@ export default {
 
     // 비밀번호 변경
     async handlePasswordChange() {
-      if (!this.userInfo.password || !this.userInfo.passwordcheck) {
-        alert('새 비밀번호를 입력해주세요.')
+      // 비밀번호를 입력하지 않은 경우
+      if (!this.userInfo.password && !this.userInfo.passwordcheck) {
+        alert('새 비밀번호를 입력하세요.')
         return
       }
 
+      // 비밀번호만 입력한 경우
+      if (!this.userInfo.password || !this.userInfo.passwordcheck) {
+        alert('비밀번호와 비밀번호 확인을 모두 입력해주세요.')
+        return
+      }
+
+      // 비밀번호 불일치
       if (this.userInfo.password !== this.userInfo.passwordcheck) {
         alert('비밀번호가 일치하지 않습니다.')
         return
@@ -261,11 +279,15 @@ export default {
         this.isLoading = true
         const result = await authService.resetPassword(this.userInfo.password)
 
-        if (result === 'success') {
-          alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.')
-          this.$router.push('/login')
+        if (result.status === 'success'){
+          alert('비밀번호가 변경되었습니다.')  // ✅ 수정!
+
+          // 입력 필드 초기화
+          this.userInfo.password = ''
+          this.userInfo.passwordcheck = ''
         }
       } catch (error) {
+        console.error('비밀번호 변경 실패:', error)
         alert('비밀번호 변경 실패: ' + error.message)
       } finally {
         this.isLoading = false
