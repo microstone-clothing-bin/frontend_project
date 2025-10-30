@@ -112,7 +112,7 @@
       <!-- 비밀번호 확인 입력창 -->
       <div class="input-container mypage-passwordcheck-container">
         <input
-            type="passwordcheck"
+            type="password"
             class="input-field"
             placeholder="새 비밀번호 재입력"
             v-model="userInfo.passwordcheck"
@@ -179,10 +179,13 @@ export default {
         password: '',
         passwordcheck: ''
       },
-      isLoading: false
+      isLoading: false,
+      authStore: useAuthStore()
     }
   },
+
   async mounted() {
+
     try {
       // localStorage에서 userId 확인
       const savedUser = localStorage.getItem('auth_user')
@@ -196,17 +199,27 @@ export default {
       const response = await authService.getMyPageInfo()
 
       if (response.status === 'success') {
-        this.userInfo.userId = response.id           // ✅ String 아이디
-        this.userInfo.email = response.email         // ✅ 이메일
-        this.userInfo.nickname = response.nickname   // ✅ 닉네임
+        this.userInfo.userId = response.id
+        this.userInfo.email = response.email
+        this.userInfo.nickname = response.nickname
 
         // 프로필 이미지 설정
         if (response.profileImageUrl) {
+
           this.uploadedImage = response.profileImageUrl
+
+
+
+          // ✅ 이 줄 추가!!!
+          this.authStore.updateProfile({
+            profileImageUrl: response.profileImageUrl
+          })
+
+
         }
       }
     } catch (error) {
-      console.error('마이페이지 정보 로드 실패:', error)
+
       alert('사용자 정보를 불러오는데 실패했습니다.')
     }
   },
@@ -222,6 +235,8 @@ export default {
           try {
             this.isLoading = true
 
+
+
             // 미리보기용
             const reader = new FileReader();
             reader.onload = (e) => {
@@ -232,19 +247,20 @@ export default {
             // 백엔드에 업로드
             const result = await authService.uploadProfile(file)
 
-            // ✅ 수정: result.status 체크 및 localStorage 업데이트
-            if (result.status === 'success') {
-              // ✅ localStorage 업데이트 추가!
-              const savedUser = JSON.parse(localStorage.getItem('auth_user'))
-              savedUser.profileImageUrl = result.profileImageUrl  // ← 이 줄 추가!
-              localStorage.setItem('auth_user', JSON.stringify(savedUser))
 
-              // ✅ 현재 표시 이미지도 업데이트
+
+            if (result.status === 'success') {
+              // ✅ 이렇게 직접 접근!
+              this.authStore.updateProfile({
+                profileImageUrl: result.profileImageUrl
+              })
+
               this.uploadedImage = result.profileImageUrl
 
               alert('프로필 이미지가 업로드되었습니다.')
             }
           } catch (error) {
+            console.error('❌ 에러 발생:', error)
             alert('이미지 업로드 실패: ' + error.message)
           } finally {
             this.isLoading = false
@@ -277,15 +293,13 @@ export default {
 
       try {
         this.isLoading = true
-        const result = await authService.resetPassword(this.userInfo.password)
 
-        if (result.status === 'success'){
-          alert('비밀번호가 변경되었습니다.')  // ✅ 수정!
+        //  authStore의 resetPassword 사용 (로그아웃 포함)
+        await this.authStore.resetPassword(this.userInfo.password)
 
-          // 입력 필드 초기화
-          this.userInfo.password = ''
-          this.userInfo.passwordcheck = ''
-        }
+        alert('비밀번호가 변경되었습니다. 다시 로그인해주세요.')
+        this.$router.push('/login') // 로그인 페이지로 이동
+
       } catch (error) {
         console.error('비밀번호 변경 실패:', error)
         alert('비밀번호 변경 실패: ' + error.message)
@@ -311,13 +325,15 @@ export default {
       if (confirm('정말로 회원 탈퇴하시겠습니까?')) {
         try {
           this.isLoading = true
-          const result = await authService.deleteAccount()
 
-          if (result === 'success') {
-            alert('회원 탈퇴가 완료되었습니다.')
-            this.$router.push('/')
-          }
+          // ✅ authStore의 deleteAccount 사용 (로그아웃 포함)
+          await this.authStore.deleteAccount()
+
+          alert('회원 탈퇴가 완료되었습니다.')
+          this.$router.push('/') // 홈으로 이동
+
         } catch (error) {
+          console.error('회원 탈퇴 실패:', error)
           alert('회원 탈퇴 실패: ' + error.message)
         } finally {
           this.isLoading = false

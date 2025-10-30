@@ -58,11 +58,11 @@ export const useAuthStore = defineStore('auth', () => {
                 user.value = {
                     userId: response.user.userId,
                     nickname: response.user.nickname,
-                    profileImageUrl: response.user.profileImageUrl  // ✅ 추가!
+                    profileImageUrl: response.user.profileImageUrl || null
                 }
 
                 // localStorage에 저장
-                saveToLocalStorage(user.value)  // ✅ 수정
+                saveToLocalStorage(user.value)
 
                 console.log('로그인 성공, 상태 저장:', user.value)
             }
@@ -171,6 +171,16 @@ export const useAuthStore = defineStore('auth', () => {
         error.value = null
         clearLocalStorage()
     }
+    // 프로필 업데이트 함수
+    const updateProfile = (profileData) => {
+        if (user.value) {
+            user.value = {
+                ...user.value,
+                ...profileData
+            }
+            saveToLocalStorage(user.value)
+        }
+    }
 
     // 스토어 생성 시 초기 상태 복원
     initializeState()
@@ -189,6 +199,7 @@ export const useAuthStore = defineStore('auth', () => {
         resetState,
         resetPassword,
         deleteAccount,
-        initializeState  // 필요시 수동으로 상태 복원할 수 있도록
+        initializeState,  // 필요시 수동으로 상태 복원할 수 있도록
+        updateProfile
     }
 })

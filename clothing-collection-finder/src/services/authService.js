@@ -123,7 +123,7 @@ class AuthService {
         }
     }
 
-    // ✅ 신규 추가: 마이페이지 정보 조회
+    // ✅ 여기에 추가!
     async getMyPageInfo() {
         try {
             const userId = getCurrentUserId()

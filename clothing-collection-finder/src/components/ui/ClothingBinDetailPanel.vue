@@ -83,7 +83,7 @@
 
               <!-- 리뷰 목록 -->
               <div v-else class="reviews-container">
-                <div v-for="review in reviews" :key="review.id" class="review-item">
+                <div v-for="review in displayReviews" :key="review.id" class="review-item">
                   <div class="user-profile">
                     <img
                         :src="review.profileImageUrl || defaultProfileImage"
@@ -180,8 +180,9 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 // 기존 imports
+import { useAuthStore } from '@/stores/authStore'
 import DetailPanelCloseButton from '@/components/ui/detailpanel/DetailPanelCloseButton.vue'
 import clothingBinImageSrc from '@/assets/images/clothing-bin-panel.png'
 import defaultProfileImage from '@/assets/images/clothing-bin-group.png'
@@ -213,6 +214,7 @@ const selectedImagePreview = ref(null)
 const selectedImageFile = ref(null)
 const imageInput = ref(null)
 const favoritesStore = useFavoritesStore()
+const authStore = useAuthStore()
 
 // Props
 const props = defineProps({
@@ -228,6 +230,42 @@ const props = defineProps({
 
 // 이벤트 정의
 const emit = defineEmits(['close'])
+
+const displayReviews = computed(() => {
+  console.log('🔄 displayReviews 계산 중...')
+  console.log('📦 authStore.user:', JSON.stringify(authStore.user))
+  console.log('📋 reviews 개수:', reviews.value.length)
+
+  const result = reviews.value.map((review, index) => {
+    console.log(`\n🔍 리뷰 ${index}:`)
+    console.log('  - review.nickname:', review.nickname)
+    console.log('  - authStore.user.nickname:', authStore.user?.nickname)
+    console.log('  - 매칭 여부:', review.nickname === authStore.user?.nickname)
+
+    // nickname으로 매칭
+    if (authStore.user && review.nickname === authStore.user.nickname) {
+      console.log('  ✅ 매칭 성공! 프로필 업데이트')
+      console.log('  - authStore 이미지:', authStore.user.profileImageUrl)
+
+      const updated = {
+        ...review,
+        // ✅ authStore에 이미지가 있으면 무조건 그걸 사용
+        profileImageUrl: authStore.user.profileImageUrl || review.profileImageUrl || defaultProfileImage,
+        nickname: authStore.user.nickname
+      }
+
+      console.log('  📤 업데이트된 리뷰 profileImageUrl:', updated.profileImageUrl)
+      return updated
+    }
+
+    return review
+  })
+
+  console.log('🎯 최종 displayReviews:', result)
+  console.log('🎯 첫 번째 리뷰 이미지:', result[0]?.profileImageUrl)
+
+  return result
+})
 
 // 리뷰 로드 함수
 const loadReviews = async () => {
@@ -248,9 +286,11 @@ const loadReviews = async () => {
 
 // 리뷰 작성 권한 확인
 const checkWritePermission = () => {
-  const result = reviewService.canWriteReview()  // async 제거
+  const result = reviewService.canWriteReview()
   canWriteReview.value = result.canWrite
-  currentUser.value = result.user
+
+  // ✅ authStore에서 최신 프로필 정보 가져오기
+  currentUser.value = authStore.user  // ← 이렇게 변경
 
   console.log('리뷰 작성 권한:', canWriteReview.value)
   console.log('현재 사용자:', currentUser.value)

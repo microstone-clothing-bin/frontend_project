@@ -72,15 +72,13 @@ export default {
   methods: {
     async handleLogin() {
       if (!this.username || !this.password) {
-        this.errorMessage = '아이디와 비밀번호를 입력해주세요.'
+        alert('아이디와 비밀번호를 입력해주세요.')
         return
       }
 
       try {
         this.isLoading = true
-        this.errorMessage = ''
 
-        // authStore 사용으로 변경
         const authStore = useAuthStore()
         const result = await authStore.login({
           userId: this.username,
@@ -89,17 +87,19 @@ export default {
 
         if (result && result.success) {
           console.log('로그인 성공!')
-          console.log('authStore 상태:', authStore.isLoggedIn) // 디버깅용
+          console.log('authStore 상태:', authStore.isLoggedIn)
 
           setTimeout(() => {
             this.$router.push('/')
           }, 100)
         } else {
-          this.errorMessage = result?.message || '로그인에 실패했습니다.'
+          // alert 방식으로 변경
+          alert('로그인이 실패했습니다.')
         }
       } catch (error) {
         console.error('로그인 에러:', error)
-        this.errorMessage = error.message || '로그인 중 오류가 발생했습니다.'
+        // alert 방식으로 변경
+        alert('로그인이 실패했습니다.')
       } finally {
         this.isLoading = false
       }

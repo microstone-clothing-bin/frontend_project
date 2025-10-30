@@ -43,6 +43,9 @@ import ClothingBinDetailPanel from "@/components/ui/ClothingBinDetailPanel.vue"
 // Composable 가져오기
 import { useDetailPanel } from '@/composables/useDetailPanel'
 
+import { useAuthStore } from '@/stores/authStore'
+import authService from '@/services/authService'
+
 export default {
   name: 'HomeView',
   components: {
@@ -56,6 +59,8 @@ export default {
     const naverMapRef = ref(null)
     const sidebarCollapsed = ref(false) //  사이드바 상태 추가
     const showLoginModal = ref(false)
+
+    const authStore = useAuthStore()
 
     // 정보패널 로직을 Composable로 분리
     const {
@@ -130,7 +135,25 @@ export default {
       sidebarCollapsed,
       handleSidebarToggle,
       showLoginModal,  // ✅ 추가
-      handleLoginModalStateChanged  // ✅ 추가
+      handleLoginModalStateChanged,  // ✅ 추가
+      authStore
+    }
+  },
+
+  async mounted() {
+    // 로그인 상태인데 프로필 이미지가 없으면 자동으로 로드
+    if (this.authStore.isLoggedIn && !this.authStore.user?.profileImageUrl) {
+      try {
+        const response = await authService.getMyPageInfo()
+
+        if (response.status === 'success' && response.profileImageUrl) {
+          this.authStore.updateProfile({
+            profileImageUrl: response.profileImageUrl
+          })
+        }
+      } catch (error) {
+
+      }
     }
   }
 }
