@@ -19,7 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
             if (savedUser && savedIsLoggedIn === 'true') {
                 user.value = JSON.parse(savedUser)
                 isLoggedIn.value = true
-                console.log('로그인 상태 복원:', user.value)
+                //console.log('로그인 상태 복원:', user.value)
             }
         } catch (error) {
             console.error('로그인 상태 복원 실패:', error)
@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
 
             // JSON 응답 처리
             if (response && response.success) {
-                console.log('로그인 응답:', response.user)
+                //console.log('로그인 응답:', response.user)
                 isLoggedIn.value = true
                 user.value = {
                     userId: response.user.userId,
@@ -64,7 +64,7 @@ export const useAuthStore = defineStore('auth', () => {
                 // localStorage에 저장
                 saveToLocalStorage(user.value)
 
-                console.log('로그인 성공, 상태 저장:', user.value)
+                //console.log('로그인 성공, 상태 저장:', user.value)
             }
 
             return response
@@ -117,7 +117,7 @@ export const useAuthStore = defineStore('auth', () => {
 
             // localStorage도 삭제
             clearLocalStorage()
-            console.log('로그아웃 완료, 상태 초기화')
+           // console.log('로그아웃 완료, 상태 초기화')
         }
     }
 

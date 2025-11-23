@@ -107,7 +107,7 @@ export default {
 
     // 지도 이동 핸들러
     const handleMoveToLocation = (locationData) => {
-      console.log('지도 이동 요청:', locationData)
+     // console.log('지도 이동 요청:', locationData)
 
       if (naverMapRef.value) {
         naverMapRef.value.moveToLocation(

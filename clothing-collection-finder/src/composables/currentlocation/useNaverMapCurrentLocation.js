@@ -19,14 +19,14 @@ export function useNaverMapCurrentLocation(
 
     // 현재 위치 찾기 성공 시 실행되는 메인 핸들러
     const handleLocationSuccess = async (result) => {
-        console.log('현재 위치 찾기 성공:', result)
+
 
         try {
             // 현재 위치를 지도에 표시 (마커 + 지도 이동)
             const showResult = await showCurrentLocation()
 
             if (showResult.success) {
-                console.log('현재 위치가 지도에 표시되었습니다:', showResult.message)
+
 
                 // 좌표를 주소로 변환
                 await convertLocationToAddress(showResult.position)
@@ -51,7 +51,7 @@ export function useNaverMapCurrentLocation(
     // 현재 위치 좌표를 주소로 변환하는 함수
     const convertLocationToAddress = async (position) => {
         try {
-            console.log('현재 위치 주소 변환 시작:', position)
+
 
             // 좌표를 주소로 변환 (네이버 지오코딩 API 사용)
             const addressInfo = await getAddressFromCoords(position.lat, position.lng, {
@@ -60,7 +60,7 @@ export function useNaverMapCurrentLocation(
             })
 
             if (addressInfo) {
-                console.log('현재 위치 주소 변환 성공:', addressInfo.shortAddress)
+
                 return addressInfo
             } else {
                 console.warn('현재 위치 주소 변환 실패 - 결과 없음')
@@ -84,7 +84,7 @@ export function useNaverMapCurrentLocation(
     // 현재 위치 마커 숨기기 (래퍼 함수)
     const hideCurrentLocationMarker = () => {
         const result = hideCurrentLocation()
-        console.log('현재 위치 마커 숨김:', result.message)
+
         return result
     }
 

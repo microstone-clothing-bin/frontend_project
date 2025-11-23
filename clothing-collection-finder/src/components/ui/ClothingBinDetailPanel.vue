@@ -232,20 +232,14 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 
 const displayReviews = computed(() => {
-  console.log('🔄 displayReviews 계산 중...')
-  console.log('📦 authStore.user:', JSON.stringify(authStore.user))
-  console.log('📋 reviews 개수:', reviews.value.length)
+
 
   const result = reviews.value.map((review, index) => {
-    console.log(`\n🔍 리뷰 ${index}:`)
-    console.log('  - review.nickname:', review.nickname)
-    console.log('  - authStore.user.nickname:', authStore.user?.nickname)
-    console.log('  - 매칭 여부:', review.nickname === authStore.user?.nickname)
+
 
     // nickname으로 매칭
     if (authStore.user && review.nickname === authStore.user.nickname) {
-      console.log('  ✅ 매칭 성공! 프로필 업데이트')
-      console.log('  - authStore 이미지:', authStore.user.profileImageUrl)
+
 
       const updated = {
         ...review,
@@ -254,15 +248,14 @@ const displayReviews = computed(() => {
         nickname: authStore.user.nickname
       }
 
-      console.log('  📤 업데이트된 리뷰 profileImageUrl:', updated.profileImageUrl)
+
       return updated
     }
 
     return review
   })
 
-  console.log('🎯 최종 displayReviews:', result)
-  console.log('🎯 첫 번째 리뷰 이미지:', result[0]?.profileImageUrl)
+
 
   return result
 })
@@ -274,8 +267,7 @@ const loadReviews = async () => {
   try {
     reviewsLoading.value = true
     reviews.value = await reviewService.getReviewsByBinId(props.binData.id)
-    console.log('받아온 리뷰 데이터:', reviews.value)
-    console.log('첫 번째 리뷰 이미지:', reviews.value[0]?.imageBase64)
+
   } catch (error) {
     console.error('리뷰 로드 실패:', error)
     reviews.value = []
@@ -292,8 +284,7 @@ const checkWritePermission = () => {
   // ✅ authStore에서 최신 프로필 정보 가져오기
   currentUser.value = authStore.user  // ← 이렇게 변경
 
-  console.log('리뷰 작성 권한:', canWriteReview.value)
-  console.log('현재 사용자:', currentUser.value)
+
 }
 
 // 이미지 선택 처리
@@ -409,7 +400,7 @@ const toggleFavorite = async (binId) => {  // ✅ async 추가
   }
   try {
     await favoritesStore.toggleFavorite(binId)  // ✅ await 추가
-    console.log(`즐겨찾기 토글: ${binId}`)
+
   } catch (error) {
     console.error('즐겨찾기 토글 실패:', error)
     if (error.message === 'LOGIN_REQUIRED') {

@@ -10,7 +10,7 @@ const loadAddressFromStorage = () => {
         const saved = localStorage.getItem('lastAddress')
         if (saved) {
             const parsed = JSON.parse(saved)
-            console.log('💾 저장된 주소 복원:', parsed.shortAddress)
+           // console.log('💾 저장된 주소 복원:', parsed.shortAddress)
             return parsed
         }
     } catch (error) {
@@ -85,7 +85,7 @@ export function useGeocoding() {
         // 캐시에서 결과 확인
         if (useCache && globalState.cache.has(cacheKey)) {
             const cachedResult = globalState.cache.get(cacheKey)
-            console.log('[useGeocoding] 캐시에서 주소 반환:', cachedResult.shortAddress)
+            //console.log('[useGeocoding] 캐시에서 주소 반환:', cachedResult.shortAddress)
 
             if (updateGlobalState) {
                 updateCurrentAddress(cachedResult, addToHistory)
@@ -102,13 +102,13 @@ export function useGeocoding() {
                 isRetrying.value = attempt > 0
                 error.value = null
 
-                console.log(`[useGeocoding] 주소 변환 시도 ${attempt + 1}/${retryCount + 1}:`, { lat, lng })
+                //console.log(`[useGeocoding] 주소 변환 시도 ${attempt + 1}/${retryCount + 1}:`, { lat, lng })
 
                 // 역지오코딩 API 호출
                 const addressInfo = await reverseGeocode(lat, lng)
 
                 // 성공 시 처리
-                console.log('[useGeocoding] 주소 변환 성공:', addressInfo.shortAddress)
+                //console.log('[useGeocoding] 주소 변환 성공:', addressInfo.shortAddress)
 
                 // 캐시에 저장
                 if (useCache) {
@@ -141,7 +141,7 @@ export function useGeocoding() {
                     return null
                 } else {
                     // 재시도 전 대기
-                    console.log(`[useGeocoding] ${1000 * attempt}ms 후 재시도...`)
+                    //console.log(`[useGeocoding] ${1000 * attempt}ms 후 재시도...`)
                     await new Promise(resolve => setTimeout(resolve, 1000 * attempt))
                 }
             } finally {
@@ -175,11 +175,11 @@ export function useGeocoding() {
             isLoading.value = true
             error.value = null
 
-            console.log('[useGeocoding] 좌표 변환 시작:', address)
+            //console.log('[useGeocoding] 좌표 변환 시작:', address)
 
             const coordInfo = await geocode(address)
 
-            console.log('[useGeocoding] 좌표 변환 성공:', coordInfo)
+            //console.log('[useGeocoding] 좌표 변환 성공:', coordInfo)
             return coordInfo
 
         } catch (err) {
@@ -204,7 +204,7 @@ export function useGeocoding() {
         // ✅ 추가: localStorage에 저장
         try {
             localStorage.setItem('lastAddress', JSON.stringify(addressInfo))
-            console.log('💾 주소 저장 완료:', addressInfo.shortAddress)
+            //console.log('💾 주소 저장 완료:', addressInfo.shortAddress)
         } catch (error) {
             console.error('주소 저장 실패:', error)
         }
@@ -238,12 +238,12 @@ export function useGeocoding() {
         // ✅ 추가: localStorage도 삭제
         try {
             localStorage.removeItem('lastAddress')
-            console.log('💾 저장된 주소 삭제')
+            //console.log('💾 저장된 주소 삭제')
         } catch (error) {
             console.error('주소 삭제 실패:', error)
         }
 
-        console.log('[useGeocoding] 현재 주소 초기화')
+        //console.log('[useGeocoding] 현재 주소 초기화')
     }
 
     /**
@@ -251,7 +251,7 @@ export function useGeocoding() {
      */
     const clearCache = () => {
         globalState.cache.clear()
-        console.log('[useGeocoding] 캐시 초기화')
+        //console.log('[useGeocoding] 캐시 초기화')
     }
 
     /**
@@ -259,7 +259,7 @@ export function useGeocoding() {
      */
     const clearHistory = () => {
         globalState.addressHistory = []
-        console.log('[useGeocoding] 히스토리 초기화')
+       // console.log('[useGeocoding] 히스토리 초기화')
     }
 
     /**

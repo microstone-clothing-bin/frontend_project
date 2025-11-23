@@ -83,7 +83,7 @@ const handleSearchAgain = async () => {
   if (!map.value) return
 
   try {
-    console.log('현재 지도 영역에서 검색 시작...')
+
 
     // 현재 지도의 사각형 영역 가져오기
     const bounds = map.value.getBounds()
@@ -92,7 +92,7 @@ const handleSearchAgain = async () => {
     const neLat = bounds.getNE().lat()
     const neLng = bounds.getNE().lng()
 
-    console.log('검색 영역:', { swLat, swLng, neLat, neLng })
+
 
     // 기존 마커 제거
     clearMarkers()
@@ -114,7 +114,7 @@ const handleSearchAgain = async () => {
 
 // ✅ 현재 위치 버튼 클릭 핸들러 추가
 const handleCurrentLocationClick = () => {
-  console.log('🎯 현재 위치 버튼 클릭!')
+
   emit('location-updated')
 }
 

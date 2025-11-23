@@ -29,7 +29,7 @@ export function useCurrentLocationMarker() {
                 zIndex: 1000                        // 다른 마커보다 위에 표시
             })
 
-            console.log('현재 위치 마커가 추가되었습니다:', position)
+
 
         } catch (error) {
             console.error('현재 위치 마커 생성 중 오류:', error)

@@ -8,14 +8,14 @@ export function useDetailPanel() {
 
     // 마커 클릭 핸들러
     const handleMarkerClick = (binData) => {
-        console.log('마커 클릭 받음:', binData)
+        //console.log('마커 클릭 받음:', binData)
         selectedBinData.value = binData
         showDetailPanel.value = true
     }
 
     // 사이드바 패널 표시 핸들러
     const handleShowPanel = (binData) => {
-        console.log('사이드바 클릭 받음:', binData)
+        //console.log('사이드바 클릭 받음:', binData)
         selectedBinData.value = binData
         showDetailPanel.value = true
     }

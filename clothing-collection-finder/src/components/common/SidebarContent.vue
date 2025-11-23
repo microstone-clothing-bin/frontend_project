@@ -235,14 +235,10 @@ export default {
     const handleBookmarkClick = async (binId, event) => {  // ✅ async 추가
       event?.stopPropagation()
       if (!binId) {
-        console.error('binId가 없습니다.')
         return
       }
-      console.log('버튼 클릭 전 isActive:', isFavorite(binId))
       try {
         await favoritesStore.toggleFavorite(binId)  // ✅ await 추가
-        console.log(`사이드바에서 즐겨찾기 토글: ${binId}`)
-        console.log('버튼 클릭 후 isActive:', isFavorite(binId))
       } catch (error) {
         console.error('즐겨찾기 토글 실패:', error)
         if (error.message === 'LOGIN_REQUIRED') {
@@ -256,7 +252,7 @@ export default {
 // 위치 업데이트 감지 (현재 위치 버튼 클릭 시에만)
     watch(() => props.locationUpdate, async (newValue, oldValue) => {
       if (newValue > 0 && newValue !== oldValue) {
-        console.log('🗺️ SidebarContent: 현재 위치 버튼 클릭 감지')
+
 
         try {
           // 1. 위치 정보 가져오기
@@ -270,7 +266,7 @@ export default {
 
           // 3. 좌표가 있으면 주소 변환
           if (geoCoordinates.value) {
-            console.log('📍 주소 변환 시작:', geoCoordinates.value)
+
             await getAddressFromCoords(
                 geoCoordinates.value.lat,
                 geoCoordinates.value.lng,
@@ -290,7 +286,7 @@ export default {
 
 // 데이터 로드
     onMounted(async () => {
-      console.log('🚀 SidebarContent 마운트 시작')
+
 
       await getGeoPosition()
       await clotheBinStore.fetchClothingBins()

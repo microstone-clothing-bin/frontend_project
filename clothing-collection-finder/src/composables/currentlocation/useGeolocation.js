@@ -69,7 +69,7 @@ export function useGeolocation() {
                 )
 
                 if (success) {
-                    console.log('[useGeolocation] 위치 획득 성공:', position)
+
                     return position
                 } else {
                     throw new Error('좌표 설정 실패')
@@ -86,7 +86,7 @@ export function useGeolocation() {
                     }
                 )
 
-                console.log('[useGeolocation] 기본 위치 사용:', position)
+
                 return position
             }
 
@@ -125,7 +125,7 @@ export function useGeolocation() {
             }
         )
 
-        console.log('[useGeolocation] 기본 위치 설정:', defaultResult.position)
+
         return defaultResult.position
     }
 
@@ -144,7 +144,7 @@ export function useGeolocation() {
     const clearError = () => {
         permissionModule.error.value = null
         gpsModule.error.value = null
-        console.log('[useGeolocation] 에러 초기화')
+
     }
 
     /**
@@ -153,7 +153,7 @@ export function useGeolocation() {
     const clearCoordinates = () => {
         gpsModule.clearCurrentCoords()
         permissionModule.resetPermission()
-        console.log('[useGeolocation] 좌표 및 권한 상태 초기화')
+
     }
 
     /**

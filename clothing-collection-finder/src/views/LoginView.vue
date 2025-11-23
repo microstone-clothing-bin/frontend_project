@@ -86,8 +86,8 @@ export default {
         })
 
         if (result && result.success) {
-          console.log('로그인 성공!')
-          console.log('authStore 상태:', authStore.isLoggedIn)
+          //console.log('로그인 성공!')
+          //console.log('authStore 상태:', authStore.isLoggedIn)
 
           setTimeout(() => {
             this.$router.push('/')

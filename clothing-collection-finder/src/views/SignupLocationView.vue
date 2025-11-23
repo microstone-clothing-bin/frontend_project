@@ -188,7 +188,7 @@ export default {
     handleAgree() {
       // 확인 버튼 클릭 시 회원가입 페이지로 돌아가기
       this.$router.push('/signup');
-      console.log('위치기반 서비스 동의 완료');
+      //console.log('위치기반 서비스 동의 완료');
     }
   }
 }

@@ -146,7 +146,7 @@ export default {
       const grouped = groupByRegion(favoriteClothingBins.value, { includeDistrict: false })
       const groupedArray = convertGroupsToArray(grouped)
 
-      console.log('지역별 그룹화 결과:', groupedArray)
+      //console.log('지역별 그룹화 결과:', groupedArray)
       return groupedArray
     })
 
@@ -189,7 +189,7 @@ export default {
     const removeFavorite = async (binId) => {
       try {
         await favoritesStore.removeFavorite(binId)
-        console.log(`즐겨찾기에서 제거: ${binId}`)
+        //console.log(`즐겨찾기에서 제거: ${binId}`)
       } catch (error) {
         console.error('즐겨찾기 제거 실패:', error)
         if (error.message === 'LOGIN_REQUIRED') {
@@ -214,7 +214,7 @@ export default {
         // ✅ await 추가
         await favoritesStore.loadFavorites()
 
-        console.log('즐겨찾기 개수:', favoritesStore.favoriteCount)
+        //console.log('즐겨찾기 개수:', favoritesStore.favoriteCount)
       } catch (error) {
         console.error('데이터 로드 실패:', error)
       }

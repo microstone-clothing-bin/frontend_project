@@ -74,11 +74,7 @@ export function useGpsCoordinates() {
                 addToHistoryInternal(coordsData)
             }
 
-            console.log('[gpsCoordinates] 현재 좌표 설정 완료:', {
-                lat: coordsData.lat,
-                lng: coordsData.lng,
-                source: coordsData.source
-            })
+
 
             return true
 
@@ -137,7 +133,7 @@ export function useGpsCoordinates() {
                             timestamp: new Date()
                         }
 
-                        console.log('[gpsCoordinates] GPS 위치 획득 성공:', coordsData)
+
                         resolve(coordsData)
                     } else {
                         reject(new Error('좌표 설정 실패'))
@@ -234,7 +230,7 @@ export function useGpsCoordinates() {
         globalCoordsState.lastUpdateTime = null
         globalCoordsState.isTracking = false
         error.value = null
-        console.log('[gpsCoordinates] 현재 좌표 초기화')
+
     }
 
     /**
@@ -242,7 +238,7 @@ export function useGpsCoordinates() {
      */
     const clearCoordsHistory = () => {
         globalCoordsState.coordsHistory = []
-        console.log('[gpsCoordinates] 좌표 히스토리 초기화')
+
     }
 
     /**
@@ -294,7 +290,7 @@ export function useGpsCoordinates() {
         if (watchId) {
             navigator.geolocation.clearWatch(watchId)
             globalCoordsState.isTracking = false
-            console.log('[gpsCoordinates] 위치 추적 중단')
+
         }
     }
 

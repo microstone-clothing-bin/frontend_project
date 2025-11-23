@@ -53,11 +53,7 @@ export function useLocationPermission() {
 
             updatePermissionState(state, state === 'granted')
 
-            console.log('[locationPermission] 권한 상태 확인:', {
-                state: state,
-                hasPermission: hasPermission.value,
-                timestamp: new Date()
-            })
+
 
             return state
 
@@ -98,7 +94,7 @@ export function useLocationPermission() {
             isChecking.value = true
             error.value = null
 
-            console.log('[locationPermission] 위치 권한 요청 시작')
+
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -120,7 +116,7 @@ export function useLocationPermission() {
                         message: '위치 권한이 허용되었습니다'
                     }
 
-                    console.log('[locationPermission] 권한 허용됨:', result)
+
                     resolve(result)
                 },
                 (err) => {
@@ -165,7 +161,7 @@ export function useLocationPermission() {
                         message: `${errorMessage}. 기본 위치(서울 시청)로 설정됩니다.`
                     }
 
-                    console.log('[locationPermission] 권한 처리 결과:', permissionResult)
+
 
                     // reject 대신 resolve로 기본값과 함께 반환
                     resolve(permissionResult)
@@ -218,7 +214,7 @@ export function useLocationPermission() {
     const getDefaultLocation = () => {
         updatePermissionState('denied', false)
 
-        console.log('[locationPermission] 기본 위치 사용:', DEFAULT_LOCATION)
+
 
         return {
             success: true,
@@ -238,7 +234,7 @@ export function useLocationPermission() {
         globalPermissionState.deniedCount = 0
         deniedCount.value = 0
         error.value = null
-        console.log('[locationPermission] 권한 상태 초기화')
+
     }
 
     /**

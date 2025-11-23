@@ -168,7 +168,7 @@ export default {
     handleAgree() {
       // 동의 버튼 클릭 시 회원가입 페이지로 돌아가기
       this.$router.push('/signup');
-      console.log('약관 동의 완료');
+     // console.log('약관 동의 완료');
     }
   }
 }

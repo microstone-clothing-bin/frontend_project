@@ -25,7 +25,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
             isLoading.value = true
             const binIds = await wishService.getUserWishes()
             favoriteIds.value = new Set(binIds)
-            console.log(`즐겨찾기 로드: ${favoriteIds.value.size}개`)
+           // console.log(`즐겨찾기 로드: ${favoriteIds.value.size}개`)
         } catch (error) {
             console.error('즐겨찾기 로드 실패:', error)
             favoriteIds.value = new Set()
@@ -44,7 +44,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
             const result = await wishService.addWish(binId)
             if (result.success) {
                 favoriteIds.value.add(binId)
-                console.log(`즐겨찾기 추가: ${binId}`)
+               // console.log(`즐겨찾기 추가: ${binId}`)
             }
             return result
         } catch (error) {
@@ -63,7 +63,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
             const result = await wishService.removeWish(binId)
             if (result.success) {
                 favoriteIds.value.delete(binId)
-                console.log(`즐겨찾기 제거: ${binId}`)
+              //  console.log(`즐겨찾기 제거: ${binId}`)
             }
             return result
         } catch (error) {

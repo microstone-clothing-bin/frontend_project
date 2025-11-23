@@ -32,7 +32,7 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
             const data = await clothesBinService.getAllClothingBins()
             clothingBins.value = transformBinData(data)  // ✅ 변환 적용
 
-            console.log(`의류수거함 데이터 로드 완료: ${data.length}개`)
+           // console.log(`의류수거함 데이터 로드 완료: ${data.length}개`)
         } catch (err) {
             error.value = err.message
             console.error('의류수거함 데이터 로드 실패:', err)
@@ -50,7 +50,7 @@ export const useClotheBinStore = defineStore('clotheBin', () => {
             const data = await clothesBinService.getClothingBinsInBounds(swLat, swLng, neLat, neLng)
             clothingBins.value = transformBinData(data)  // ✅ 변환 적용
 
-            console.log(`사각형 영역 내 의류수거함 데이터 로드 완료: ${data.length}개`)
+           // console.log(`사각형 영역 내 의류수거함 데이터 로드 완료: ${data.length}개`)
         } catch (err) {
             error.value = err.message
             console.error('사각형 영역 검색 실패:', err)

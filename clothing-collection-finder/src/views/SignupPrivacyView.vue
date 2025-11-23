@@ -168,7 +168,7 @@ export default {
     handleAgree() {
       // 확인 버튼 클릭 시 회원가입 페이지로 돌아가기
       this.$router.push('/signup');
-      console.log('개인정보 약관 동의 완료');
+      //console.log('개인정보 약관 동의 완료');
     }
   }
 }

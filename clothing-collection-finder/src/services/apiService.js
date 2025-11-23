@@ -18,7 +18,7 @@ const apiClient = axios.create({
 // 요청 인터셉터 (요청을 보내기 전에 실행)
 apiClient.interceptors.request.use(
     (config) => {
-        console.log('API 요청:', config.method?.toUpperCase(), config.url)
+        //console.log('API 요청:', config.method?.toUpperCase(), config.url)
 
         // Content-Type 자동 설정 로직
         if (config.data instanceof FormData) {
@@ -43,7 +43,7 @@ apiClient.interceptors.request.use(
 // 응답 인터셉터 (응답을 받은 후에 실행)
 apiClient.interceptors.response.use(
     (response) => {
-        console.log('API 응답 성공:', response.status, response.config.url)
+        //console.log('API 응답 성공:', response.status, response.config.url)
         return response
     },
     (error) => {

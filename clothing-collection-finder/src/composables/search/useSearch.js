@@ -29,7 +29,7 @@ export function useSearch() {
 
         // 디버깅용 로그 (필요시 주석 해제)
         if (score > 0) {
-            console.log(`검색매칭: "${query}" -> 도로명:${roadScore}, 지번:${landLotScore}, 최종:${score}`)
+            //console.log(`검색매칭: "${query}" -> 도로명:${roadScore}, 지번:${landLotScore}, 최종:${score}`)
         }
 
         return score
@@ -119,7 +119,7 @@ export function useSearch() {
             searchResults.value = scoredResults
 
             // 검색 결과 로그
-            console.log(` 검색 완료: "${trimmedQuery}" → ${scoredResults.length}개 결과`)
+            //console.log(` 검색 완료: "${trimmedQuery}" → ${scoredResults.length}개 결과`)
 
             // 매칭된 주소 유형별 통계 (디버깅용)
             if (scoredResults.length > 0) {
@@ -127,7 +127,7 @@ export function useSearch() {
                     stats[result.matchedBy] = (stats[result.matchedBy] || 0) + 1
                     return stats
                 }, {})
-                console.log(' 매칭 유형별 통계:', matchStats)
+               // console.log(' 매칭 유형별 통계:', matchStats)
             }
 
         } catch (error) {
@@ -162,7 +162,7 @@ export function useSearch() {
         searchQuery.value = ''
         searchResults.value = []
         isSearchMode.value = false
-        console.log(' 검색 초기화')
+        //console.log(' 검색 초기화')
     }
 
     // 검색어 강조 함수 - 도로명 주소와 지번 주소 모두 지원
