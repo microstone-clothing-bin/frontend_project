@@ -5,6 +5,11 @@ import { ref, computed } from 'vue'
 // 🔍 도 단위 동의어 매핑 (지역 검색 확장)
 // ============================================
 const PROVINCE_SYNONYMS = {
+    // 서울 추가
+    '서울': ['서울', '서울시', '서울특별시'],
+    '서울시': ['서울', '서울시', '서울특별시'],
+    '서울특별시': ['서울', '서울시', '서울특별시'],
+
     // 강원도
     '강원': ['강원', '강원도', '강원특별자치도', '강원자치도'],
     '강원도': ['강원', '강원도', '강원특별자치도', '강원자치도'],
@@ -48,16 +53,90 @@ const PROVINCE_SYNONYMS = {
 /**
  * 검색어를 동의어로 확장하는 함수
  * 예: "강원" 입력 → ["강원", "강원도", "강원특별자치도", "강원자치도"] 반환
+ * 예: "서울 강남" 입력 → ["서울 강남", "서울시 강남", "서울특별시 강남"] 반환
  */
 const expandSearchQuery = (query) => {
     const trimmedQuery = query.trim().toLowerCase()
 
-    // 동의어 매핑에서 찾기
+    // 1. 기본 동의어 매핑에서 찾기
     if (PROVINCE_SYNONYMS[trimmedQuery]) {
         return PROVINCE_SYNONYMS[trimmedQuery]
     }
 
-    // 매핑에 없으면 원래 검색어만 반환
+    // 2. "서울 강남", "서울시 강남구" 같은 시+구 패턴 감지 및 확장
+    const cityDistrictPattern = /^(서울|부산|대구|인천|광주|대전|울산|세종)(시)?\s+(.+)$/
+    const match = trimmedQuery.match(cityDistrictPattern)
+
+    if (match) {
+        const city = match[1]      // "서울"
+        const hasCity = match[2]   // "시" 여부
+        const district = match[3]  // "강남" 또는 "강남구"
+
+        // 구 접미사 제거 (있으면)
+        const districtBase = district.replace(/(구|동|읍|면)$/, '')
+
+        const expanded = []
+
+        // 서울특별시인 경우
+        if (city === '서울') {
+            expanded.push(`${city} ${district}`)
+            expanded.push(`${city}시 ${district}`)
+            expanded.push(`${city}특별시 ${district}`)
+            // 구가 명시되지 않았다면 "구" 추가 버전도 포함
+            if (!district.endsWith('구')) {
+                expanded.push(`${city} ${district}구`)
+                expanded.push(`${city}시 ${district}구`)
+                expanded.push(`${city}특별시 ${district}구`)
+            }
+        }
+        // 광역시인 경우 (부산, 대구, 인천, 광주, 대전, 울산)
+        else if (['부산', '대구', '인천', '광주', '대전', '울산'].includes(city)) {
+            expanded.push(`${city} ${district}`)
+            expanded.push(`${city}시 ${district}`)
+            expanded.push(`${city}광역시 ${district}`)
+            // 구가 명시되지 않았다면 "구" 추가 버전도 포함
+            if (!district.endsWith('구')) {
+                expanded.push(`${city} ${district}구`)
+                expanded.push(`${city}시 ${district}구`)
+                expanded.push(`${city}광역시 ${district}구`)
+            }
+        }
+        // 세종특별자치시
+        else if (city === '세종') {
+            expanded.push(`${city} ${district}`)
+            expanded.push(`${city}시 ${district}`)
+            expanded.push(`${city}특별자치시 ${district}`)
+        }
+
+        return expanded.length > 0 ? expanded : [trimmedQuery]
+    }
+
+    // 3. "경기 수원", "경기도 수원시" 같은 도+시 패턴 감지 및 확장
+    const provinceDistrictPattern = /^(경기|강원|충북|충남|전북|전남|경북|경남|제주)(도)?\s+(.+)$/
+    const provinceMatch = trimmedQuery.match(provinceDistrictPattern)
+
+    if (provinceMatch) {
+        const province = provinceMatch[1]  // "경기"
+        const district = provinceMatch[3]  // "수원" 또는 "수원시"
+
+        const expanded = []
+
+        // 도의 모든 변형 가져오기
+        const provinceVariants = PROVINCE_SYNONYMS[province] || [province]
+
+        // 각 도 변형에 대해 시 조합 생성
+        provinceVariants.forEach(prov => {
+            expanded.push(`${prov} ${district}`)
+            // 시가 명시되지 않았다면 "시" 추가 버전도 포함
+            if (!district.endsWith('시') && !district.endsWith('군')) {
+                expanded.push(`${prov} ${district}시`)
+            }
+        })
+
+        return expanded.length > 0 ? expanded : [trimmedQuery]
+    }
+
+    // 4. 매핑에 없으면 원래 검색어만 반환
     return [trimmedQuery]
 }
 

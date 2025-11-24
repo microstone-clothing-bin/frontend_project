@@ -13,7 +13,7 @@
           @input="handleSearch"
           @keyup.enter="handleSearch"
           type="text"
-          placeholder="00시 00동"
+          placeholder="주소를 검색해주세요"
           class="search-input-overlay"
           :disabled="isSearching"
       />
