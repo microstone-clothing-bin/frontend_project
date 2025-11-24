@@ -1,6 +1,66 @@
 // src/composables/search/useSearch.js
 import { ref, computed } from 'vue'
 
+// ============================================
+// 🔍 도 단위 동의어 매핑 (지역 검색 확장)
+// ============================================
+const PROVINCE_SYNONYMS = {
+    // 강원도
+    '강원': ['강원', '강원도', '강원특별자치도', '강원자치도'],
+    '강원도': ['강원', '강원도', '강원특별자치도', '강원자치도'],
+    '강원특별자치도': ['강원', '강원도', '강원특별자치도', '강원자치도'],
+
+    // 경기도
+    '경기': ['경기', '경기도'],
+    '경기도': ['경기', '경기도'],
+
+    // 충청북도
+    '충북': ['충북', '충청북도', '충북도'],
+    '충청북도': ['충북', '충청북도', '충북도'],
+
+    // 충청남도
+    '충남': ['충남', '충청남도', '충남도'],
+    '충청남도': ['충남', '충청남도', '충남도'],
+
+    // 전라북도
+    '전북': ['전북', '전라북도', '전북도', '전북특별자치도', '전북자치도'],
+    '전라북도': ['전북', '전라북도', '전북도', '전북특별자치도', '전북자치도'],
+    '전북특별자치도': ['전북', '전라북도', '전북도', '전북특별자치도', '전북자치도'],
+
+    // 전라남도
+    '전남': ['전남', '전라남도', '전남도'],
+    '전라남도': ['전남', '전라남도', '전남도'],
+
+    // 경상북도
+    '경북': ['경북', '경상북도', '경북도'],
+    '경상북도': ['경북', '경상북도', '경북도'],
+
+    // 경상남도
+    '경남': ['경남', '경상남도', '경남도'],
+    '경상남도': ['경남', '경상남도', '경남도'],
+
+    // 제주도
+    '제주': ['제주', '제주도', '제주특별자치도', '제주자치도'],
+    '제주도': ['제주', '제주도', '제주특별자치도', '제주자치도'],
+    '제주특별자치도': ['제주', '제주도', '제주특별자치도', '제주자치도']
+}
+
+/**
+ * 검색어를 동의어로 확장하는 함수
+ * 예: "강원" 입력 → ["강원", "강원도", "강원특별자치도", "강원자치도"] 반환
+ */
+const expandSearchQuery = (query) => {
+    const trimmedQuery = query.trim().toLowerCase()
+
+    // 동의어 매핑에서 찾기
+    if (PROVINCE_SYNONYMS[trimmedQuery]) {
+        return PROVINCE_SYNONYMS[trimmedQuery]
+    }
+
+    // 매핑에 없으면 원래 검색어만 반환
+    return [trimmedQuery]
+}
+
 export function useSearch() {
     // 검색 상태
     const searchQuery = ref('')           // 검색어
@@ -8,31 +68,41 @@ export function useSearch() {
     const isSearchMode = ref(false)       // 검색 모드 여부
     const isSearching = ref(false)        // 검색 중 상태
 
-    // 검색 점수 계산 함수 - 도로명 주소와 지번 주소 모두 검색
+    // 검색 점수 계산 함수 - 도로명 주소와 지번 주소 모두 검색 + 동의어 확장
     const calculateScore = (bin, query) => {
         const roadAddress = (bin.roadAddress || '').toLowerCase()
         const landLotAddress = (bin.landLotAddress || '').toLowerCase()
-        const searchTerm = query.toLowerCase()
 
-        if (!searchTerm) return 0
+        // 🔍 검색어를 동의어로 확장
+        const expandedQueries = expandSearchQuery(query)
 
-        let score = 0
+        let maxScore = 0
 
-        // 도로명 주소에서 점수 계산
-        const roadScore = calculateAddressScore(roadAddress, searchTerm, 1.0) // 기본 가중치
+        // 확장된 검색어들로 각각 점수 계산
+        expandedQueries.forEach(searchTerm => {
+            if (!searchTerm) return
 
-        // 지번 주소에서 점수 계산 (약간 낮은 가중치)
-        const landLotScore = calculateAddressScore(landLotAddress, searchTerm, 0.9)
+            // 도로명 주소에서 점수 계산
+            const roadScore = calculateAddressScore(roadAddress, searchTerm, 1.0)
 
-        // 둘 중 높은 점수 사용 (하나의 주소가 매칭되면 충분)
-        score = Math.max(roadScore, landLotScore)
+            // 지번 주소에서 점수 계산 (약간 낮은 가중치)
+            const landLotScore = calculateAddressScore(landLotAddress, searchTerm, 0.9)
+
+            // 둘 중 높은 점수
+            const score = Math.max(roadScore, landLotScore)
+
+            // 최대 점수 갱신
+            if (score > maxScore) {
+                maxScore = score
+            }
+        })
 
         // 디버깅용 로그 (필요시 주석 해제)
-        if (score > 0) {
-            //console.log(`검색매칭: "${query}" -> 도로명:${roadScore}, 지번:${landLotScore}, 최종:${score}`)
+        if (maxScore > 0) {
+            //console.log(`검색매칭: "${query}" (확장: ${expandedQueries.join(', ')}) -> 최종점수:${maxScore}`)
         }
 
-        return score
+        return maxScore
     }
 
     // 개별 주소에서 점수 계산하는 헬퍼 함수
@@ -119,7 +189,7 @@ export function useSearch() {
             searchResults.value = scoredResults
 
             // 검색 결과 로그
-            //console.log(` 검색 완료: "${trimmedQuery}" → ${scoredResults.length}개 결과`)
+            console.log(`🔍 검색 완료: "${trimmedQuery}" (확장: ${expandSearchQuery(trimmedQuery).join(', ')}) → ${scoredResults.length}개 결과`)
 
             // 매칭된 주소 유형별 통계 (디버깅용)
             if (scoredResults.length > 0) {
@@ -127,7 +197,7 @@ export function useSearch() {
                     stats[result.matchedBy] = (stats[result.matchedBy] || 0) + 1
                     return stats
                 }, {})
-               // console.log(' 매칭 유형별 통계:', matchStats)
+                console.log('📊 매칭 유형별 통계:', matchStats)
             }
 
         } catch (error) {
@@ -142,16 +212,24 @@ export function useSearch() {
     const getMatchType = (bin, query) => {
         const roadAddress = (bin.roadAddress || '').toLowerCase()
         const landLotAddress = (bin.landLotAddress || '').toLowerCase()
-        const searchTerm = query.toLowerCase()
+        const expandedQueries = expandSearchQuery(query)
 
-        const roadScore = calculateAddressScore(roadAddress, searchTerm)
-        const landLotScore = calculateAddressScore(landLotAddress, searchTerm)
+        let maxRoadScore = 0
+        let maxLandLotScore = 0
 
-        if (roadScore > landLotScore) {
+        expandedQueries.forEach(searchTerm => {
+            const roadScore = calculateAddressScore(roadAddress, searchTerm)
+            const landLotScore = calculateAddressScore(landLotAddress, searchTerm)
+
+            if (roadScore > maxRoadScore) maxRoadScore = roadScore
+            if (landLotScore > maxLandLotScore) maxLandLotScore = landLotScore
+        })
+
+        if (maxRoadScore > maxLandLotScore) {
             return 'roadAddress'
-        } else if (landLotScore > roadScore) {
+        } else if (maxLandLotScore > maxRoadScore) {
             return 'landLotAddress'
-        } else if (roadScore > 0) {
+        } else if (maxRoadScore > 0) {
             return 'both'
         }
         return 'none'
@@ -162,17 +240,25 @@ export function useSearch() {
         searchQuery.value = ''
         searchResults.value = []
         isSearchMode.value = false
-        //console.log(' 검색 초기화')
+        console.log('🔄 검색 초기화')
     }
 
     // 검색어 강조 함수 - 도로명 주소와 지번 주소 모두 지원
     const highlightSearchTerm = (text, addressType = 'road') => {
         if (!searchQuery.value || !text) return text
 
-        const regex = new RegExp(`(${searchQuery.value})`, 'gi')
-        const highlightColor = addressType === 'landLot' ? '#90EE90' : '#FFFF00' // 지번은 연두색, 도로명은 노란색
+        const expandedQueries = expandSearchQuery(searchQuery.value)
+        let highlightedText = text
 
-        return text.replace(regex, `<mark style="background-color: ${highlightColor}; font-weight: bold; padding: 1px 2px; border-radius: 2px;">$1</mark>`)
+        // 확장된 모든 검색어에 대해 하이라이트 적용
+        expandedQueries.forEach(term => {
+            const regex = new RegExp(`(${term})`, 'gi')
+            const highlightColor = addressType === 'landLot' ? '#90EE90' : '#FFFF00' // 지번은 연두색, 도로명은 노란색
+
+            highlightedText = highlightedText.replace(regex, `<mark style="background-color: ${highlightColor}; font-weight: bold; padding: 1px 2px; border-radius: 2px;">$1</mark>`)
+        })
+
+        return highlightedText
     }
 
     // 검색 결과에서 표시할 주소를 결정하는 함수
